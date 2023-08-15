@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'Profile/MainProfile.dart';
+import 'PushNotificationScreen.dart';
 import 'guidPlannig.dart';
 import 'ConcentricAnimationOnboarding.dart';
 
@@ -11,9 +12,11 @@ class NavigationRailPage extends StatefulWidget {
   State<NavigationRailPage> createState() => _NavigationRailPageState();
 }
 
+Widget _PushNotificationScreenState = PushNotificationScreen();
 Widget _planningScreenContent = PlaningSecreen();
-Widget _mainProfileScreenContent = MainProfile(); 
-Widget _concentricAnimationOnboardingScreenContent = ConcentricAnimationOnboarding(); 
+Widget _mainProfileScreenContent = MainProfile();
+Widget _concentricAnimationOnboardingScreenContent =
+    ConcentricAnimationOnboarding();
 const _navBarItems = [
   BottomNavigationBarItem(
     icon: Icon(Icons.home_outlined),
@@ -29,6 +32,16 @@ const _navBarItems = [
     icon: Icon(Icons.person_outline_rounded),
     activeIcon: Icon(Icons.person_rounded),
     label: 'Profile',
+  ),
+  BottomNavigationBarItem(
+    icon: Icon(Icons.notifications_active),
+    activeIcon: Icon(Icons.notifications_active),
+    label: 'Notification',
+  ),
+  BottomNavigationBarItem(
+    icon: Icon(Icons.more_vert),
+    activeIcon: Icon(Icons.more_vert),
+    label: 'More',
   ),
 ];
 
@@ -74,15 +87,16 @@ class _NavigationRailPageState extends State<NavigationRailPage> {
             ),
           const VerticalDivider(thickness: 1, width: 1),
           // This is the main content.
-         Expanded(
+          Expanded(
             child: _selectedIndex == 0
                 ? _planningScreenContent
                 : _selectedIndex == 2
                     ? _mainProfileScreenContent
-:_selectedIndex == 1?_concentricAnimationOnboardingScreenContent
-                    : Center(
-                        child:
-                            Text("${_navBarItems[_selectedIndex].label} Page")),
+                    : _selectedIndex == 1
+                        ? _concentricAnimationOnboardingScreenContent
+                        : Center(
+                            child: Text(
+                                "${_navBarItems[_selectedIndex].label} Page")),
           )
         ],
       ),

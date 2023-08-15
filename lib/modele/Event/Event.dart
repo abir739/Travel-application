@@ -10,14 +10,20 @@ class CalendarEvent {
   final String? title;
   final String? id;
   final String? description;
+  final String? note;
   final DateTime? startTime;
   final DateTime? endTime;
   final Color? color;
   Color? cardcolor;
   final TextStyle? displayNameTextStyle;
   CalendarEvent(
-      {this.title, this.description, this.startTime, this.endTime, this.color,this.id,
-this.cardcolor,
-      this.displayNameTextStyle
-});
+      {this.title,
+      this.description,
+      this.startTime,
+      this.endTime,
+      this.color,
+      this.id,
+      this.note,
+      this.cardcolor,
+      this.displayNameTextStyle});
 }

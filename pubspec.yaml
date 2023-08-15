@@ -60,6 +60,10 @@ dependencies:
   salomon_bottom_bar: ^3.3.2
   flutter_animation_progress_bar:
   animated_text_kit: ^4.2.2
+  curved_navigation_bar: ^1.0.3
+  flutter_widget_from_html: 
+  awesome_snackbar_content: ^0.1.1
+  file_picker: ^4.6.1
 dependency_overrides:
   platform: ^3.1.0
 

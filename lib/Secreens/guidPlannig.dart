@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'dart:math';
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zenify_trip/NetworkHandler.dart';
+import 'package:zenify_trip/Secreens/AddPlanningScreen.dart';
 import 'package:zenify_trip/Secreens/MyCalendarPage.dart';
 
 import 'package:zenify_trip/modele/touristGroup.dart';
@@ -25,7 +27,9 @@ import 'package:jwt_decode/jwt_decode.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 import 'AccommodationSecreen.dart';
+import 'AddToristGroupScreen.dart';
 import 'PlannigSecreen.dart';
+import 'welcome_page.dart';
 
 class PlaningSecreen extends StatefulWidget {
   const PlaningSecreen({super.key});
@@ -60,16 +64,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
   TouristGuide? selectedTouristGuide = TouristGuide();
   TouristGroup? selectedTouristGroup = TouristGroup();
   PlanningMainModel? selectedPlanning = PlanningMainModel();
-// TouristGuide? selectedTouristGuide=
-// TouristGuide(
-//   id: "default_id",
-//   name: "default_name",
-//   fullName: "default_full_name",
-//   logo: "default_logo",
-//   primaryColor: "default_primary_color",
-//   secondaryColor: "default_secondary_color",
-//   subDomain: "default_sub_domain",
-// );
+
   int subscriptionCount = 0;
   final storage = new FlutterSecureStorage();
   late String errorText;
@@ -96,28 +91,13 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
     _loadDataplanning();
     readRoleFromToken();
     initPlatformState();
-    // OneSignal.shared.setAppId('a83993b3-1680-49fa-a371-c5ad4c55849a');
-    // OneSignal.shared
-    //     .setSubscriptionObserver((OSSubscriptionStateChanges changes) {
-    //   print("SUBSCRIPTION STATE CHANGED: ${changes.jsonRepresentation()}");
-    // });
-    // OneSignal.shared.promptUserForPushNotificationPermission();
-    // organisation();
   }
 
   Future<void> initPlatformState() async {
     OneSignal.shared.setAppId(
       oneSignalAppId,
-      // iOSSettings: {
-      //   OSiOSSettings.autoPrompt: true,
-      //   OSiOSSettings.inAppLaunchUrl: true
-      // },
     );
 
-    // OneSignal.shared
-    //     .(OSNotificationDisplayType.notification);
-
-    //This method only work when app is in foreground.
     OneSignal.shared
         .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
       OSNotification notification1 = result.notification;
@@ -142,13 +122,6 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
     OneSignal.shared.setNotificationOpenedHandler(
       (OSNotificationOpenedResult result) async {
         var data = result.notification.additionalData;
-        // globals.appNavigator.currentState.push(
-        // MaterialPageRoute(
-        //   builder: (context) => SecondPage(
-        //     postId: data['post_id'].toString(),
-        //   ),
-        // ),
-        // );
       },
     );
   }
@@ -276,67 +249,129 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
   Widget build(BuildContext context) {
     if (isLoading) {
       return Scaffold(
-        body: Container(
-          child: Center(
-            child: FutureBuilder(
-              future: Future.delayed(Duration(seconds: 5)),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  // Show a loading indicator or any other widget while waiting
-                  return Center(
-                    child: CircularProgressIndicator(
-                      backgroundColor: Color.fromARGB(255, 219, 10, 10),
-                      valueColor: new AlwaysStoppedAnimation<Color>(
-                          Color.fromARGB(255, 24, 10, 221)),
+        appBar: AppBar(
+          backgroundColor: const Color.fromARGB(255, 207, 207, 219),
+          title: Row(
+            children: [
+              AnimatedTextKit(
+                animatedTexts: [
+                  TypewriterAnimatedText(
+                    'Zenify', // Your text
+                    textStyle: const TextStyle(
+                      fontSize: 26,
+                      letterSpacing: 24,
+                      color: Color.fromARGB(255, 68, 5, 150),
                     ),
-                  );
-                } else {
-                  // After the delay, show the "Submit" button
-                  return Center(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: Get.width * 0.7,
-                        ),
-                        Text('session Tim out.... ',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w900,
-                                fontSize: 20,
-                                color: Color.fromARGB(255, 90, 3, 203))),
-                        ElevatedButton(
-                          child: Text('Logout'),
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors
-                                .red, // Change the button's background color
-                            onPrimary: Colors.white, // Change the text color
-                            textStyle: TextStyle(
-                                fontSize: 16), // Change the text style
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 16), // Adjust the padding
-                            minimumSize: Size(120,
-                                40), // Set a minimum width and height for the button
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                  20), // Adjust the border radius
-                            ),
+                    speed: const Duration(
+                        milliseconds: 200), // Adjust the animation speed
+                  ),
+                ],
+                totalRepeatCount:
+                    5, // Set the number of times the animation will repeat
+                pause: const Duration(
+                    milliseconds:
+                        1000), // Duration before animation starts again
+                displayFullTextOnTap: true, // Display full text when tapped
+              ),
+              SvgPicture.asset(
+                'assets/Frame.svg',
+                fit: BoxFit.cover,
+                height: 36.0,
+              ),
+            ],
+          ),
+        ),
+        body: Center(
+          child: FutureBuilder(
+            future: Future.delayed(Duration(seconds: 5)),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                // Show a loading indicator or any other widget while waiting
+                return Center(
+                  child: CircularProgressIndicator(
+                    backgroundColor: Color.fromARGB(255, 219, 10, 10),
+                    valueColor: new AlwaysStoppedAnimation<Color>(
+                        Color.fromARGB(255, 24, 10, 221)),
+                  ),
+                );
+              } else {
+                // After the delay, show the "Submit" button
+                return Center(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: Get.width * 0.7,
+                      ),
+                      Text('session Tim out.... ',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w900,
+                              fontSize: 20,
+                              color: Color.fromARGB(255, 90, 3, 203))),
+                      ElevatedButton(
+                        child: Text('Logout'),
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors
+                              .red, // Change the button's background color
+                          onPrimary: Colors.white, // Change the text color
+                          textStyle:
+                              TextStyle(fontSize: 16), // Change the text style
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 16), // Adjust the padding
+                          minimumSize: Size(120,
+                              40), // Set a minimum width and height for the button
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                                20), // Adjust the border radius
                           ),
-                          onPressed: () async {
-                            await storage.delete(key: "access_token");
-                            // Get.to(LoginView());
-                          },
                         ),
-                      ],
-                    ),
-                  );
-                }
-              },
-            ),
+                        onPressed: () async {
+                          await storage.delete(key: "access_token");
+                          // Get.to(LoginView());
+                        },
+                      ),
+                    ],
+                  ),
+                );
+              }
+            },
           ),
         ),
       );
     } else {
       return Scaffold(
+        appBar: AppBar(
+          backgroundColor: const Color.fromARGB(255, 207, 207, 219),
+          title: Row(
+            children: [
+              AnimatedTextKit(
+                animatedTexts: [
+                  TypewriterAnimatedText(
+                    'Zenify', // Your text
+                    textStyle: const TextStyle(
+                      fontSize: 26,
+                      letterSpacing: 24,
+                      color: Color.fromARGB(255, 68, 5, 150),
+                    ),
+                    speed: const Duration(
+                        milliseconds: 200), // Adjust the animation speed
+                  ),
+                ],
+                totalRepeatCount:
+                    5, // Set the number of times the animation will repeat
+                pause: const Duration(
+                    milliseconds:
+                        1000), // Duration before animation starts again
+                displayFullTextOnTap: true, // Display full text when tapped
+              ),
+              SvgPicture.asset(
+                'assets/Frame.svg',
+                fit: BoxFit.cover,
+                height: 36.0,
+              ),
+            ],
+          ),
+        ),
         body: Stack(
           children: [
             Center(
@@ -570,9 +605,9 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                                 ),
                                 onPressed: () {
                                   // Handle button press, navigate to desired screen or perform any action
-                                  // Get.to(AddTouristGroupScreen());
+                                  Get.to(const AddTouristGroupScreen());
                                 },
-                                child: const Text('new Goup'),
+                                child: const Text('new Group'),
                               ),
                               FutureBuilder<int>(
                                 future: count.fetchInlineCount(
@@ -620,7 +655,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                               ),
                             ),
                             onPressed: () {
-                              // Get.to(AddPlanningScreen());
+                              Get.to(const AddPlanningScreen());
                             },
                             child: const Text('new Plannig'),
                           )
@@ -721,9 +756,12 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                                   // ));
                                   // Get.to(MyCalendarPage(
                                   //   planning: selectedPlanning,
+
                                   Get.to(PlanningScreen(
                                     selectedPlanning!.id,
                                   ));
+
+                                  //  Get.to(CalendarPage());
                                 },
                                 child: SizedBox(
                                   width: Get.width * 0.8,

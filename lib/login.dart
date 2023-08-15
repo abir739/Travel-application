@@ -69,8 +69,7 @@ class _MyLoginState extends State<MyLogin> {
           await storage.write(key: "id", value: output["data"]["id"]);
 
           // Navigator.pushNamed(context, 'register');
-          Get.to(() =>  const GoogleBottomBar());
-         
+          Get.to(() => const PlaningSecreen());
         } else {
           Map<String, dynamic> output =
               new Map<String, dynamic>.from(json.decode(response.body));

@@ -1,36 +1,27 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
-import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
-import '../AccommodationSecreen.dart';
-import '../Profile/MainProfile.dart';
-import '../PushNotificationScreen.dart';
-import '../guidPlannig.dart';
-import '../ConcentricAnimationOnboarding.dart';
-// ignore: depend_on_referenced_packages
-import 'package:flutter_svg/svg.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:flutter_svg/svg.dart';
+import 'ConcentricAnimationOnboarding.dart';
+import 'Profile/MainProfile.dart';
+import 'PushNotificationScreen.dart';
 
-class GoogleBottomBar extends StatefulWidget {
-  const GoogleBottomBar({Key? key}) : super(key: key);
-
+class CalendarPage extends StatefulWidget {
   @override
-  State<GoogleBottomBar> createState() => _GoogleBottomBarState();
+  _CalendarPageState createState() => _CalendarPageState();
 }
 
-class _GoogleBottomBarState extends State<GoogleBottomBar> {
-  final Widget _planningScreenContent = const PlaningSecreen();
-  final Widget _mainProfileScreenContent = MainProfile();
-  final Widget _concentricAnimationOnboardingScreenContent =
-      const ConcentricAnimationOnboarding();
-  final Widget _PushNotificationScreenState = PushNotificationScreen();
-  int _selectedIndex = 0;
-  final List<Widget> _screens = [
-    const PlaningSecreen(),
+class _CalendarPageState extends State<CalendarPage> {
+  int _pageIndex = 0;
+  final List<Widget> _pages = [
+    
     const ConcentricAnimationOnboarding(),
     MainProfile(),
     PushNotificationScreen(),
-    MainProfile(),
+    MainProfile(), // Add your other pages here
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,11 +56,8 @@ class _GoogleBottomBarState extends State<GoogleBottomBar> {
           ],
         ),
       ),
-      body: Center(
-        child: _screens[_selectedIndex], // Display the selected screen
-      ),
+      body: _pages[_pageIndex],
       bottomNavigationBar: CurvedNavigationBar(
-        index: _selectedIndex,
         height: 50.0,
         backgroundColor: Colors.blueAccent,
         buttonBackgroundColor: Colors.white,
@@ -85,7 +73,7 @@ class _GoogleBottomBarState extends State<GoogleBottomBar> {
         ],
         onTap: (index) {
           setState(() {
-            _selectedIndex = index;
+            _pageIndex = index;
           });
         },
       ),

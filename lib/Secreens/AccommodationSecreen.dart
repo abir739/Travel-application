@@ -20,6 +20,7 @@ import 'package:get/get.dart';
 import '../modele/transportmodel/transportModel.dart';
 import 'package:zenify_trip/Secreens/CustomCalendarDataSource.dart';
 import 'AccoummondationSecreenDetail.dart';
+import 'ConcentricAnimationOnboarding.dart';
 import 'EventView.dart';
 import '../constent.dart';
 import 'package:flutter_svg/svg.dart';
@@ -27,6 +28,9 @@ import 'package:flutter/material.dart';
 import 'package:time_planner/time_planner.dart';
 import 'package:intl/intl.dart'; // For date formatting
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
+
+import 'Profile/MainProfile.dart';
+import 'PushNotificationScreen.dart';
 
 class PlanningScreen extends StatefulWidget {
   String? Plannigid;
@@ -36,6 +40,7 @@ class PlanningScreen extends StatefulWidget {
 }
 
 class _PlanningScreenState extends State<PlanningScreen> {
+
   final storage = const FlutterSecureStorage();
   final CalendarController _controller = CalendarController();
   String? _headerText = '';
@@ -360,6 +365,7 @@ class _PlanningScreenState extends State<PlanningScreen> {
                     fontSize: 24,
                   ),
                 ),
+                
               ],
             ),
           ),
@@ -531,7 +537,8 @@ class _PlanningScreenState extends State<PlanningScreen> {
       builder: (context) => AlertDialog(
         title: const Text("Dropped resource details"),
         contentPadding: const EdgeInsets.all(16.0),
-        content: Text("You have dropped the appointment from ${sourceResource.displayName} to ${targetResource.displayName}"),
+        content: Text(
+            "You have dropped the appointment from ${sourceResource.displayName} to ${targetResource.displayName}"),
         actions: <Widget>[
           TextButton(
               child: const Text('OK'),
