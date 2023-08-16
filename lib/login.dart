@@ -9,6 +9,7 @@ import 'Secreens/NavigationRailPage.dart';
 import 'Secreens/PlannigSecreen.dart';
 import 'Secreens/guidPlannig.dart';
 import 'constent.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class MyLogin extends StatefulWidget {
   const MyLogin({Key? key}) : super(key: key);
@@ -41,8 +42,20 @@ class _MyLoginState extends State<MyLogin> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    _requestPermission();
     emailController = TextEditingController();
     passwordController = TextEditingController();
+  }
+
+  void _requestPermission() async {
+    final status = await Permission.storage.request();
+    print(status);
+  }
+
+  Future<void> storeAccessToken(String token) async {
+    final storage = FlutterSecureStorage();
+    await storage.write(key: 'access_token', value: token);
+    print(token);
   }
 
   void _handleLogin() async {
@@ -63,13 +76,13 @@ class _MyLoginState extends State<MyLogin> {
 
           print(output["access_token"]);
           print(output["data"]);
-
-          await storage.write(
-              key: "access_token", value: output["access_token"]);
+          storeAccessToken(output["access_token"]);
+          // await storage.write(
+          //     key: "access_token", value: output["access_token"]);
           await storage.write(key: "id", value: output["data"]["id"]);
 
           // Navigator.pushNamed(context, 'register');
-          Get.to(() => const PlaningSecreen());
+          Get.to(() => GoogleBottomBar());
         } else {
           Map<String, dynamic> output =
               new Map<String, dynamic>.from(json.decode(response.body));
@@ -94,7 +107,7 @@ class _MyLoginState extends State<MyLogin> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         image: DecorationImage(
             image: AssetImage('assets/login.png'), fit: BoxFit.cover),
       ),
@@ -105,7 +118,7 @@ class _MyLoginState extends State<MyLogin> {
             Container(),
             Container(
               padding: EdgeInsets.only(left: 35, top: 130),
-              child: const Text(
+              child: Text(
                 'Welcome\nBack',
                 style: TextStyle(color: Colors.white, fontSize: 33),
               ),
@@ -167,7 +180,7 @@ class _MyLoginState extends State<MyLogin> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const Text(
+                                Text(
                                   'Sign in',
                                   style: TextStyle(
                                       fontSize: 27,
@@ -179,13 +192,13 @@ class _MyLoginState extends State<MyLogin> {
                                   child: IconButton(
                                       color: Colors.white,
                                       onPressed: _handleLogin,
-                                      icon: const Icon(
+                                      icon: Icon(
                                         Icons.arrow_forward,
                                       )),
                                 )
                               ],
                             ),
-                            const SizedBox(
+                            SizedBox(
                               height: 40,
                             ),
                             Row(
@@ -195,7 +208,7 @@ class _MyLoginState extends State<MyLogin> {
                                   onPressed: () {
                                     Navigator.pushNamed(context, 'register');
                                   },
-                                  child: const Text(
+                                  child: Text(
                                     'Sign Up',
                                     textAlign: TextAlign.left,
                                     style: TextStyle(
@@ -207,7 +220,7 @@ class _MyLoginState extends State<MyLogin> {
                                 ),
                                 TextButton(
                                     onPressed: () {},
-                                    child: const Text(
+                                    child: Text(
                                       'Forgot Password',
                                       style: TextStyle(
                                         decoration: TextDecoration.underline,

@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-
+import 'package:flutter_svg/svg.dart';
 import 'package:zenify_trip/modele/Event/Event.dart';
+import 'package:zenify_trip/modele/TouristGuide.dart';
 import 'package:zenify_trip/modele/activitsmodel/activitesmodel.dart';
 
 import '../modele/accommodationsModel/accommodationModel.dart';
@@ -20,27 +21,23 @@ import 'package:get/get.dart';
 import '../modele/transportmodel/transportModel.dart';
 import 'package:zenify_trip/Secreens/CustomCalendarDataSource.dart';
 import 'AccoummondationSecreenDetail.dart';
-import 'ConcentricAnimationOnboarding.dart';
 import 'EventView.dart';
 import '../constent.dart';
-import 'package:flutter_svg/svg.dart';
+
 import 'package:flutter/material.dart';
 import 'package:time_planner/time_planner.dart';
 import 'package:intl/intl.dart'; // For date formatting
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
 
-import 'Profile/MainProfile.dart';
-import 'PushNotificationScreen.dart';
-
 class PlanningScreen extends StatefulWidget {
   String? Plannigid;
+  TouristGuide? guid;
   @override
-  PlanningScreen(this.Plannigid, {Key? key}) : super(key: key);
+  PlanningScreen(this.Plannigid, this.guid, {Key? key}) : super(key: key);
   _PlanningScreenState createState() => _PlanningScreenState();
 }
 
 class _PlanningScreenState extends State<PlanningScreen> {
-
   final storage = const FlutterSecureStorage();
   final CalendarController _controller = CalendarController();
   String? _headerText = '';
@@ -97,6 +94,7 @@ class _PlanningScreenState extends State<PlanningScreen> {
         title: "Accom: ${accommodation.note}",
         description: "A-T",
         id: accommodation.id,
+        type: accommodation,
         startTime: accommodation.date,
         endTime: accommodation.date!
             .add(Duration(days: accommodation.countNights ?? 0)),
@@ -115,6 +113,7 @@ class _PlanningScreenState extends State<PlanningScreen> {
         id: activity.id,
         description: "Activity ${activity.name}",
         startTime: activity.departureDate,
+        type: activity,
         endTime: activity.returnDate,
         color: Color.fromARGB(227, 239, 176, 3),
       ));
@@ -126,6 +125,7 @@ class _PlanningScreenState extends State<PlanningScreen> {
         id: transfer.id,
         description: "Transfer Guid",
         startTime: transfer.date,
+        type: transfer,
         endTime:
             transfer.date!.add(Duration(hours: transfer.durationHours ?? 0)),
         color: Color.fromARGB(200, 2, 152, 172),
@@ -141,7 +141,7 @@ class _PlanningScreenState extends State<PlanningScreen> {
       accommodationList = await fetchAccommodations(
           "/api/plannings/activitiestransfertaccommondation/${widget.Plannigid}");
       transferList = await fetchTransfers(
-          "/api/plannings/activitiestransfertaccommondation/${widget.Plannigid}");
+          "/api/transfers/touristGuidId/${widget.guid?.id}");
       setState(() {
         List<CalendarEvent> events = convertToCalendarEvents(
             accommodationList, activityList, transferList);
@@ -161,7 +161,7 @@ class _PlanningScreenState extends State<PlanningScreen> {
         "/api/plannings/activitiestransfertaccommondation/047c80d9-14c8-4735-b355-d8f5beaa90e6",
       );
       List<Transport> transfersList = await fetchTransfers(
-        "/api/plannings/activitiestransfertaccommondation/${widget.Plannigid}",
+        "/api/transfers/touristGuidId/${widget.guid!.id}",
       );
 
       List<CalendarEvent> events = convertToCalendarEvents(
@@ -278,7 +278,7 @@ class _PlanningScreenState extends State<PlanningScreen> {
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       var data = jsonDecode(response.body);
-      List<dynamic> resultList = data['transfers'];
+      List<dynamic> resultList = data["results"];
       transferList = resultList.map((e) => Transport.fromJson(e)).toList();
       return transferList;
     } else {
@@ -287,36 +287,36 @@ class _PlanningScreenState extends State<PlanningScreen> {
   }
 
   final Map<int, Widget> segmentWidgets = {
-    0: Expanded(
+    0: const Expanded(
       child: Column(
         children: [
           SizedBox(height: 14.0),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 6.0),
+            padding: EdgeInsets.symmetric(horizontal: 6.0),
             child: Text('Accommodations'),
           ),
           SizedBox(height: 14.0),
         ],
       ),
     ),
-    3: Expanded(
+    3: const Expanded(
       child: Column(
         children: [
           SizedBox(height: 14.0),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
             child: Text('Activity'),
           ),
           SizedBox(height: 14.0),
         ],
       ),
     ),
-    1: Expanded(
+    1: const Expanded(
       child: Column(
         children: [
           SizedBox(height: 14.0),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
             child: Text('Transfers'),
           ),
           SizedBox(height: 14.0),
@@ -365,7 +365,6 @@ class _PlanningScreenState extends State<PlanningScreen> {
                     fontSize: 24,
                   ),
                 ),
-                
               ],
             ),
           ),
@@ -373,11 +372,11 @@ class _PlanningScreenState extends State<PlanningScreen> {
             children: [
               Expanded(
                 child: SfCalendar(
-                  todayHighlightColor: const Color.fromARGB(255, 68, 5, 150),
-                  todayTextStyle: const TextStyle(
-                      fontStyle: FontStyle.italic,
-                      fontSize: 35,
-                      fontWeight: FontWeight.w700,
+                  todayHighlightColor: Color.fromARGB(255, 242, 186, 3),
+                  todayTextStyle: TextStyle(
+                      fontStyle: FontStyle.normal,
+                      fontSize: 30,
+                      fontWeight: FontWeight.w900,
                       color: Color.fromARGB(255, 238, 234, 238)),
                   monthCellBuilder:
                       (BuildContext context, MonthCellDetails details) {
@@ -385,11 +384,10 @@ class _PlanningScreenState extends State<PlanningScreen> {
                     return Container(
                       decoration: BoxDecoration(
                         color: details.date.month == DateTime.now().month
-                            ? const Color.fromARGB(255, 245, 242, 242)
-                            : const Color.fromARGB(255, 242, 186, 3),
+                            ? Color.fromARGB(255, 245, 242, 242)
+                            : Color.fromARGB(255, 242, 186, 3),
                         border: Border.all(
-                            color: Color.fromARGB(255, 236, 227, 227),
-                            width: 0.5),
+                            color: Color.fromARGB(255, 20, 1, 1), width: 0.5),
                       ),
                       alignment: Alignment.center,
                       child: Column(
@@ -411,8 +409,8 @@ class _PlanningScreenState extends State<PlanningScreen> {
                             style: TextStyle(
                               fontSize: 14,
                               color: details.visibleDates.contains(details.date)
-                                  ? const Color.fromARGB(255, 236, 2, 2)
-                                  : const Color.fromARGB(255, 248, 2, 2),
+                                  ? Color.fromARGB(255, 236, 2, 2)
+                                  : Color.fromARGB(255, 248, 2, 2),
                             ),
                           ),
                         ],
@@ -422,13 +420,26 @@ class _PlanningScreenState extends State<PlanningScreen> {
                   headerHeight: 30,
                   controller: _controller,
                   view: CalendarView.month,
+// onViewChanged: (ViewChangedDetails viewChangedDetails) {
+                  //   _headerText = DateFormat('MMMM yyyy', 'fr')
+                  //       .format(viewChangedDetails
+                  //       .visibleDates[viewChangedDetails.visibleDates
+                  //       .length ~/ 2])
+                  //       .toString();
+                  //   _string = _headerText![0].toUpperCase() +
+                  //       _headerText!.substring(1);
+                  //   SchedulerBinding.instance!.addPostFrameCallback((
+                  //       duration) {
+                  //     setState(() {});
+                  //   });
+                  // },
                   scheduleViewMonthHeaderBuilder: (BuildContext context,
                       ScheduleViewMonthHeaderDetails details) {
                     // You can return a custom widget here to be displayed as the header.
                     return Container(
-                      color: const Color.fromARGB(
+                      color: Color.fromARGB(
                           255, 215, 8, 46), // Set your desired background color
-                      child: const Center(
+                      child: Center(
                         child: Text(
                           'Custom Header', // Set your desired header text
                           style: TextStyle(
@@ -445,7 +456,7 @@ class _PlanningScreenState extends State<PlanningScreen> {
                         context, details); // Call your calendarTapped function
                   },
                   showDatePickerButton: true,
-                  resourceViewSettings: const ResourceViewSettings(
+                  resourceViewSettings: ResourceViewSettings(
                       visibleResourceCount: 4,
                       showAvatar: false,
                       displayNameTextStyle: TextStyle(
@@ -453,11 +464,16 @@ class _PlanningScreenState extends State<PlanningScreen> {
                           fontSize: 12,
                           color: Color.fromARGB(255, 250, 248, 246),
                           fontWeight: FontWeight.w400)),
-                  allowedViews: const <CalendarView>[
+
+                  allowedViews: <CalendarView>[
                     CalendarView.day,
                     CalendarView.week,
                     CalendarView.workWeek,
                     CalendarView.month,
+                    // CalendarView.timelineDay,
+                    // CalendarView.timelineWeek,
+                    // CalendarView.timelineWorkWeek,
+                    // CalendarView.timelineMonth,
                     CalendarView.schedule
                   ],
                   initialDisplayDate: DateTime.parse(dateString),
@@ -471,7 +487,7 @@ class _PlanningScreenState extends State<PlanningScreen> {
                       numberOfWeeksInView: 5,
                       agendaViewHeight:
                           isLargeScreen ? Get.height * 0.18 : Get.height * 0.24,
-                      monthCellStyle: const MonthCellStyle(
+                      monthCellStyle: MonthCellStyle(
                         todayBackgroundColor: Colors.red,
                         textStyle: TextStyle(
                             fontStyle: FontStyle.normal,
@@ -479,8 +495,8 @@ class _PlanningScreenState extends State<PlanningScreen> {
                             fontWeight: FontWeight.w700,
                             color: Color.fromARGB(255, 243, 239, 239)),
                       ),
-                      agendaStyle: const AgendaStyle(
-                        backgroundColor: Color.fromARGB(218, 199, 212, 233),
+                      agendaStyle: AgendaStyle(
+                        backgroundColor: Color.fromARGB(218, 1, 9, 22),
                         appointmentTextStyle: TextStyle(
                             fontSize: 20,
                             fontStyle: FontStyle.italic,
@@ -523,7 +539,7 @@ class _PlanningScreenState extends State<PlanningScreen> {
               onPressed: () {
                 Navigator.pop(context); // Close the dialog
               },
-              child: const Text('Close'),
+              child: Text('Close'),
             ),
           ],
         );
@@ -537,8 +553,10 @@ class _PlanningScreenState extends State<PlanningScreen> {
       builder: (context) => AlertDialog(
         title: const Text("Dropped resource details"),
         contentPadding: const EdgeInsets.all(16.0),
-        content: Text(
-            "You have dropped the appointment from ${sourceResource.displayName} to ${targetResource.displayName}"),
+        content: Text("You have dropped the appointment from " +
+            sourceResource.displayName +
+            " to " +
+            targetResource.displayName),
         actions: <Widget>[
           TextButton(
               child: const Text('OK'),
@@ -561,7 +579,7 @@ class _PlanningScreenState extends State<PlanningScreen> {
             width: calendarAppointmentDetails.bounds.width,
             height: calendarAppointmentDetails.bounds.height / 2,
             color: appointment.color,
-            child: const Center(
+            child: Center(
               child: Icon(
                 Icons.group,
                 color: Colors.black,
@@ -572,7 +590,10 @@ class _PlanningScreenState extends State<PlanningScreen> {
           height: calendarAppointmentDetails.bounds.height / 2,
           color: appointment.color,
           child: Text(
-            '${appointment.subject}${DateFormat(' (hh:mm a').format(appointment.startTime)}-${DateFormat('hh:mm a)').format(appointment.endTime)}',
+            appointment.subject +
+                DateFormat(' (hh:mm a').format(appointment.startTime) +
+                '-' +
+                DateFormat('hh:mm a)').format(appointment.endTime),
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 10),
           ),

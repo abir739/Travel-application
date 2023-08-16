@@ -249,38 +249,38 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
   Widget build(BuildContext context) {
     if (isLoading) {
       return Scaffold(
-        appBar: AppBar(
-          backgroundColor: const Color.fromARGB(255, 207, 207, 219),
-          title: Row(
-            children: [
-              AnimatedTextKit(
-                animatedTexts: [
-                  TypewriterAnimatedText(
-                    'Zenify', // Your text
-                    textStyle: const TextStyle(
-                      fontSize: 26,
-                      letterSpacing: 24,
-                      color: Color.fromARGB(255, 68, 5, 150),
-                    ),
-                    speed: const Duration(
-                        milliseconds: 200), // Adjust the animation speed
-                  ),
-                ],
-                totalRepeatCount:
-                    5, // Set the number of times the animation will repeat
-                pause: const Duration(
-                    milliseconds:
-                        1000), // Duration before animation starts again
-                displayFullTextOnTap: true, // Display full text when tapped
-              ),
-              SvgPicture.asset(
-                'assets/Frame.svg',
-                fit: BoxFit.cover,
-                height: 36.0,
-              ),
-            ],
-          ),
-        ),
+        // appBar: AppBar(
+        //   backgroundColor: const Color.fromARGB(255, 207, 207, 219),
+        //   title: Row(
+        //     children: [
+        //       AnimatedTextKit(
+        //         animatedTexts: [
+        //           TypewriterAnimatedText(
+        //             'Zenify', // Your text
+        //             textStyle: const TextStyle(
+        //               fontSize: 26,
+        //               letterSpacing: 24,
+        //               color: Color.fromARGB(255, 68, 5, 150),
+        //             ),
+        //             speed: const Duration(
+        //                 milliseconds: 200), // Adjust the animation speed
+        //           ),
+        //         ],
+        //         totalRepeatCount:
+        //             5, // Set the number of times the animation will repeat
+        //         pause: const Duration(
+        //             milliseconds:
+        //                 1000), // Duration before animation starts again
+        //         displayFullTextOnTap: true, // Display full text when tapped
+        //       ),
+        //       SvgPicture.asset(
+        //         'assets/Frame.svg',
+        //         fit: BoxFit.cover,
+        //         height: 36.0,
+        //       ),
+        //     ],
+        //   ),
+        // ),
         body: Center(
           child: FutureBuilder(
             future: Future.delayed(Duration(seconds: 5)),
@@ -340,38 +340,38 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
       );
     } else {
       return Scaffold(
-        appBar: AppBar(
-          backgroundColor: const Color.fromARGB(255, 207, 207, 219),
-          title: Row(
-            children: [
-              AnimatedTextKit(
-                animatedTexts: [
-                  TypewriterAnimatedText(
-                    'Zenify', // Your text
-                    textStyle: const TextStyle(
-                      fontSize: 26,
-                      letterSpacing: 24,
-                      color: Color.fromARGB(255, 68, 5, 150),
-                    ),
-                    speed: const Duration(
-                        milliseconds: 200), // Adjust the animation speed
-                  ),
-                ],
-                totalRepeatCount:
-                    5, // Set the number of times the animation will repeat
-                pause: const Duration(
-                    milliseconds:
-                        1000), // Duration before animation starts again
-                displayFullTextOnTap: true, // Display full text when tapped
-              ),
-              SvgPicture.asset(
-                'assets/Frame.svg',
-                fit: BoxFit.cover,
-                height: 36.0,
-              ),
-            ],
-          ),
-        ),
+        // appBar: AppBar(
+        //   backgroundColor: const Color.fromARGB(255, 207, 207, 219),
+        //   title: Row(
+        //     children: [
+        //       AnimatedTextKit(
+        //         animatedTexts: [
+        //           TypewriterAnimatedText(
+        //             'Zenify', // Your text
+        //             textStyle: const TextStyle(
+        //               fontSize: 26,
+        //               letterSpacing: 24,
+        //               color: Color.fromARGB(255, 68, 5, 150),
+        //             ),
+        //             speed: const Duration(
+        //                 milliseconds: 200), // Adjust the animation speed
+        //           ),
+        //         ],
+        //         totalRepeatCount:
+        //             5, // Set the number of times the animation will repeat
+        //         pause: const Duration(
+        //             milliseconds:
+        //                 1000), // Duration before animation starts again
+        //         displayFullTextOnTap: true, // Display full text when tapped
+        //       ),
+        //       SvgPicture.asset(
+        //         'assets/Frame.svg',
+        //         fit: BoxFit.cover,
+        //         height: 36.0,
+        //       ),
+        //     ],
+        //   ),
+        // ),
         body: Stack(
           children: [
             Center(
@@ -757,9 +757,8 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                                   // Get.to(MyCalendarPage(
                                   //   planning: selectedPlanning,
 
-                                  Get.to(PlanningScreen(
-                                    selectedPlanning!.id,
-                                  ));
+                                  Get.to(PlanningScreen(selectedPlanning!.id,
+                                      selectedTouristGuide));
 
                                   //  Get.to(CalendarPage());
                                 },

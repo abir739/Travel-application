@@ -1,82 +1,76 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../modele/Event/Event.dart';
-
 import 'package:get/get.dart';
-class EventView extends StatelessWidget {
+import '../modele/accommodationsModel/accommodationModel.dart';
+import '../modele/activitsmodel/activitesmodel.dart';
+import '../modele/transportCompanies/transportModel.dart';
+import 'Activity/activitytempdetails.dart';
+
+class EventView extends StatefulWidget {
   final CalendarEvent event; // Replace with your event class
 
   EventView({required this.event});
+
+  @override
+  _EventViewState createState() => _EventViewState();
+}
+
+class _EventViewState extends State<EventView> {
   ScrollController controller = ScrollController();
+  String? tokens = '';
+  @override
+  void initState() {
+    super.initState();
+    getAccessToken();
+  }
+
+  Future<String?> getAccessToken() async {
+    final storage = FlutterSecureStorage();
+    final token = await storage.read(key: 'access_token');
+    print(token);
+    tokens = token;
+    return token;
+  }
+
   @override
   Widget build(BuildContext context) {
+    print(getAccessToken);
+    print(widget.event.type);
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Event Details'),
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              event.title ??
-                  'No title', // Assuming your event class has a 'title' property
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 10),
-            Text(event.description ?? 'no description '),
-            // SizedBox(height: Get.height*0.2,
-            //   child: Expanded(
-            //     child: Markdown(
-            //       controller: controller,
-            //       selectable: true, softLineBreak: true,
-            //       data: "Insert emoji :smiley: &#9787; 😇	😈 here",
-            //       extensionSet: md.ExtensionSet(
-            //         md.ExtensionSet.gitHubFlavored.blockSyntaxes,
-            //         <md.InlineSyntax>[
-            //           md.EmojiSyntax(),
-            //           ...md.ExtensionSet.gitHubFlavored.inlineSyntaxes
-            //         ],
-            //       ),
-            //       styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)),
-            //       onTapLink: (url, text, title) {
-            //         // Implement your custom onTapLink behavior
-            //         // This is called when a link is tapped
-            //       },
-            //       imageBuilder: (uri, title, alt) {
-            //         // Implement your custom imageBuilder
-            //         // This is called to display images
-            //         return YourCustomImageWidget(uri: uri, alt: alt ?? " ");
-            //       },
-            //       // You can customize other parameters as needed
-            //     ),
-            //   ),
-            // ),
-            Text(event.id ?? 'no id '), // Replace with appropriate property
-            // You can display other event properties here
-          ],
-        ),
+      body: FutureBuilder(
+        // Replace with your logic to determine if the event type is Activity
+        future: checkIfActivity(widget.event.type),
+        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator();
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else {
+            bool isActivity = snapshot.data ?? false;
+            return isActivity
+                ? activitytempdetalSecreen(
+                    widget.event.type as Activity?, tokens)
+                : Text(widget.event.id ?? 'No id');
+          }
+        },
       ),
     );
   }
-}
 
-class YourCustomImageWidget extends StatelessWidget {
-  final Uri uri;
-
-  final String alt;
-
-  YourCustomImageWidget({
-    required this.uri,
-    required this.alt,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    // Implement your custom image widget here
-    // You can use the provided 'uri', 'title', and 'alt' properties
-    // to construct and display the image as desired.
-    return Image.network(uri.toString(), semanticLabel: alt);
+  // Replace this with your logic to check if the event type is Activity
+  Future<bool> checkIfActivity(dynamic eventType) async {
+    if (eventType is Activity) {
+      // Implement your logic here to determine if the event type is Activity
+      return true;
+    }
+    return false;
   }
+
+//   Future<String?> getAccessToken() async {
+//     final storage = FlutterSecureStorage();
+//     final token = await storage.read(key: 'access_token');
+//     return token;
+//   }
 }

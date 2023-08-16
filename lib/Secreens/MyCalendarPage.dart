@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'package:zenify_trip/modele/TouristGuide.dart';
+import 'package:zenify_trip/modele/touristGroup.dart';
+import 'package:zenify_trip/modele/transportmodel/transportModel.dart';
 
 import '../modele/activitsmodel/activitesmodel.dart';
 import '../modele/activitsmodel/httpActivites.dart';
+import '../modele/activitsmodel/httpTransfer.dart';
 import '../modele/planningmainModel.dart';
+
 
 class AppointmentDataSource extends CalendarDataSource {
   AppointmentDataSource(List<Appointment> source) {
@@ -13,8 +19,9 @@ class AppointmentDataSource extends CalendarDataSource {
 
 class MyCalendarPage extends StatefulWidget {
   final PlanningMainModel? planning;
+  final TouristGuide? guid;
 
-  const MyCalendarPage({Key? key, this.planning}) : super(key: key);
+  const MyCalendarPage({Key? key, this.planning,this.guid}) : super(key: key);
 
   @override
   _MyCalendarPageState createState() => _MyCalendarPageState();
@@ -23,8 +30,8 @@ class MyCalendarPage extends StatefulWidget {
 class _MyCalendarPageState extends State<MyCalendarPage> {
   late DateTime startDate;
   late DateTime endDate;
-  HTTPHandlerActivites activiteshanhler = HTTPHandlerActivites();
-  var activiteslist1;
+  HTTPHandlerTransfer transporthandler = HTTPHandlerTransfer();
+  var transferlist;
 
   @override
   void initState() {
@@ -33,22 +40,27 @@ class _MyCalendarPageState extends State<MyCalendarPage> {
     endDate = widget.planning?.endDate ?? DateTime.now().add(Duration(days: 7));
   }
 
-  Future<List<Activity>>? _loadData() async {
+  Future<List<Transport>>? _loadData() async {
     setState(() {
-      activiteslist1 = activiteshanhler.fetchData(
-          "/api/activities/planningIdDs/${widget.planning!.id}");
+      transferlist = transporthandler.fetchData(
+          "/api/transfers/touristGuidId/${widget.guid!.id}");
     });
-    return activiteslist1;
+    return transferlist;
   }
 
-  CalendarDataSource _getCalendarDataSource(List<Activity> activities) {
+  CalendarDataSource _getCalendarDataSource(List<Transport> tansports) {
     List<Appointment> appointments = [];
 
-    for (Activity activity in activities) {
+    for (Transport transfer in tansports) {
       appointments.add(Appointment(
-        startTime: activity.departureDate ?? DateTime.now(),
-        endTime: activity.returnDate ?? DateTime.now(),
-        subject: activity.name ?? "",
+  isAllDay :transfer.confirmed ?? true,
+        id: transfer.id,
+       notes:transfer.note,
+        startTime: transfer.date ?? DateTime.now(),
+  subject :'from ${transfer.from } to ${transfer.to}',
+        endTime:
+            transfer.date!.add(Duration(hours: transfer.durationHours ?? 0)),
+color: Color.fromARGB(255, 245, 205, 7)
       ));
     }
 
@@ -58,21 +70,22 @@ class _MyCalendarPageState extends State<MyCalendarPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Calendar Page'),
-      ),
-      body: FutureBuilder<List<Activity>>(
+      // appBar: AppBar(
+       
+      //  title: Text('Calendar Page'),
+      // ),
+      body: FutureBuilder<List<Transport>>(
         future: _loadData(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
+            return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Text('No data available.');
+            return Center(child: Text('No data available.'));
           } else {
-            return SfCalendar(
-              view: CalendarView.schedule,
+            return SfCalendar(allowDragAndDrop :true,
+              view: CalendarView.day,
               dataSource: _getCalendarDataSource(snapshot.data ?? []),
             );
           }

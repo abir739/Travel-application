@@ -1,7 +1,10 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
+import '../../modele/TouristGuide.dart';
+import '../../modele/planningmainModel.dart';
 import '../AccommodationSecreen.dart';
+import '../MyCalendarPage.dart';
 import '../Profile/MainProfile.dart';
 import '../PushNotificationScreen.dart';
 import '../guidPlannig.dart';
@@ -18,6 +21,8 @@ class GoogleBottomBar extends StatefulWidget {
 }
 
 class _GoogleBottomBarState extends State<GoogleBottomBar> {
+  TouristGuide? selectedTouristGuide = TouristGuide();
+  PlanningMainModel? selectedPlanning = PlanningMainModel();
   final Widget _planningScreenContent = const PlaningSecreen();
   final Widget _mainProfileScreenContent = MainProfile();
   final Widget _concentricAnimationOnboardingScreenContent =
@@ -26,10 +31,10 @@ class _GoogleBottomBarState extends State<GoogleBottomBar> {
   int _selectedIndex = 0;
   final List<Widget> _screens = [
     const PlaningSecreen(),
-    const ConcentricAnimationOnboarding(),
+    const MyCalendarPage(),
     MainProfile(),
     PushNotificationScreen(),
-    MainProfile(),
+    const ConcentricAnimationOnboarding(),
   ];
   @override
   Widget build(BuildContext context) {
@@ -71,7 +76,7 @@ class _GoogleBottomBarState extends State<GoogleBottomBar> {
       bottomNavigationBar: CurvedNavigationBar(
         index: _selectedIndex,
         height: 50.0,
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: const Color.fromARGB(244, 78, 3, 73),
         buttonBackgroundColor: Colors.white,
         color: Colors.white,
         animationCurve: Curves.easeInOut,

@@ -11,9 +11,11 @@ class CalendarEvent {
   final String? id;
   final String? description;
   final String? note;
+
   final DateTime? startTime;
   final DateTime? endTime;
   final Color? color;
+  final Object? type;
   Color? cardcolor;
   final TextStyle? displayNameTextStyle;
   CalendarEvent(
@@ -25,5 +27,6 @@ class CalendarEvent {
       this.id,
       this.note,
       this.cardcolor,
+      this.type,
       this.displayNameTextStyle});
 }
