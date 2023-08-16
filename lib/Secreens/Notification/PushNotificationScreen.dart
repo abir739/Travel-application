@@ -3,23 +3,19 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:zenify_trip/modele/touristGroup.dart';
-// ignore: depend_on_referenced_packages
-import 'package:flutter_svg/svg.dart';
 
-import '../constent.dart';
-import '../modele/TouristGuide.dart';
-import '../modele/activitsmodel/httpActivites.dart';
-import '../modele/activitsmodel/httpToristGroup.dart';
-import '../modele/activitsmodel/httpToristguid.dart';
-import 'AddToristGroupScreen.dart';
-import 'AddTouristGuideScreen.dart';
 import 'package:get/get.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 
+import '../../constent.dart';
+import '../../modele/TouristGuide.dart';
+import '../../modele/activitsmodel/httpActivites.dart';
+import '../../modele/activitsmodel/httpToristGroup.dart';
+import '../../modele/activitsmodel/httpToristguid.dart';
+import '../../modele/touristGroup.dart';
+
 class PushNotificationScreen extends StatefulWidget {
   @override
-  // ignore: library_private_types_in_public_api
   _PushNotificationScreenState createState() => _PushNotificationScreenState();
 }
 
@@ -28,13 +24,12 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
   TouristGroup? selectedTouristGroup = TouristGroup();
   TouristGuide? selectedTouristGuide = TouristGuide();
   final count = HTTPHandlerCount();
-  final TextEditingController _messageController = TextEditingController();
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _androidAccentColorController =
-      TextEditingController();
-  final TextEditingController _bigPictureController = TextEditingController();
-  final TextEditingController _linkUrlController = TextEditingController();
-  final TextEditingController _tagsController = TextEditingController();
+  TextEditingController _messageController = TextEditingController();
+  TextEditingController _titleController = TextEditingController();
+  TextEditingController _androidAccentColorController = TextEditingController();
+  TextEditingController _bigPictureController = TextEditingController();
+  TextEditingController _linkUrlController = TextEditingController();
+  TextEditingController _tagsController = TextEditingController();
   final httpHandler = HTTPHandlerhttpToristguid();
   List<TouristGuide>? touristGuides;
   List<TouristGroup>? group;
@@ -61,25 +56,22 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
     super.initState();
     // initializeMultiSelectItems();
     _loadData();
-    _loadDatagroup();
+    // _loadDatagroup();
   }
 
   void _loadData() async {
-    token = (await storage.read(key: "access_token"))!;
-
-    baseUrl = (await storage.read(key: "baseurl"))!;
     setState(() {
       touristGuides = []; // initialize the list to an empty list
     });
     final data = await httpHandler.fetchData("/api/tourist-guides");
 
-    if (data == null) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => AddTouristGuideScreen()),
-      );
-      return; // Stop further execution of the function
-    }
+    // if (data == null) {
+    //   Navigator.push(
+    //     context,
+    //     MaterialPageRoute(builder: (context) => AddTouristGuideScreen()),
+    //   );
+    //   return; // Stop further execution of the function
+    // }
     setState(() {
       touristGuides = data.cast<TouristGuide>();
       selectedTouristGuide = data.first as TouristGuide;
@@ -98,14 +90,14 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
     });
     final data = await httpHandlertorist.fetchData(
         "/api/tourist-groups/touristGuideId/${selectedTouristGuide!.id}");
-    if (data == null) {
-      // Data is null, navigate to the 'addtouristguid' screen
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const AddTouristGuideScreen()),
-      );
-      return; // Stop further execution of the function
-    }
+    // if (data == null) {
+    //   // Data is null, navigate to the 'addtouristguid' screen
+    //   Navigator.push(
+    //     context,
+    //     MaterialPageRoute(builder: (context) => AddTouristGuideScreen()),
+    //   );
+    //   return; // Stop further execution of the function
+    // }
     setState(() {
       touristGroup = data.cast<TouristGroup>();
       selectedTouristGroup = data.first as TouristGroup;
@@ -114,57 +106,92 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
     });
   }
 
-  Map<String, String> sendSelectedTags(
-      List<MultiSelectItem<TouristGroup>> multiSelectItems) {
+// void _loadDatagroup() async {
+//     setState(() {
+//       group = []; // initialize the list to an empty list
+//       groupOptions = []; // Initialize the groupOptions list
+//     });
+
+//     final data = await httpHandlertorist.fetchData(
+//         "/api/tourist-groups/touristGuideId/${selectedTouristGuide!.id}");
+
+//     if (data == null) {
+//       Navigator.push(
+//         context,
+//         MaterialPageRoute(builder: (context) => AddTouristGuideScreen()),
+//       );
+//       return; // Stop further execution of the function
+//     }
+
+//     setState(() {
+//       group = data.cast<TouristGroup>();
+//       selectedTouristGroup = data.first as TouristGroup;
+//       groupOptions = List.from(group!); // Populate groupOptions with group data
+//     });
+
+//     initializeMultiSelectItems(); // Initialize multiSelectItems after the data is fetched and set in the state
+//   }
+// List<String> sendSelectedTags(
+//       List<MultiSelectItem<TouristGroup>> multiSelectItems) {
+//     List<String> selectedTags = multiSelectItems
+//         .where((item) => item.selected) // Filter out only the selected items
+//         .map((item) => item.value.id!) // Extract the tag IDs
+//         .toList();
+//     return selectedTags;
+//   }
+  Map<String, String> selectedTagsMapsendSelectedTags(
+    List<MultiSelectItem<TouristGroup>> multiSelectItems,
+  ) {
     Map<String, String> selectedTagsMap = {};
     for (var item in multiSelectItems) {
       if (item.selected) {
         String tagId = item.value.id!;
-        selectedTagsMap['GroupName_Tag'] = tagId;
+        // selectedTagsMap.putIfAbsent('GroupName_Tag', () => []).add(tagId);
+
+        selectedTagsMap[tagId] = tagId;
       }
     }
     return selectedTagsMap;
   }
 
   Future<void> sendNotification() async {
-    String? backendUrl1 = await storage.read(key: "access_token");
-    backendUrl = (await storage.read(key: "access_token"))!;
-
-    if (backendUrl == null || backendUrl.isEmpty) {
-      print('Error: Backend URL is not set');
-      return;
-    }
-
     try {
-      Map<String, String> selectedTagsMap = sendSelectedTags(multiSelectItems);
+      Map<String, String> selectedTagsMap =
+          selectedTagsMapsendSelectedTags(multiSelectItems);
       var response = await http.post(
+        Uri.parse('$baseUrls/api/push-notifications/notification'),
         headers: {
           "Authorization": "Bearer $token",
-          "Accept": "application/json, text/plain, */*",
-          "Accept-Encoding": "gzip, deflate, br",
-          "Accept-Language": "en-US,en;q=0.9",
-          "Connection": "keep-alive",
+          "Content-Type": "application/json"
         },
-        Uri.parse('${baseUrls}/api/push-notifications/notification'),
-        // headers: {
-        //   'Content-Type': 'application/json',
-        // },
-        body: jsonEncode({
-          'message': _messageController.text,
-          'title': _titleController.text,
-          'android_accent_color': _androidAccentColorController.text,
-          'big_picture': _bigPictureController.text,
-          'type': _linkUrlController.text,
-          'tags': selectedTagsMap,
+        body: json.encode({
+          "message": "new activitfffffy , !",
+          "title": "test",
+          "type":
+              "http://cdn1-www.dogtime.com/assets/uploads/gallery/30-impossibly-cute-puppies/impossibly-cute-puppy-2.jpg",
+          "tags": selectedTagsMap,
+          "mutable_content": false,
+          "android_sound": null,
+          "small_icon": null,
+          "large_icon": null,
+          "big_picture":
+              "https://www.destinationtunisie.info/wp-content/uploads/2019/05/hotel_barcelo_sousse_-marhaba.jpg",
+          "android_led_color": "ed0000",
+          "android_accent_color": "ed0000",
+          "android_group": null,
+          "android_visibility": 0,
+          "app_id": "****"
         }),
       );
 
       if (response.statusCode == 201) {
         // Notification sent successfully
+        print('Selected Tags Map: $selectedTagsMap');
         print('Notification sent successfully!');
       } else {
         print(
             'Failed to send notification. Status code: ${response.statusCode}');
+        print('Selected Tags Map: $selectedTagsMap');
       }
     } catch (e) {
       print('Error sending notification: $e');
@@ -174,20 +201,6 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 207, 207, 219),
-        title: Row(
-          children: [
-            // SvgPicture.asset(
-            //   'assets/images/Logo.svg',
-            //   fit: BoxFit.cover,
-            //   height: 36.0,
-            // ),
-            // const SizedBox(width: 30),
-            // const Text('Push Notification'),
-          ],
-        ),
-      ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16),
         child: Column(
@@ -373,27 +386,25 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
                   color: Color.fromARGB(47, 181, 89, 3),
                 ),
                 alignment: Alignment.center,
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(2.0),
                 margin: const EdgeInsets.only(left: 20, right: 20),
                 child: touristGuides!.isEmpty
                     ? ElevatedButton(
                         onPressed: () {
                           // Handle button press, navigate to desired screen or perform any action
-                          Get.to(const AddTouristGuideScreen());
+                          // Get.to(AddTouristGuideScreen());
                         },
-                        child: const Text(
-                            'you are not effect to any tourist guid'),
+                        child: const Text('you are not effect to any tourist guid'),
                       )
-                    : SizedBox(
+                    : Container(
                         width: 800, // Set the desired width
-                        height: 50, // Set the desired height
+                        height: 60, // Set the desired height
                         child: Row(
                           children: [
                             DropdownButton<TouristGuide>(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(20)),
-                              dropdownColor:
-                                  const Color.fromARGB(255, 229, 224, 224),
+                              dropdownColor: const Color.fromARGB(255, 229, 224, 224),
                               iconEnabledColor:
                                   const Color.fromARGB(160, 245, 241, 241),
                               iconDisabledColor:
@@ -411,7 +422,7 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
                                       ),
                                       const SizedBox(
                                           width:
-                                              14), // Add some spacing between the icon and text
+                                              8), // Add some spacing between the icon and text
                                       Text(
                                         touristGuide.name ?? 'h',
                                         style: const TextStyle(
@@ -492,57 +503,50 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
                         ),
                       )),
 
-            const SizedBox(height: 50),
-            TextFormField(
-              maxLines: 10,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(
-                    borderSide: BorderSide(
-                  color: Color.fromARGB(255, 6, 70, 189),
-                )),
-                focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                  color: Colors.orange,
-                  width: 2,
-                )),
-                labelText: "Message",
-                helperText: "Write about  Notification",
-                hintText: "Notification Message",
-              ),
-              controller: _messageController,
-              // decoration: InputDecoration(labelText: 'Message'),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: _titleController,
-              decoration: const InputDecoration(labelText: 'Title'),
-            ),
-            // TextField(
-            //   controller: _androidAccentColorController,
-            //   decoration: InputDecoration(labelText: 'Android Accent Color'),
-            // ),
-            // TextField(
-            //   controller: _bigPictureController,
-            //   decoration: InputDecoration(labelText: 'Big Picture'),
-            // ),
-            // TextField(
-            //   controller: _linkUrlController,
-            //   decoration: InputDecoration(labelText: 'Type/Link URL'),
+            const SizedBox(height: 32),
+            // TextFormField(
+            //   maxLines: 10,
+            //   decoration: InputDecoration(
+            //     border: OutlineInputBorder(
+            //         borderSide: BorderSide(
+            //       color: Color.fromARGB(255, 6, 70, 189),
+            //     )),
+            //     focusedBorder: OutlineInputBorder(
+            //         borderSide: BorderSide(
+            //       color: Colors.orange,
+            //       width: 2,
+            //     )),
+            //     labelText: "Message",
+            //     helperText: "Write about  Notification",
+            //     hintText: "Notification Message",
+            //   ),
+            //   controller: _messageController,
+            //   // decoration: InputDecoration(labelText: 'Message'),
             // ),
 
-            const SizedBox(height: 26),
+            TextField(
+              controller: _titleController,
+              decoration: InputDecoration(labelText: 'Title'),
+            ),
+            TextField(
+              controller: _androidAccentColorController,
+              decoration: InputDecoration(labelText: 'Android Accent Color'),
+            ),
+            TextField(
+              controller: _bigPictureController,
+              decoration: InputDecoration(labelText: 'Big Picture'),
+            ),
+            TextField(
+              controller: _linkUrlController,
+              decoration: InputDecoration(labelText: 'Type/Link URL'),
+            ),
+
+            SizedBox(height: 16),
             ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Color.fromARGB(244, 78, 3, 73),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
-              ),
-              child: const Text('Send Notification'),
               onPressed: () {
                 sendNotification();
               },
+              child: Text('Send Notification'),
             ),
           ],
         ),

@@ -230,7 +230,7 @@ class _activitytempdetalSecreenState extends State<activitytempdetalSecreen> {
   }
 
   @override
- Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Activity Detail"),
@@ -239,27 +239,26 @@ class _activitytempdetalSecreenState extends State<activitytempdetalSecreen> {
           ? Center(
               child: CircularProgressIndicator(),
             )
-          :   SingleChildScrollView(
-                child: SafeArea(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        activites.name ?? "No name",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
+          : SingleChildScrollView(
+              child: SafeArea(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      activites.name ?? "No name",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
                       ),
-                      HtmlWidget(
-                        activites.longDescription ?? "No description",
-                      ),
-                      // Add more widgets to display other properties of 'activites'
-                    ],
-                  ),
+                    ),
+                    HtmlWidget(
+                      activites.longDescription ?? "No description",
+                    ),
+                    // Add more widgets to display other properties of 'activites'
+                  ],
                 ),
               ),
-        
+            ),
     );
   }
 }

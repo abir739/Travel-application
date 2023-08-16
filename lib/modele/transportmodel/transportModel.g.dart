@@ -34,7 +34,7 @@ Transport _$TransportFromJson(Map<String, dynamic> json) => Transport(
           ?.map((e) => e as String)
           .toList(),
       touristGroups: (json['touristGroups'] as List<dynamic>?)
-          ?.map((e) => e as String)
+          ?.map((e) => TouristGroup.fromJson(e as Map<String, dynamic>))
           .toList(),
       bus: json['bus'] == null
           ? null

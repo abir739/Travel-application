@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-import 'package:flutter_svg/svg.dart';
+
 import 'package:zenify_trip/modele/Event/Event.dart';
 import 'package:zenify_trip/modele/TouristGuide.dart';
 import 'package:zenify_trip/modele/activitsmodel/activitesmodel.dart';
@@ -23,7 +23,7 @@ import 'package:zenify_trip/Secreens/CustomCalendarDataSource.dart';
 import 'AccoummondationSecreenDetail.dart';
 import 'EventView.dart';
 import '../constent.dart';
-
+import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
 import 'package:time_planner/time_planner.dart';
 import 'package:intl/intl.dart'; // For date formatting
@@ -311,12 +311,12 @@ class _PlanningScreenState extends State<PlanningScreen> {
         ],
       ),
     ),
-    1: const Expanded(
+    1: Expanded(
       child: Column(
         children: [
           SizedBox(height: 14.0),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Text('Transfers'),
           ),
           SizedBox(height: 14.0),
@@ -368,153 +368,163 @@ class _PlanningScreenState extends State<PlanningScreen> {
               ],
             ),
           ),
-          body: Column(
-            children: [
-              Expanded(
-                child: SfCalendar(
-                  todayHighlightColor: Color.fromARGB(255, 242, 186, 3),
-                  todayTextStyle: TextStyle(
-                      fontStyle: FontStyle.normal,
-                      fontSize: 30,
-                      fontWeight: FontWeight.w900,
-                      color: Color.fromARGB(255, 238, 234, 238)),
-                  monthCellBuilder:
-                      (BuildContext context, MonthCellDetails details) {
-                    // Customize the appearance of each month cell based on the details
-                    return Container(
-                      decoration: BoxDecoration(
-                        color: details.date.month == DateTime.now().month
-                            ? Color.fromARGB(255, 245, 242, 242)
-                            : Color.fromARGB(255, 242, 186, 3),
-                        border: Border.all(
-                            color: Color.fromARGB(255, 20, 1, 1), width: 0.5),
-                      ),
-                      alignment: Alignment.center,
-                      child: Column(
-                        children: [
-                          Text(
-                            details.date.day.toString(),
-                            style: TextStyle(
-                              fontSize: 23,
-                              color: details.visibleDates.contains(details.date)
-                                  ? Colors.black87
-                                  : Colors.grey,
+          body: RefreshIndicator(
+            onRefresh: fetchData,
+            child: ListView(
+              children: [
+                Container(
+                  height: Get.height * 0.88,
+                  child: SfCalendar(
+                    todayHighlightColor: Color.fromARGB(255, 242, 186, 3),
+                    todayTextStyle: TextStyle(
+                        fontStyle: FontStyle.normal,
+                        fontSize: 30,
+                        fontWeight: FontWeight.w900,
+                        color: Color.fromARGB(255, 238, 234, 238)),
+                    monthCellBuilder:
+                        (BuildContext context, MonthCellDetails details) {
+                      // Customize the appearance of each month cell based on the details
+                      return Container(
+                        decoration: BoxDecoration(
+                          color: details.date.month == DateTime.now().month
+                              ? Color.fromARGB(255, 245, 242, 242)
+                              : Color.fromARGB(255, 179, 228, 236),
+                          border: Border.all(
+                              color: const Color.fromARGB(255, 207, 207, 219),
+                              width: 0.5),
+                        ),
+                        alignment: Alignment.center,
+                        child: Column(
+                          children: [
+                            Text(
+                              details.date.day.toString(),
+                              style: TextStyle(
+                                fontSize: 23,
+                                color: details.visibleDates
+                                        .contains(details.date)
+                                    ? Colors.black87
+                                    : const Color.fromARGB(255, 158, 158, 158),
+                              ),
                             ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Text(
-                            details.appointments.length.toString(),
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: details.visibleDates.contains(details.date)
-                                  ? Color.fromARGB(255, 236, 2, 2)
-                                  : Color.fromARGB(255, 248, 2, 2),
+                            const SizedBox(
+                              height: 20,
                             ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                  headerHeight: 30,
-                  controller: _controller,
-                  view: CalendarView.month,
-// onViewChanged: (ViewChangedDetails viewChangedDetails) {
-                  //   _headerText = DateFormat('MMMM yyyy', 'fr')
-                  //       .format(viewChangedDetails
-                  //       .visibleDates[viewChangedDetails.visibleDates
-                  //       .length ~/ 2])
-                  //       .toString();
-                  //   _string = _headerText![0].toUpperCase() +
-                  //       _headerText!.substring(1);
-                  //   SchedulerBinding.instance!.addPostFrameCallback((
-                  //       duration) {
-                  //     setState(() {});
-                  //   });
-                  // },
-                  scheduleViewMonthHeaderBuilder: (BuildContext context,
-                      ScheduleViewMonthHeaderDetails details) {
-                    // You can return a custom widget here to be displayed as the header.
-                    return Container(
-                      color: Color.fromARGB(
-                          255, 215, 8, 46), // Set your desired background color
-                      child: Center(
-                        child: Text(
-                          'Custom Header', // Set your desired header text
-                          style: TextStyle(
-                            color: Colors.white, // Set your desired text color
-                            fontWeight: FontWeight.bold,
+                            Text(
+                              details.appointments.length.toString(),
+                              style: TextStyle(
+                                fontSize: 14,
+                                color:
+                                    details.visibleDates.contains(details.date)
+                                        ? Color.fromARGB(255, 87, 6, 134)
+                                        : Color.fromARGB(255, 87, 6, 134),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                    headerHeight: 38,
+                    controller: _controller,
+                    view: CalendarView.month,
+                    // onViewChanged: (ViewChangedDetails viewChangedDetails) {
+                    //   _headerText = DateFormat('MMMM yyyy', 'fr')
+                    //       .format(viewChangedDetails
+                    //       .visibleDates[viewChangedDetails.visibleDates
+                    //       .length ~/ 2])
+                    //       .toString();
+                    //   _string = _headerText![0].toUpperCase() +
+                    //       _headerText!.substring(1);
+                    //   SchedulerBinding.instance!.addPostFrameCallback((
+                    //       duration) {
+                    //     setState(() {});
+                    //   });
+                    // },
+                    scheduleViewMonthHeaderBuilder: (BuildContext context,
+                        ScheduleViewMonthHeaderDetails details) {
+                      // You can return a custom widget here to be displayed as the header.
+                      return Container(
+                        color: const Color.fromARGB(255, 215, 8,
+                            46), // Set your desired background color
+                        child: const Center(
+                          child: Text(
+                            'Custom Header', // Set your desired header text
+                            style: TextStyle(
+                              color:
+                                  Colors.white, // Set your desired text color
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  },
-                  viewNavigationMode: ViewNavigationMode.snap,
-                  onTap: (CalendarTapDetails details) {
-                    calendarTapped(
-                        context, details); // Call your calendarTapped function
-                  },
-                  showDatePickerButton: true,
-                  resourceViewSettings: ResourceViewSettings(
-                      visibleResourceCount: 4,
-                      showAvatar: false,
-                      displayNameTextStyle: TextStyle(
-                          fontStyle: FontStyle.italic,
-                          fontSize: 12,
-                          color: Color.fromARGB(255, 250, 248, 246),
-                          fontWeight: FontWeight.w400)),
+                      );
+                    },
+                    viewNavigationMode: ViewNavigationMode.snap,
+                    onTap: (CalendarTapDetails details) {
+                      calendarTapped(context,
+                          details); // Call your calendarTapped function
+                    },
+                    showDatePickerButton: true,
+                    resourceViewSettings: const ResourceViewSettings(
+                        visibleResourceCount: 4,
+                        showAvatar: false,
+                        displayNameTextStyle: TextStyle(
+                            fontStyle: FontStyle.italic,
+                            fontSize: 10,
+                            color: Color.fromARGB(255, 250, 248, 246),
+                            fontWeight: FontWeight.w400)),
 
-                  allowedViews: <CalendarView>[
-                    CalendarView.day,
-                    CalendarView.week,
-                    CalendarView.workWeek,
-                    CalendarView.month,
-                    // CalendarView.timelineDay,
-                    // CalendarView.timelineWeek,
-                    // CalendarView.timelineWorkWeek,
-                    // CalendarView.timelineMonth,
-                    CalendarView.schedule
-                  ],
-                  initialDisplayDate: DateTime.parse(dateString),
-                  dataSource: _getCalendarDataSource(),
-                  monthViewSettings: MonthViewSettings(
-                      navigationDirection: MonthNavigationDirection.vertical,
-                      showAgenda: true,
-                      appointmentDisplayMode:
-                          MonthAppointmentDisplayMode.indicator,
-                      agendaItemHeight: Get.height * 0.14,
-                      numberOfWeeksInView: 5,
-                      agendaViewHeight:
-                          isLargeScreen ? Get.height * 0.18 : Get.height * 0.24,
-                      monthCellStyle: MonthCellStyle(
-                        todayBackgroundColor: Colors.red,
-                        textStyle: TextStyle(
-                            fontStyle: FontStyle.normal,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
-                            color: Color.fromARGB(255, 243, 239, 239)),
-                      ),
-                      agendaStyle: AgendaStyle(
-                        backgroundColor: Color.fromARGB(218, 1, 9, 22),
-                        appointmentTextStyle: TextStyle(
-                            fontSize: 20,
-                            fontStyle: FontStyle.italic,
-                            color: Color.fromARGB(239, 236, 235, 234)),
-                        dateTextStyle: TextStyle(
-                            fontStyle: FontStyle.italic,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w900,
-                            color: Color.fromARGB(255, 240, 4, 200)),
-                        dayTextStyle: TextStyle(
-                            fontStyle: FontStyle.normal,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
-                            color: Color.fromARGB(255, 240, 4, 200)),
-                      )),
+                    allowedViews: const <CalendarView>[
+                      CalendarView.day,
+                      CalendarView.week,
+                      CalendarView.workWeek,
+                      CalendarView.month,
+                      // CalendarView.timelineDay,
+                      // CalendarView.timelineWeek,
+                      // CalendarView.timelineWorkWeek,
+                      // CalendarView.timelineMonth,
+                      CalendarView.schedule
+                    ],
+                    initialDisplayDate: DateTime.parse(dateString),
+                    dataSource: _getCalendarDataSource(),
+                    monthViewSettings: MonthViewSettings(
+                        navigationDirection:
+                            MonthNavigationDirection.horizontal,
+                        showAgenda: true,
+                        appointmentDisplayMode:
+                            MonthAppointmentDisplayMode.indicator,
+                        agendaItemHeight: Get.height * 0.09,
+                        numberOfWeeksInView: 5,
+                        agendaViewHeight: isLargeScreen
+                            ? Get.height * 0.18
+                            : Get.height * 0.28,
+                        monthCellStyle: const MonthCellStyle(
+                          todayBackgroundColor: Colors.red,
+                          textStyle: TextStyle(
+                              fontStyle: FontStyle.normal,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                              color: Color.fromARGB(255, 243, 239, 239)),
+                        ),
+                        agendaStyle: const AgendaStyle(
+                          backgroundColor: Color.fromARGB(218, 249, 252, 253),
+                          appointmentTextStyle: TextStyle(
+                              fontSize: 20,
+                              fontStyle: FontStyle.italic,
+                              color: Color.fromARGB(239, 236, 235, 234)),
+                          dateTextStyle: TextStyle(
+                              fontStyle: FontStyle.italic,
+                              fontSize: 22,
+                              fontWeight: FontWeight.w900,
+                              color: Color.fromARGB(255, 240, 4, 200)),
+                          dayTextStyle: TextStyle(
+                              fontStyle: FontStyle.normal,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                              color: Color.fromARGB(255, 240, 4, 200)),
+                        )),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           )),
     );
   }

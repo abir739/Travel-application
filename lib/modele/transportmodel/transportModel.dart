@@ -2,6 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 import '../bus/busModel.dart';
 import '../drivers/driversModel.dart';
+import '../touristGroup.dart';
 
 part 'transportModel.g.dart';
 
@@ -26,7 +27,7 @@ class Transport {
   String? updaterUserId;
   DateTime? updatedAt;
   List<String>? plannings;
-  List<String>? touristGroups;
+  List<TouristGroup>? touristGroups;
   Bus? bus;
   Driver? driver;
 

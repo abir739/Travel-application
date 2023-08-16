@@ -757,10 +757,13 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                                   // Get.to(MyCalendarPage(
                                   //   planning: selectedPlanning,
 
-                                  Get.to(PlanningScreen(selectedPlanning!.id,
-                                      selectedTouristGuide));
+                                  // Get.to(PlanningScreen(selectedPlanning!.id,
+                                  //     selectedTouristGuide));
 
                                   //  Get.to(CalendarPage());
+
+                                  Get.to(PlanningScreen(selectedPlanning!.id,
+                                      selectedTouristGuide));
                                 },
                                 child: SizedBox(
                                   width: Get.width * 0.8,
@@ -784,6 +787,35 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                                   ),
                                 ),
                               ),
+
+// to navigate to the second calendar
+
+// ),
+//                             SizedBox(
+//                               width: Get.width * 0.5,
+//                               height: Get.height * 0.06,
+//                             ),
+//                             ElevatedButton(
+//                               style: ButtonStyle(
+//                                 backgroundColor:
+//                                 //   planning: selectedPlanning,
+//                                 // ));
+//                                 Get.to(MyCalendarPage(
+//                                   planning:selectedPlanning,guid: selectedTouristGuide,
+//                                   planning: selectedPlanning,
+//                                   guid: selectedTouristGuide,
+//                                 ));
+//                               },
+//                               child: SizedBox(
+//                                       color: Color.fromARGB(227, 172, 2, 2),
+//                                     ), // Add the planning icon here
+//                                     // Add some spacing between the icon and text
+//                                     Text(
+//                                         'Go To MyCalendarPage',
+//                                     Text('Go To MyCalendarPage',
+//                                         style: TextStyle(
+//                                           color: Color.fromARGB(
+//                                               255, 235, 232, 226),
                             ),
                           ],
                         ),

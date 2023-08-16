@@ -5,8 +5,9 @@ import '../../modele/TouristGuide.dart';
 import '../../modele/planningmainModel.dart';
 import '../AccommodationSecreen.dart';
 import '../MyCalendarPage.dart';
+import '../Notification/PushNotificationScreen.dart';
 import '../Profile/MainProfile.dart';
-import '../PushNotificationScreen.dart';
+
 import '../guidPlannig.dart';
 import '../ConcentricAnimationOnboarding.dart';
 // ignore: depend_on_referenced_packages
