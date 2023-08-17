@@ -7,13 +7,13 @@ import 'package:cr_calendar/cr_calendar.dart';
 import 'package:flutter/material.dart'; // Make
 
 class CalendarEvent {
-  final String? title;
+  late final String? title;
   final String? id;
-  final String? description;
-  final String? note;
+  late final String? description;
+  late final String? note;
 
-  final DateTime? startTime;
-  final DateTime? endTime;
+  late final DateTime? startTime;
+  late final DateTime? endTime;
   final Color? color;
   final Object? type;
   Color? cardcolor;

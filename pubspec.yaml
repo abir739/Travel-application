@@ -39,6 +39,7 @@ dependencies:
   timeago:
 
   jwt_decode: ^0.3.1
+  intl: ^0.17.0
   onesignal_flutter: ^3.5.1
   flutter_avif: ^1.0.1
   latlong2:

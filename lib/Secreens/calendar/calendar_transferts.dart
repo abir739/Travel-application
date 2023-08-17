@@ -9,19 +9,15 @@ import 'package:zenify_trip/Secreens/calendar/transfert_data.dart';
 
 import 'package:zenify_trip/modele/Event/Event.dart';
 import 'package:zenify_trip/modele/TouristGuide.dart';
-import 'package:zenify_trip/modele/activitsmodel/activitesmodel.dart';
 
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
 import 'package:get/get.dart';
 import 'package:zenify_trip/modele/transportmodel/transportModel.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../constent.dart';
-
 import '../CustomCalendarDataSource.dart';
 //import '../EventView.dart';
 
