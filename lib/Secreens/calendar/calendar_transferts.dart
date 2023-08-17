@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'package:zenify_trip/Secreens/calendar/eventdetail.dart';
+import 'package:zenify_trip/Secreens/calendar/transfert_data.dart';
 
 import 'package:zenify_trip/modele/Event/Event.dart';
 import 'package:zenify_trip/modele/TouristGuide.dart';
 import 'package:zenify_trip/modele/activitsmodel/activitesmodel.dart';
-
-import '../modele/accommodationsModel/accommodationModel.dart';
 
 import 'dart:convert';
 
@@ -18,16 +18,12 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:get/get.dart';
-import '../modele/transportmodel/transportModel.dart';
-import 'package:zenify_trip/Secreens/CustomCalendarDataSource.dart';
-import 'AccoummondationSecreenDetail.dart';
-import 'EventView.dart';
-import '../constent.dart';
+import 'package:zenify_trip/modele/transportmodel/transportModel.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:flutter/material.dart';
-import 'package:time_planner/time_planner.dart';
-import 'package:intl/intl.dart'; // For date formatting
-import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
+import '../../constent.dart';
+
+import '../CustomCalendarDataSource.dart';
+//import '../EventView.dart';
 
 class PlanningScreen extends StatefulWidget {
   String? Plannigid;
@@ -44,8 +40,6 @@ class _PlanningScreenState extends State<PlanningScreen> {
   String? date;
   double? _width = 0.0, cellWidth = 0.0;
   String _string = '';
-  List<Activity> activityList = [];
-  List<Accommodations> accommodationList = [];
   List<Transport> transferList = [];
   int selectedIndex = 0;
   double activityProgress = 0.0;
@@ -71,54 +65,10 @@ class _PlanningScreenState extends State<PlanningScreen> {
     fetchDataAndOrganizeEvents();
   }
 
-  // double calculateCompletedActivities(List<Activity> activities) {
-  //   // int completedCount = 0;
-
-  //   for (var activity in activities) {
-  //     completedCount++;
-  //   }
-
-  //   return completedCount.toDouble();
-  // }
-
   List<CalendarEvent> convertToCalendarEvents(
-    List<Accommodations> accommodations,
-    List<Activity> activities,
     List<Transport> transfers,
   ) {
     List<CalendarEvent> events = [];
-
-    // Convert accommodations to events
-    for (var accommodation in accommodations) {
-      events.add(CalendarEvent(
-        title: "Accom: ${accommodation.note}",
-        description: "A-T",
-        id: accommodation.id,
-        type: accommodation,
-        startTime: accommodation.date,
-        endTime: accommodation.date!
-            .add(Duration(days: accommodation.countNights ?? 0)),
-        color: Color.fromARGB(199, 245, 2, 253),
-      ));
-    }
-    for (var activity in activities) {
-      // Assuming 60 as total count
-      events.add(CalendarEvent(
-        displayNameTextStyle: TextStyle(
-          fontStyle: FontStyle.italic,
-          fontSize: 10,
-          fontWeight: FontWeight.w400,
-        ),
-        title: "A-c :${activity.name}",
-        id: activity.id,
-        description: "Activity ${activity.name}",
-        startTime: activity.departureDate,
-        type: activity,
-        endTime: activity.returnDate,
-        color: Color.fromARGB(227, 239, 176, 3),
-      ));
-    }
-
     for (var transfer in transfers) {
       events.add(CalendarEvent(
         title: "T-R ${transfer.note}",
@@ -128,7 +78,7 @@ class _PlanningScreenState extends State<PlanningScreen> {
         type: transfer,
         endTime:
             transfer.date!.add(Duration(hours: transfer.durationHours ?? 0)),
-        color: Color.fromARGB(200, 2, 152, 172),
+        color: const Color.fromARGB(200, 2, 152, 172),
       ));
     }
     return events;
@@ -136,15 +86,10 @@ class _PlanningScreenState extends State<PlanningScreen> {
 
   Future<void> fetchData() async {
     try {
-      activityList = await fetchActivities(
-          "/api/plannings/activitiestransfertaccommondation/${widget.Plannigid}");
-      accommodationList = await fetchAccommodations(
-          "/api/plannings/activitiestransfertaccommondation/${widget.Plannigid}");
       transferList = await fetchTransfers(
           "/api/transfers/touristGuidId/${widget.guid?.id}");
       setState(() {
-        List<CalendarEvent> events = convertToCalendarEvents(
-            accommodationList, activityList, transferList);
+        List<CalendarEvent> events = transferList.cast<CalendarEvent>();
       });
     } catch (e) {
       // Handle error
@@ -154,21 +99,12 @@ class _PlanningScreenState extends State<PlanningScreen> {
 
   Future<Map<String, List<dynamic>>> fetchDataAndOrganizeEvents() async {
     try {
-      List<Activity> activitiesList = await fetchActivities(
-        "/api/plannings/activitiestransfertaccommondation/${widget.Plannigid}",
-      );
-      List<Accommodations> accommodationsList = await fetchAccommodations(
-        "/api/plannings/activitiestransfertaccommondation/${widget.Plannigid}",
-      );
       List<Transport> transfersList = await fetchTransfers(
         "/api/transfers/touristGuidId/${widget.guid!.id}",
       );
 
-      List<CalendarEvent> events = convertToCalendarEvents(
-        accommodationsList,
-        activitiesList,
-        transfersList,
-      );
+      List<CalendarEvent> events =
+          transfersList.map((transport) => TransportEvent(transport)).toList();
 
       for (var event in events) {
         if (event.startTime != null) {
@@ -188,8 +124,6 @@ class _PlanningScreenState extends State<PlanningScreen> {
       }
 
       return {
-        'activities': activitiesList,
-        'accommodations': accommodationsList,
         'transfers': transfersList,
       };
     } catch (e) {
@@ -207,60 +141,6 @@ class _PlanningScreenState extends State<PlanningScreen> {
 
     // Create an instance of CalendarDataSource with the events list
     return CustomCalendarDataSource(events, eventColors);
-  }
-
-  Future<List<Activity>> fetchActivities(String url) async {
-    String? token = await storage.read(key: "access_token");
-    String? baseUrl = await storage.read(key: "baseurl");
-    String formatter(String url) {
-      return baseUrls + url;
-    }
-
-    url = formatter(url);
-
-    List<Activity> activityList = [];
-
-    final response = await http.get(headers: {
-      "Authorization": "Bearer $token",
-      "Accept": "application/json, text/plain, */*",
-      "Accept-Encoding": "gzip, deflate, br",
-      "Accept-Language": "en-US,en;q=0.9",
-      "Connection": "keep-alive",
-    }, Uri.parse(url));
-
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      var data = jsonDecode(response.body);
-      List<dynamic> resultList = data['activities'];
-      print("resultList $resultList");
-      activityList = resultList.map((e) => Activity.fromJson(e)).toList();
-      return activityList;
-    } else {
-      throw Exception('${response.statusCode} err');
-    }
-  }
-
-  Future<List<Accommodations>> fetchAccommodations(String url) async {
-    List<Accommodations> accommodationList = [];
-    String? token = await storage.read(key: "access_token");
-    String? baseUrl = await storage.read(key: "baseurl");
-
-    String formatter(String url) {
-      return baseUrls + url;
-    }
-
-    url = formatter(url);
-    final response = await http
-        .get(headers: {"Authorization": "Bearer $token"}, Uri.parse(url));
-
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      var data = jsonDecode(response.body);
-      List<dynamic> resultList = data['accommodations'];
-      accommodationList =
-          resultList.map((e) => Accommodations.fromJson(e)).toList();
-      return accommodationList;
-    } else {
-      throw Exception('${response.statusCode}');
-    }
   }
 
   Future<List<Transport>> fetchTransfers(String url) async {
@@ -287,30 +167,6 @@ class _PlanningScreenState extends State<PlanningScreen> {
   }
 
   final Map<int, Widget> segmentWidgets = {
-    0: const Expanded(
-      child: Column(
-        children: [
-          SizedBox(height: 14.0),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 6.0),
-            child: Text('Accommodations'),
-          ),
-          SizedBox(height: 14.0),
-        ],
-      ),
-    ),
-    3: const Expanded(
-      child: Column(
-        children: [
-          SizedBox(height: 14.0),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0),
-            child: Text('Activity'),
-          ),
-          SizedBox(height: 14.0),
-        ],
-      ),
-    ),
     1: const Expanded(
       child: Column(
         children: [
@@ -327,8 +183,8 @@ class _PlanningScreenState extends State<PlanningScreen> {
   void calendarTapped(
       BuildContext context, CalendarTapDetails calendarTapDetails) {
     if (calendarTapDetails.targetElement == CalendarElement.appointment) {
-      CalendarEvent event =
-          calendarTapDetails.appointments![0] as CalendarEvent;
+      TransportEvent event =
+          calendarTapDetails.appointments![0] as TransportEvent;
       Navigator.of(context).push(
         MaterialPageRoute(builder: (context) => EventView(event: event)),
       );
@@ -341,11 +197,7 @@ class _PlanningScreenState extends State<PlanningScreen> {
     final bool isSmallScreen = width < 600;
     final bool isLargeScreen = width > 800;
     return Container(
-      color: Color.fromARGB(236, 238, 239, 242),
-      // decoration: BoxDecoration(
-      //   // image: DecorationImage(
-      //   //     image: AssetImage('assets/istockphoto-1045809116-612x612.jpg'), fit: BoxFit.cover),
-      // ),
+      color: const Color.fromARGB(236, 238, 239, 242),
       child: Scaffold(
           backgroundColor: const Color.fromARGB(0, 3, 46, 164),
           appBar: AppBar(
@@ -372,11 +224,11 @@ class _PlanningScreenState extends State<PlanningScreen> {
             onRefresh: fetchData,
             child: ListView(
               children: [
-                Container(
+                SizedBox(
                   height: Get.height * 0.88,
                   child: SfCalendar(
                     todayHighlightColor: Color.fromARGB(255, 242, 186, 3),
-                    todayTextStyle: TextStyle(
+                    todayTextStyle: const TextStyle(
                         fontStyle: FontStyle.normal,
                         fontSize: 30,
                         fontWeight: FontWeight.w900,
@@ -425,20 +277,7 @@ class _PlanningScreenState extends State<PlanningScreen> {
                     },
                     headerHeight: 38,
                     controller: _controller,
-                    view: CalendarView.month,
-                    // onViewChanged: (ViewChangedDetails viewChangedDetails) {
-                    //   _headerText = DateFormat('MMMM yyyy', 'fr')
-                    //       .format(viewChangedDetails
-                    //       .visibleDates[viewChangedDetails.visibleDates
-                    //       .length ~/ 2])
-                    //       .toString();
-                    //   _string = _headerText![0].toUpperCase() +
-                    //       _headerText!.substring(1);
-                    //   SchedulerBinding.instance!.addPostFrameCallback((
-                    //       duration) {
-                    //     setState(() {});
-                    //   });
-                    // },
+                    view: CalendarView.schedule,
                     scheduleViewMonthHeaderBuilder: (BuildContext context,
                         ScheduleViewMonthHeaderDetails details) {
                       // You can return a custom widget here to be displayed as the header.
@@ -471,16 +310,11 @@ class _PlanningScreenState extends State<PlanningScreen> {
                             fontSize: 10,
                             color: Color.fromARGB(255, 250, 248, 246),
                             fontWeight: FontWeight.w400)),
-
                     allowedViews: const <CalendarView>[
                       CalendarView.day,
                       CalendarView.week,
                       CalendarView.workWeek,
                       CalendarView.month,
-                      // CalendarView.timelineDay,
-                      // CalendarView.timelineWeek,
-                      // CalendarView.timelineWorkWeek,
-                      // CalendarView.timelineMonth,
                       CalendarView.schedule
                     ],
                     initialDisplayDate: DateTime.parse(dateString),
@@ -491,16 +325,17 @@ class _PlanningScreenState extends State<PlanningScreen> {
                         showAgenda: true,
                         appointmentDisplayMode:
                             MonthAppointmentDisplayMode.indicator,
-                        agendaItemHeight: Get.height * 0.09,
+                        agendaItemHeight: Get.height * 0.1,
                         numberOfWeeksInView: 5,
                         agendaViewHeight: isLargeScreen
                             ? Get.height * 0.18
-                            : Get.height * 0.28,
+                            : Get.height * 0.30,
                         monthCellStyle: const MonthCellStyle(
-                          todayBackgroundColor: Colors.red,
+                          todayBackgroundColor:
+                              Color.fromARGB(255, 21, 163, 156),
                           textStyle: TextStyle(
                               fontStyle: FontStyle.normal,
-                              fontSize: 20,
+                              fontSize: 16,
                               fontWeight: FontWeight.w700,
                               color: Color.fromARGB(255, 243, 239, 239)),
                         ),
@@ -542,14 +377,14 @@ class _PlanningScreenState extends State<PlanningScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(appointment.subject ?? "subject"),
+          title: Text(appointment.subject),
           content: Text(appointment.notes ?? "notes"),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.pop(context); // Close the dialog
               },
-              child: Text('Close'),
+              child: const Text('Close'),
             ),
           ],
         );
@@ -563,10 +398,8 @@ class _PlanningScreenState extends State<PlanningScreen> {
       builder: (context) => AlertDialog(
         title: const Text("Dropped resource details"),
         contentPadding: const EdgeInsets.all(16.0),
-        content: Text("You have dropped the appointment from " +
-            sourceResource.displayName +
-            " to " +
-            targetResource.displayName),
+        content: Text(
+            "You have dropped the appointment from ${sourceResource.displayName} to ${targetResource.displayName}"),
         actions: <Widget>[
           TextButton(
               child: const Text('OK'),
@@ -589,7 +422,7 @@ class _PlanningScreenState extends State<PlanningScreen> {
             width: calendarAppointmentDetails.bounds.width,
             height: calendarAppointmentDetails.bounds.height / 2,
             color: appointment.color,
-            child: Center(
+            child: const Center(
               child: Icon(
                 Icons.group,
                 color: Colors.black,
@@ -600,12 +433,9 @@ class _PlanningScreenState extends State<PlanningScreen> {
           height: calendarAppointmentDetails.bounds.height / 2,
           color: appointment.color,
           child: Text(
-            appointment.subject +
-                DateFormat(' (hh:mm a').format(appointment.startTime) +
-                '-' +
-                DateFormat('hh:mm a)').format(appointment.endTime),
+            '${appointment.subject}${DateFormat(' (hh:mm a').format(appointment.startTime)}-${DateFormat('hh:mm a)').format(appointment.endTime)}',
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 10),
+            style: const TextStyle(fontSize: 10),
           ),
         )
       ],

@@ -24,7 +24,7 @@ class TouristGuide {
   final  String? coordinates;
   final String? zipCode;
   final  String? countryId;
- 
+ final  String? userId;
   final  String? stateId;
   final  String?  cityId;
   final String? creatorUserId;
@@ -53,6 +53,7 @@ class TouristGuide {
      this.zipCode,
      this.countryId,
      this.stateId,
+     this.userId,
      this.cityId,
      this.creatorUserId,
      this.createdAt,

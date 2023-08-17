@@ -47,6 +47,7 @@ class _EventViewState extends State<EventView> {
             return CircularProgressIndicator();
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
+            
           } else {
             bool isActivity = snapshot.data ?? false;
             return isActivity

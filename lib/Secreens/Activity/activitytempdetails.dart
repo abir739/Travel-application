@@ -253,6 +253,7 @@ class _activitytempdetalSecreenState extends State<activitytempdetalSecreen> {
                     ),
                     HtmlWidget(
                       activites.longDescription ?? "No description",
+                      renderMode :RenderMode.column,
                     ),
                     // Add more widgets to display other properties of 'activites'
                   ],

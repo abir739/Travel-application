@@ -26,9 +26,10 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
-import 'AccommodationSecreen.dart';
+//import 'AccommodationSecreen.dart';
 import 'AddToristGroupScreen.dart';
 import 'PlannigSecreen.dart';
+import 'calendar/calendar_transferts.dart';
 import 'welcome_page.dart';
 
 class PlaningSecreen extends StatefulWidget {
@@ -128,19 +129,11 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
 
   void _loadData() async {
     setState(() {
-      touristGuides = []; // initialize the list to an empty list
+      touristGuides = [];
     });
     final data = await httpHandler.fetchData("/api/tourist-guides");
-    // randomImagePath =
-    //     selecterundomimagepath[random.nextInt(selecterundomimagepath.length)];
-    // print(randomImagePath);
     if (data == null) {
-      // Data is null, navigate to the 'addtouristguid' screen
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(builder: (context) => AddTouristGuideScreen()),
-      // );
-      return; // Stop further execution of the function
+      return;
     }
     setState(() {
       touristGuides = data.cast<TouristGuide>();
@@ -151,17 +144,12 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
 
   void _loadDatagroup() async {
     setState(() {
-      touristGroup = []; // initialize the list to an empty list
+      touristGroup = [];
     });
     final data = await httpHandlertorist.fetchData(
         "/api/tourist-groups/touristGuideId/${selectedTouristGuide!.id}");
     if (data == null) {
-      // Data is null, navigate to the 'addtouristguid' screen
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(builder: (context) => AddTouristGuideScreen()),
-      // );
-      return; // Stop further execution of the function
+      return;
     }
     setState(() {
       touristGroup = data.cast<TouristGroup>();
@@ -170,35 +158,12 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
     });
   }
 
-  // void _loadDataplanning() async {
-  //   setState(() {
-  //     planning = []; // initialize the list to an empty list
-  //   });
-  //   final data = await httpHandlerPlanning
-  //       .fetchData("/api/plannings/touristGuideId/${selectedTouristGuide!.id}");
-  //   setState(() {   print('$data data1');
-  //     planning = data.cast<PlanningMainModel>();
-  //     selectedPlanning = data.first as PlanningMainModel;
-  //     if (data.isNotEmpty) {
-  //       print('$data data');
-  //       selectedPlanning = data.first as PlanningMainModel;
-  //     } else {  print('$data data');
-  //       selectedPlanning = null;
-  //       Navigator.push(
-  //         context,
-  //         MaterialPageRoute(builder: (context) => AddPlanningScreen()),
-  //       );
-  //     }
-  //   });
-  // }
   void _loadDataplanning() async {
     setState(() {
-      planning = []; // initialize the list to an empty list
+      planning = [];
     });
 
     final data = await httpHandlerPlanning.fetchData("/api/plannings");
-
-// /touristGroupId/${selectedTouristGroup!.id}");
 
     setState(() {
       print('$data data1');
@@ -210,10 +175,6 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
       } else {
         print('$data data');
         selectedPlanning = null;
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(builder: (context) => AddPlanningScreen()),
-        // );
       }
     });
   }
@@ -229,58 +190,11 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
       Username = user;
     });
   }
-  // void organisation() async {
-  //   await OneSignal.shared.setAppId('a83993b3-1680-49fa-a371-c5ad4c55849a');
-  //   OneSignal.shared.setNotificationWillShowInForegroundHandler(
-  //       (OSNotificationReceivedEvent event) {
-  //     print('FOREGROUND HANDLER CALLED WITH: ${event}');
-  //     OSNotificationDisplayType.notification;
 
-  //     /// Display Notification, send null to not display
-  //     event.complete(null);
-
-  //     // this.setState(() {
-  //     //   _debugLabelString =
-  //     //       "Notification received in foreground notification: \n${event.notification.jsonRepresentation().replaceAll("\\n", "\n")}";
-  //     // });
-  //   });
-  // }
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
       return Scaffold(
-        // appBar: AppBar(
-        //   backgroundColor: const Color.fromARGB(255, 207, 207, 219),
-        //   title: Row(
-        //     children: [
-        //       AnimatedTextKit(
-        //         animatedTexts: [
-        //           TypewriterAnimatedText(
-        //             'Zenify', // Your text
-        //             textStyle: const TextStyle(
-        //               fontSize: 26,
-        //               letterSpacing: 24,
-        //               color: Color.fromARGB(255, 68, 5, 150),
-        //             ),
-        //             speed: const Duration(
-        //                 milliseconds: 200), // Adjust the animation speed
-        //           ),
-        //         ],
-        //         totalRepeatCount:
-        //             5, // Set the number of times the animation will repeat
-        //         pause: const Duration(
-        //             milliseconds:
-        //                 1000), // Duration before animation starts again
-        //         displayFullTextOnTap: true, // Display full text when tapped
-        //       ),
-        //       SvgPicture.asset(
-        //         'assets/Frame.svg',
-        //         fit: BoxFit.cover,
-        //         height: 36.0,
-        //       ),
-        //     ],
-        //   ),
-        // ),
         body: Center(
           child: FutureBuilder(
             future: Future.delayed(Duration(seconds: 5)),
@@ -291,7 +205,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                   child: CircularProgressIndicator(
                     backgroundColor: Color.fromARGB(255, 219, 10, 10),
                     valueColor: new AlwaysStoppedAnimation<Color>(
-                        Color.fromARGB(255, 24, 10, 221)),
+                        const Color.fromARGB(255, 24, 10, 221)),
                   ),
                 );
               } else {
@@ -303,7 +217,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                       SizedBox(
                         height: Get.width * 0.7,
                       ),
-                      Text('session Tim out.... ',
+                      const Text('session Tim out.... ',
                           style: TextStyle(
                               fontWeight: FontWeight.w900,
                               fontSize: 20,
