@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-import 'package:zenify_trip/Secreens/calendar/eventdetail.dart';
+//import 'package:zenify_trip/Secreens/calendar/eventdetail.dart';
 import 'package:zenify_trip/Secreens/calendar/transfert_data.dart';
 
 import 'package:zenify_trip/modele/Event/Event.dart';
@@ -19,13 +19,16 @@ import 'package:zenify_trip/modele/transportmodel/transportModel.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../constent.dart';
 import '../CustomCalendarDataSource.dart';
-//import '../EventView.dart';
+import 'eventdetail_test.dart';
 
 class PlanningScreen extends StatefulWidget {
   String? Plannigid;
   TouristGuide? guid;
+
   @override
   PlanningScreen(this.Plannigid, this.guid, {Key? key}) : super(key: key);
+
+  get handleEventSave => null;
   _PlanningScreenState createState() => _PlanningScreenState();
 }
 
@@ -129,6 +132,17 @@ class _PlanningScreenState extends State<PlanningScreen> {
     }
   }
 
+  void handleEventSave(TransportEvent updatedEvent) {
+    setState(() {
+      // Update the event list with the changes
+      int index = transferList
+          .indexWhere((element) => element.id == updatedEvent.transport.id);
+      if (index != -1) {
+        transferList[index] = updatedEvent.transport;
+      }
+    });
+  }
+
   CalendarDataSource _getCalendarDataSource() {
     List<CalendarEvent> events = [];
     eventsByDate.forEach((date, eventList) {
@@ -182,7 +196,12 @@ class _PlanningScreenState extends State<PlanningScreen> {
       TransportEvent event =
           calendarTapDetails.appointments![0] as TransportEvent;
       Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => EventView(event: event)),
+        MaterialPageRoute(
+          builder: (context) => EventView(
+            event: event,
+            onSave: handleEventSave, // Pass the method
+          ),
+        ),
       );
     }
   }
