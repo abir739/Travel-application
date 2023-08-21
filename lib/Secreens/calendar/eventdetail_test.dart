@@ -1,16 +1,16 @@
 import 'dart:convert';
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:multi_select_flutter/chip_display/multi_select_chip_display.dart';
+import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
+import 'package:multi_select_flutter/util/multi_select_item.dart';
+import 'package:multi_select_flutter/util/multi_select_list_type.dart';
 import 'package:zenify_trip/Secreens/calendar/transfert_data.dart';
-import 'package:zenify_trip/modele/transportmodel/transportModel.dart';
 import 'package:http/http.dart' as http;
 import '../../constent.dart';
 import '../PlannigSecreen.dart';
 import 'package:flutter_svg/svg.dart';
-
-import 'package:zenify_trip/Secreens/calendar/transfert_data.dart';
-import 'package:zenify_trip/modele/Event/Event.dart';
-import 'package:zenify_trip/modele/transportmodel/transportModel.dart';
+import 'package:zenify_trip/modele/touristGroup.dart';
 
 class EventView extends StatefulWidget {
   final TransportEvent event;
@@ -22,18 +22,28 @@ class EventView extends StatefulWidget {
 }
 
 class _EventViewState extends State<EventView> {
+  List<TouristGroup> _touristGroups = [];
+
   late TextEditingController _noteController;
   late TextEditingController _durationController;
 
-
+  late TextEditingController messageController;
+  late TextEditingController titleController;
+  late TextEditingController typeController;
+  bool sendNotification = false;
 
   @override
   void initState() {
     super.initState();
+    fetchTouristGroups();
 
     _noteController = TextEditingController(text: widget.event.transport.note);
     _durationController = TextEditingController(
         text: widget.event.transport.durationHours.toString());
+
+    messageController = TextEditingController();
+    titleController = TextEditingController();
+    typeController = TextEditingController();
   }
 
   @override
@@ -42,6 +52,34 @@ class _EventViewState extends State<EventView> {
     _durationController.dispose();
 
     super.dispose();
+  }
+
+  Future<void> fetchTouristGroups() async {
+    String? token = await storage.read(key: "access_token");
+    String formatter(String url) {
+      return baseUrls + url;
+    }
+
+    String url =
+        formatter("/api/tourist-groups/transfrid/${widget.event.transport.id}");
+
+    final response = await http.get(
+      Uri.parse(url),
+      headers: {
+        "Authorization": "Bearer $token",
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = jsonDecode(response.body);
+      final List<dynamic> results = data["results"];
+      _touristGroups =
+          results.map((groupData) => TouristGroup.fromJson(groupData)).toList();
+      setState(() {});
+    } else {
+      print("Error fetching tourist groups: ${response.statusCode}");
+      // Handle error here
+    }
   }
 
   // Define a function to update the event details
@@ -65,15 +103,19 @@ class _EventViewState extends State<EventView> {
       final Map<String, dynamic> updatePayload = {
         'note': _noteController.text,
         'durationHours': int.parse(_durationController.text),
-
-        // Add other fields you want to update
+        // ... (other fields you want to update)
+        // "notification": {
+        "message": messageController.text,
+        "title": titleController.text,
+        "type": typeController.text,
+        "sendNotification": true,
+        // },
       };
-
       String? token = await storage.read(key: "access_token");
       String url = formatter("/api/transfers/${widget.event.transport.id}");
 
       // Perform the PUT request to update the event
-      final response = await http.put(
+      final response = await http.patch(
         Uri.parse(url),
         headers: {
           "Authorization": "Bearer $token",
@@ -86,8 +128,10 @@ class _EventViewState extends State<EventView> {
         // Successfully updated
         // You might want to refetch the data after saving
         //await fetchDataAndOrganizeEvents();
-        Navigator.pop(
-            context); // Close the EventView screen after saving changes
+        print(updatePayload);
+        print(response.body);
+        // Navigator.pop(
+        //     context); // Close the EventView screen after saving changes
       } else {
         // Handle API error
         print("API Error: ${response.statusCode}");
@@ -125,56 +169,143 @@ class _EventViewState extends State<EventView> {
           ],
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 16),
-            const Text(
-              'Transport Details',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 36),
-            Text('Title: ${widget.event.transport.note}'),
-            const SizedBox(height: 16),
-            Text('Date: ${widget.event.startTime.toString()}'),
-            const SizedBox(height: 16),
-            TextFormField(
-              controller: _noteController,
-              decoration: const InputDecoration(labelText: 'Title'),
-            ),
-            const SizedBox(height: 16),
-            TextFormField(
-              controller: _durationController,
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(labelText: 'Duration (hours)'),
-            ),
-            const SizedBox(height: 24),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: const Color(0xFFEB5F52),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 14),
+              const Text(
+                'Transport Details',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              onPressed: _saveChanges,
-              child: const Center(
-                child: const Text(
-                  'Save Changes',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16,
+              const SizedBox(height: 26),
+              Text('Title: ${widget.event.transport.note}'),
+              const SizedBox(height: 14),
+              Text('Date: ${widget.event.startTime.toString()}'),
+              const SizedBox(height: 14),
+              TextFormField(
+                controller: _noteController,
+                decoration: const InputDecoration(labelText: 'Title'),
+              ),
+              const SizedBox(height: 14),
+              TextFormField(
+                controller: _durationController,
+                keyboardType: TextInputType.number,
+                decoration:
+                    const InputDecoration(labelText: 'Duration (hours)'),
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                'Tourist Groups:',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 13),
+              // ListView.builder(
+              //   shrinkWrap: true,
+              //   itemCount: _touristGroups.length,
+              //   itemBuilder: (context, index) {
+              //     final touristGroup = _touristGroups[index];
+              //     return ListTile(
+              //       title: Text(touristGroup.name ?? "Unknown Name"),
+              //       subtitle:
+              //           Text(touristGroup.tourOperatorId ?? "No Description"),
+              //       // You can customize the appearance of the ListTile as needed
+              //     );
+              //   },
+              // ),
+              // Add Flexible or Expanded to adjust the space taken by the ListView
+              MultiSelectDialogField<TouristGroup>(
+                items: _touristGroups
+                    .map((group) => MultiSelectItem(group, group.name!))
+                    .toList(),
+                listType: MultiSelectListType.CHIP,
+                onConfirm: (selectedItems) {
+                  // Handle selected items here
+                },
+                chipDisplay: MultiSelectChipDisplay(
+                  onTap: (item) {
+                    // Handle chip tap here
+                  },
+                ),
+              ),
+
+              const SizedBox(height: 18),
+              TextFormField(
+                controller: messageController,
+                decoration:
+                    const InputDecoration(labelText: 'Notification Message'),
+              ),
+              const SizedBox(height: 14),
+              TextFormField(
+                controller: titleController,
+                decoration:
+                    const InputDecoration(labelText: 'Notification Title'),
+              ),
+              const SizedBox(height: 14),
+              TextFormField(
+                controller: typeController,
+                decoration:
+                    const InputDecoration(labelText: 'Notification Type'),
+              ),
+              Card(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Icon(
+                      Icons.notification_add,
+                      color: Colors.amber,
+                    ),
+                    Text(
+                      'Send notification',
+                      style: TextStyle(
+                        color: Colors.black12,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    CupertinoSwitch(
+                      value: sendNotification,
+                      onChanged: (val) {
+                        setState(() {
+                          sendNotification = val;
+                          print(sendNotification.toString());
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 20),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: const Color(0xFFEB5F52),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                onPressed: _saveChanges,
+                child: const Center(
+                  child: const Text(
+                    'Save Changes',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16,
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

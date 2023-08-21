@@ -26,10 +26,10 @@ import '../modele/Event/Event.dart';
 //   // Add any additional methods that are required to override the abstract methods
 //   // of the CalendarDataSource class.
 // }
-class CustomCalendarDataSource extends CalendarDataSource {
+class CustomCalendarDataSourceToueist extends CalendarDataSource {
   final Map<CalendarEvent, Color>? eventColors;
 
-  CustomCalendarDataSource(List<CalendarEvent> events, this.eventColors) {
+  CustomCalendarDataSourceToueist(List<CalendarEvent> events, this.eventColors) {
     appointments = events;
   }
   @override
@@ -51,10 +51,10 @@ class CustomCalendarDataSource extends CalendarDataSource {
     return appointments![index].title!;
   }
 
-  // @override
-  // String getRecurrenceId(int index) {
-  //   return appointments![index].recurrenceId!;
-  // }
+  @override
+  String getRecurrenceId(int index) {
+    return appointments![index].recurrenceId!;
+  }
   Color getColor(int index) {
     CalendarEvent event = appointments![index] as CalendarEvent;
     return event.color ?? super.getColor(index);

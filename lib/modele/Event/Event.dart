@@ -16,6 +16,7 @@ class CalendarEvent {
   late final DateTime? endTime;
   final Color? color;
   final Object? type;
+  final Object? recurrenceId;
   Color? cardcolor;
   final TextStyle? displayNameTextStyle;
   CalendarEvent(
@@ -24,9 +25,8 @@ class CalendarEvent {
       this.startTime,
       this.endTime,
       this.color,
-      this.id,
+      this.id,this.recurrenceId,
       this.note,
-      this.cardcolor,
-      this.type,
+      this.cardcolor,this.type,
       this.displayNameTextStyle});
 }

@@ -1,17 +1,11 @@
-import 'package:cr_calendar/cr_calendar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-//import 'package:zenify_trip/Secreens/calendar/eventdetail.dart';
 import 'package:zenify_trip/Secreens/calendar/transfert_data.dart';
-
 import 'package:zenify_trip/modele/Event/Event.dart';
 import 'package:zenify_trip/modele/TouristGuide.dart';
-
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
@@ -19,6 +13,7 @@ import 'package:zenify_trip/modele/transportmodel/transportModel.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../constent.dart';
 import '../CustomCalendarDataSource.dart';
+//import 'groups.dart';
 import 'eventdetail_test.dart';
 
 class PlanningScreen extends StatefulWidget {

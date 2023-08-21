@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'NetworkHandler.dart';
+import 'Secreens/Clientcalendar/TravellerFirstScreen.dart';
 import 'Secreens/Navigation/GoogleBottomBar.dart';
 import 'Secreens/NavigationRailPage.dart';
 import 'Secreens/PlannigSecreen.dart';
@@ -34,6 +35,7 @@ TextEditingController forgetEmailController = TextEditingController();
 bool circular = false;
 late String errorText;
 bool validate = false;
+
 NetworkHandler networkHandler = NetworkHandler();
 final storage = new FlutterSecureStorage();
 
@@ -80,9 +82,15 @@ class _MyLoginState extends State<MyLogin> {
           // await storage.write(
           //     key: "access_token", value: output["access_token"]);
           await storage.write(key: "id", value: output["data"]["id"]);
-
+          String Role = output["data"]["role"];
           // Navigator.pushNamed(context, 'register');
-          Get.to(() => GoogleBottomBar());
+          // Get.to(() => GoogleBottomBar());
+          if (Role == "Administrator") {
+            // Get.to(() => PlaningSecreen());
+            Get.to(() => GoogleBottomBar());
+          } else {
+            Get.to(() => TravellerFirstScreen());
+          }
         } else {
           Map<String, dynamic> output =
               new Map<String, dynamic>.from(json.decode(response.body));

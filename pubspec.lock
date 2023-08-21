@@ -9,6 +9,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "38.0.0"
+  analog_clock:
+    dependency: "direct main"
+    description:
+      name: analog_clock
+      sha256: "6550dc371c5834d76295ec7b50c44b96c52f60e9bb2dd49568a3cb100e4b289e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.1"
   analyzer:
     dependency: transitive
     description:

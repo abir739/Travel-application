@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'CreatProfile.dart';
 import 'UpdateUserDetailDialog.dart';
+
 String? baseUrl = "";
 
 class MainProfile extends StatefulWidget {
@@ -61,7 +62,6 @@ class _MainProfileState extends State<MainProfile> {
       print('Error loading user: $error');
     }
   }
-
 
   void updateUserDetail(String field, String updatedValue) async {
     final String? userId =
@@ -182,14 +182,14 @@ class _MainProfileState extends State<MainProfile> {
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: () {
-                      updateUserDetailDialog(
-                          'Password:', selectedUser?.password ?? '');
-                    },
-
-                    //   onPressed: () {
-                    //   showPasswordUpdateDialog(context); // Pass the context
+                    // onPressed: () {
+                    //   updateUserDetailDialog(
+                    //       'Password:', selectedUser?.password ?? '');
                     // },
+
+                    onPressed: () {
+                      showPasswordUpdateDialog(context); // Pass the context
+                    },
 
                     child: const Text('Change Password'),
                   ),
@@ -349,7 +349,8 @@ class _MainProfileState extends State<MainProfile> {
                     },
                     child: Row(
                       children: [
-                        const SizedBox(width: 10), // Adding space before the icon
+                        const SizedBox(
+                            width: 10), // Adding space before the icon
                         const Icon(
                           Icons.cottage_rounded,
                           color: Color.fromARGB(210, 13, 2, 165),

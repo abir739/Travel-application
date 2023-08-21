@@ -1,12 +1,9 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
 import 'package:get/get.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
-
 import '../../constent.dart';
 import '../../modele/TouristGuide.dart';
 import '../../modele/activitsmodel/httpActivites.dart';
@@ -54,9 +51,8 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
   @override
   void initState() {
     super.initState();
-    // initializeMultiSelectItems();
+
     _loadData();
-    // _loadDatagroup();
   }
 
   void _loadData() async {
@@ -65,13 +61,6 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
     });
     final data = await httpHandler.fetchData("/api/tourist-guides");
 
-    // if (data == null) {
-    //   Navigator.push(
-    //     context,
-    //     MaterialPageRoute(builder: (context) => AddTouristGuideScreen()),
-    //   );
-    //   return; // Stop further execution of the function
-    // }
     setState(() {
       touristGuides = data.cast<TouristGuide>();
       selectedTouristGuide = data.first as TouristGuide;
@@ -90,14 +79,7 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
     });
     final data = await httpHandlertorist.fetchData(
         "/api/tourist-groups/touristGuideId/${selectedTouristGuide!.id}");
-    // if (data == null) {
-    //   // Data is null, navigate to the 'addtouristguid' screen
-    //   Navigator.push(
-    //     context,
-    //     MaterialPageRoute(builder: (context) => AddTouristGuideScreen()),
-    //   );
-    //   return; // Stop further execution of the function
-    // }
+
     setState(() {
       touristGroup = data.cast<TouristGroup>();
       selectedTouristGroup = data.first as TouristGroup;
@@ -106,39 +88,6 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
     });
   }
 
-// void _loadDatagroup() async {
-//     setState(() {
-//       group = []; // initialize the list to an empty list
-//       groupOptions = []; // Initialize the groupOptions list
-//     });
-
-//     final data = await httpHandlertorist.fetchData(
-//         "/api/tourist-groups/touristGuideId/${selectedTouristGuide!.id}");
-
-//     if (data == null) {
-//       Navigator.push(
-//         context,
-//         MaterialPageRoute(builder: (context) => AddTouristGuideScreen()),
-//       );
-//       return; // Stop further execution of the function
-//     }
-
-//     setState(() {
-//       group = data.cast<TouristGroup>();
-//       selectedTouristGroup = data.first as TouristGroup;
-//       groupOptions = List.from(group!); // Populate groupOptions with group data
-//     });
-
-//     initializeMultiSelectItems(); // Initialize multiSelectItems after the data is fetched and set in the state
-//   }
-// List<String> sendSelectedTags(
-//       List<MultiSelectItem<TouristGroup>> multiSelectItems) {
-//     List<String> selectedTags = multiSelectItems
-//         .where((item) => item.selected) // Filter out only the selected items
-//         .map((item) => item.value.id!) // Extract the tag IDs
-//         .toList();
-//     return selectedTags;
-//   }
   Map<String, String> selectedTagsMapsendSelectedTags(
     List<MultiSelectItem<TouristGroup>> multiSelectItems,
   ) {
@@ -161,14 +110,17 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
       var response = await http.post(
         Uri.parse('$baseUrls/api/push-notifications/notification'),
         headers: {
-          "Authorization": "Bearer $token",
+          "Authorization":
+              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMwZjkxMTkyLTUzYWItNGUzZC1iM2EwLTM1NDNkNDk5YWVmZCIsInN1YiI6IjMwZjkxMTkyLTUzYWItNGUzZC1iM2EwLTM1NDNkNDk5YWVmZCIsInVzZXJuYW1lIjoiYWJpcjExMSIsImVtYWlsIjoiYWJpcjExMUBnbWFpbC5jb20iLCJyb2xlIjoiQWRtaW5pc3RyYXRvciIsImZpcnN0TmFtZSI6IkFiaXIiLCJsYXN0TmFtZSI6ImNoZXJpZmZmIiwiZXhwaXJlcyI6MTY5MjcwMTMzNSwiY3JlYXRlZCI6MTY5MjYxNDkzNSwiaWF0IjoxNjkyNjE0OTM1LCJleHAiOjE2OTI3MDEzMzV9.o_a0AoDvZCBcDi9BPRkHVBkRcek3kOKz24q19F95oqA",
           "Content-Type": "application/json"
         },
         body: json.encode({
-          "message": "new activitfffffy , !",
-          "title": "test",
-          "type":
-              "http://cdn1-www.dogtime.com/assets/uploads/gallery/30-impossibly-cute-puppies/impossibly-cute-puppy-2.jpg",
+          "message": _messageController.text, // Use the entered message
+          "title": _titleController.text, // Use the entered title
+          "type": _linkUrlController.text.isNotEmpty
+              ? _linkUrlController.text
+              : _bigPictureController
+                  .text, // Use either link URL or picture URL
           "tags": selectedTagsMap,
           "mutable_content": false,
           "android_sound": null,
@@ -207,9 +159,9 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Card(
-              margin: const EdgeInsets.all(14),
+              margin: EdgeInsets.all(14),
               shape: RoundedRectangleBorder(
-                side: const BorderSide(color: Color.fromARGB(235, 79, 2, 2)),
+                side: BorderSide(color: Color.fromARGB(235, 79, 2, 2)),
                 borderRadius: BorderRadius.circular(15),
               ),
               child: MultiSelectDialogField<TouristGroup>(
@@ -217,17 +169,17 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
                 isDismissible: false,
                 initialValue: selectedGroup.toList(),
                 dialogHeight: Get.height * 0.2,
-                barrierColor: const Color.fromARGB(146, 129, 129, 129),
-                title: const Text('group List'),
+                barrierColor: Color.fromARGB(146, 129, 129, 129),
+                title: Text('group List'),
                 separateSelectedItems: true,
                 selectedColor: Colors.purple,
                 searchable: true,
-                selectedItemsTextStyle: const TextStyle(
+                selectedItemsTextStyle: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
                   color: Color.fromARGB(255, 133, 3, 133),
                 ),
-                unselectedColor: const Color.fromARGB(255, 8, 88, 180),
+                unselectedColor: Color.fromARGB(255, 8, 88, 180),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please select at least one group';
@@ -243,150 +195,13 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
                 chipDisplay: MultiSelectChipDisplay<TouristGroup>(),
               ),
             ),
-            // Container(
-            //   decoration: BoxDecoration(
-            //     borderRadius: BorderRadius.all(Radius.circular(10)),
-            //     color: Color.fromARGB(244, 188, 95, 3),
-            //   ),
-            //   alignment: Alignment.center,
-            //   padding: EdgeInsets.all(5.0),
-            //   margin: EdgeInsets.only(left: 60, right: 60),
-            //   child: touristGroup!.isEmpty
-            //       ? ElevatedButton(
-            //           style: ButtonStyle(
-            //             backgroundColor: MaterialStateProperty.all<Color>(
-            //                 Color.fromARGB(184, 209, 17,
-            //                     17)), // Set the desired background color
-            //           ),
-            //           onPressed: () {
-            //             // Handle button press, navigate to desired screen or perform any action
-            //             Get.to(AddTouristGroupScreen());
-            //           },
-            //           child: Text('you are not effect  group'),
-            //         )
-            //       : Row(
-            //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //           children: [
-            //             Container(
-            //               width: 120, // Set the desired width
-            //               height: 60,
-            //               child: DropdownButton<TouristGroup>(
-            //                 borderRadius: BorderRadius.all(Radius.circular(20)),
-            //                 dropdownColor: Color.fromARGB(255, 210, 151, 3),
-            //                 iconEnabledColor: Color.fromARGB(161, 0, 0, 0),
-            //                 iconDisabledColor:
-            //                     Color.fromARGB(255, 158, 158, 158),
-            //                 value: selectedTouristGroup,
-            //                 items: touristGroup!.map((touristGroup) {
-            //                   return DropdownMenuItem<TouristGroup>(
-            //                       value: touristGroup,
-            //                       child: Row(
-            //                         children: [
-            //                           Icon(
-            //                             Icons.group,
-            //                             size:
-            //                                 20, // Set the desired size of the icon
-            //                           ),
-            //                           SizedBox(
-            //                               width:
-            //                                   8), // Add some spacing between the icon and text
-            //                           Text(
-            //                             touristGroup.name ?? 'i known Group',
-            //                             style: TextStyle(
-            //                                 fontSize: 16,
-            //                                 color:
-            //                                     Color.fromARGB(255, 88, 19, 2)),
-            //                           ),
-            //                         ],
-            //                       ));
-            //                 }).toList(),
-            //                 onChanged: (TouristGroup? newValue) {
-            //                   setState(() {
-            //                     // OneSignal.shared
-            //                     //     .deleteTag('${selectedTouristGroup?.id}')
-            //                     //     .then((success) {
-            //                     //   print("Old tags deleted successfully");
-            //                     // }).catchError((error) {
-            //                     //   print("Error deleting old tags: $error");
-            //                     // });
-
-            //                     // selectedTouristGroup = newValue!;
-            //                     // tag = newValue.id!;
-            //                     // _loadDataplanning();
-            //                     if (selectedTouristGroup?.id != null) {
-            //                       // try {
-            //                       //   OneSignal.shared.setAppId(
-            //                       //       'a83993b3-1680-49fa-a371-c5ad4c55849a');
-            //                       //   OneSignal.shared.setSubscriptionObserver(
-            //                       //       (OSSubscriptionStateChanges changes) {
-            //                       //     print(
-            //                       //         "SUBSCRIPTION STATE CHANGED: ${changes.jsonRepresentation()}");
-            //                       //   });
-            //                       //   OneSignal.shared
-            //                       //       .promptUserForPushNotificationPermission();
-            //                       //   OneSignal.shared.sendTags({
-            //                       //     '${selectedTouristGroup?.id}':
-            //                       //         '${selectedTouristGroup?.id}'
-            //                       //   }).then((success) {
-            //                       //     print("Tags created successfully");
-            //                       //   }).catchError((error) {
-            //                       //     print("Error creating tags: $error");
-            //                       //   });
-            //                       // } catch (e) {
-            //                       //   print('Error initializing OneSignal: $e');
-            //                       // }
-            //                     }
-            //                     print(selectedTouristGroup!.id);
-            //                   });
-            //                 },
-            //               ),
-            //             ),
-            //             ElevatedButton(
-            //               style: ButtonStyle(
-            //                 backgroundColor: MaterialStateProperty.all<Color>(
-            //                     Color.fromARGB(184, 209, 17,
-            //                         17)), // Set the desired background color
-            //               ),
-            //               onPressed: () {
-            //                 // Handle button press, navigate to desired screen or perform any action
-            //                 Get.to(AddTouristGroupScreen());
-            //               },
-            //               child: Text('new Goup'),
-            //             ),
-            //             FutureBuilder<int>(
-            //               future: count.fetchInlineCount(
-            //                 "/api/tourist-groups/touristGuideId/${selectedTouristGuide!.id}",
-            //               ),
-            //               builder: (context, snapshot) {
-            //                 if (snapshot.connectionState ==
-            //                     ConnectionState.waiting) {
-            //                   // Display a loading indicator while fetching the inline count
-            //                   return CircularProgressIndicator(
-            //                       strokeWidth: 1.0);
-            //                 }
-            //                 if (snapshot.hasError) {
-            //                   // Handle the error if the inline count couldn't be fetched
-            //                   return Text("Error");
-            //                 }
-            //                 final inlineCount = snapshot.data ?? 0;
-            //                 return Text(
-            //                   " $inlineCount",
-            //                   style: TextStyle(
-            //                       fontWeight: FontWeight.w800, fontSize: 20),
-            //                 );
-            //               },
-            //             ),
-            //           ],
-            //         ),
-            // ),
-            // const SizedBox(height: 32),
             Container(
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                   color: Color.fromARGB(47, 181, 89, 3),
                 ),
                 alignment: Alignment.center,
-                padding: const EdgeInsets.all(2.0),
+                padding: EdgeInsets.all(2.0),
                 margin: const EdgeInsets.only(left: 20, right: 20),
                 child: touristGuides!.isEmpty
                     ? ElevatedButton(
@@ -394,9 +209,10 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
                           // Handle button press, navigate to desired screen or perform any action
                           // Get.to(AddTouristGuideScreen());
                         },
-                        child: const Text('you are not effect to any tourist guid'),
+                        child: const Text(
+                            'you are not effect to any tourist guid'),
                       )
-                    : Container(
+                    : SizedBox(
                         width: 800, // Set the desired width
                         height: 60, // Set the desired height
                         child: Row(
@@ -404,7 +220,7 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
                             DropdownButton<TouristGuide>(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(20)),
-                              dropdownColor: const Color.fromARGB(255, 229, 224, 224),
+                              dropdownColor: Color.fromARGB(255, 229, 224, 224),
                               iconEnabledColor:
                                   const Color.fromARGB(160, 245, 241, 241),
                               iconDisabledColor:
@@ -435,118 +251,54 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
                                 );
                               }).toList(),
                               onChanged: (TouristGuide? newValue) {
-                                // setState(() {
-                                //   OneSignal.shared
-                                //       .deleteTag('${selectedTouristGuide?.id}')
-                                //       .then((success) {
-                                //     print("Old tags deleted successfully");
-                                //   }).catchError((error) {
-                                //     print("Error deleting old tags: $error");
-                                //   });
-
                                 selectedTouristGuide = newValue!;
-                                // tag = newValue.id!;
-                                // _loadDataplanning();
+
                                 _loadDatagroup();
-                                //   if (selectedTouristGuide?.id != null) {
-                                //     try {
-                                //       OneSignal.shared.setAppId(
-                                //           'a83993b3-1680-49fa-a371-c5ad4c55849a');
-                                //       OneSignal.shared.setSubscriptionObserver(
-                                //           (OSSubscriptionStateChanges changes) {
-                                //         print(
-                                //             "SUBSCRIPTION STATE CHANGED: ${changes.jsonRepresentation()}");
-                                //       });
-                                //       OneSignal.shared
-                                //           .promptUserForPushNotificationPermission();
-                                //       OneSignal.shared.sendTags({
-                                //         '${selectedTouristGuide?.id}':
-                                //             '${selectedTouristGuide?.id}'
-                                //       }).then((success) {
-                                //         print("Tags created successfully");
-                                //       }).catchError((error) {
-                                //         print("Error creating tags: $error");
-                                //       });
-                                //     } catch (e) {
-                                //       print('Error initializing OneSignal: $e');
-                                //     }
-                                //   }
-                                //   print(selectedTouristGuide!.id);
-                                // });
                               },
                             ),
-                            // FutureBuilder<int>(
-                            //   future: count.fetchInlineCount(
-                            //     "/api/tourist-guides",
-                            //   ),
-                            //   builder: (context, snapshot) {
-                            //     if (snapshot.connectionState ==
-                            //         ConnectionState.waiting) {
-                            //       // Display a loading indicator while fetching the inline count
-                            //       return CircularProgressIndicator(
-                            //           strokeWidth: 1.0);
-                            //     }
-                            //     if (snapshot.hasError) {
-                            //       // Handle the error if the inline count couldn't be fetched
-                            //       return Text("Error");
-                            //     }
-                            //     final inlineCount = snapshot.data ?? 0;
-                            //     return Text(
-                            //       " $inlineCount",
-                            //       style: TextStyle(
-                            //           fontWeight: FontWeight.w800,
-                            //           fontSize: 20),
-                            //     );
-                            //   },
-                            // ),
                           ],
                         ),
                       )),
-
             const SizedBox(height: 32),
-            // TextFormField(
-            //   maxLines: 10,
-            //   decoration: InputDecoration(
-            //     border: OutlineInputBorder(
-            //         borderSide: BorderSide(
-            //       color: Color.fromARGB(255, 6, 70, 189),
-            //     )),
-            //     focusedBorder: OutlineInputBorder(
-            //         borderSide: BorderSide(
-            //       color: Colors.orange,
-            //       width: 2,
-            //     )),
-            //     labelText: "Message",
-            //     helperText: "Write about  Notification",
-            //     hintText: "Notification Message",
-            //   ),
-            //   controller: _messageController,
-            //   // decoration: InputDecoration(labelText: 'Message'),
-            // ),
-
+            // TextFields for title, message, picture URL, and link URL
             TextField(
               controller: _titleController,
-              decoration: InputDecoration(labelText: 'Title'),
+              decoration: const InputDecoration(labelText: 'Title'),
             ),
             TextField(
-              controller: _androidAccentColorController,
-              decoration: InputDecoration(labelText: 'Android Accent Color'),
+              controller: _messageController, // Add this line
+              decoration: const InputDecoration(labelText: 'Message'),
             ),
             TextField(
               controller: _bigPictureController,
-              decoration: InputDecoration(labelText: 'Big Picture'),
+              decoration: const InputDecoration(labelText: 'Big Picture URL'),
             ),
             TextField(
               controller: _linkUrlController,
-              decoration: InputDecoration(labelText: 'Type/Link URL'),
+              decoration: const InputDecoration(labelText: 'Link URL'),
             ),
-
-            SizedBox(height: 16),
+            const SizedBox(height: 60),
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: const Color(0xFFEB5F52),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
               onPressed: () {
                 sendNotification();
               },
-              child: Text('Send Notification'),
+              child: const Center(
+                child: Text(
+                  'Send Notification',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
             ),
           ],
         ),
