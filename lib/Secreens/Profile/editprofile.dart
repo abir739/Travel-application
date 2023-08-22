@@ -1,13 +1,22 @@
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../../NetworkHandler.dart';
+import '../../buttonNavbar.dart';
 import '../../constent.dart';
 import '../../modele/HttpUserHandler.dart';
+import '../../modele/TouristGuide.dart';
 import '../../modele/activitsmodel/usersmodel.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import '../../modele/planningmainModel.dart';
+import '../ConcentricAnimationOnboarding.dart';
+import '../Notification/PushNotificationScreen.dart';
+import '../calendar/calendar_transferts.dart';
+import '../guidPlannig.dart';
 import 'CreatProfile.dart';
 import 'UpdateUserDetailDialog.dart';
+import 'package:flutter_svg/svg.dart';
 
 String? baseUrl = "";
 
@@ -27,7 +36,9 @@ class _MainProfileState extends State<MainProfile> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   NetworkHandler networkHandler = NetworkHandler();
   FlutterSecureStorage storage = const FlutterSecureStorage();
+  get selectedPlanning => PlanningMainModel();
 
+  TouristGuide? get selectedTouristGuide => TouristGuide();
   @override
   void initState() {
     super.initState();
@@ -144,6 +155,26 @@ class _MainProfileState extends State<MainProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 207, 207, 219),
+        title: Row(
+          children: [
+            SvgPicture.asset(
+              'assets/Frame.svg',
+              fit: BoxFit.cover,
+              height: 36.0,
+            ),
+            const SizedBox(width: 30),
+            const Text(
+              'Your Profil',
+              style: TextStyle(
+                color: Color.fromARGB(255, 68, 5, 150),
+                fontSize: 24,
+              ),
+            ),
+          ],
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(14.0),
         child: circular
@@ -417,6 +448,7 @@ class _MainProfileState extends State<MainProfile> {
                 ],
               ),
       ),
+      // bottomNavigationBar: AppBottomNavigationBar(),
     );
   }
 

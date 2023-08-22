@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ import 'package:zenify_trip/Secreens/MyCalendarPage.dart';
 import 'package:zenify_trip/modele/touristGroup.dart';
 import 'package:flutter_avif/flutter_avif.dart';
 import '../NetworkHandler.dart';
+import '../buttonNavbar.dart';
 import '../modele/HttpPlaning.dart';
 import '../modele/TouristGuide.dart';
 import '../modele/activitsmodel/httpActivites.dart';
@@ -28,9 +30,10 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 //import 'AccommodationSecreen.dart';
 import 'AddToristGroupScreen.dart';
-import 'PlannigSecreen.dart';
+import 'ConcentricAnimationOnboarding.dart';
+import 'Notification/PushNotificationScreen.dart';
+import 'Profile/editprofile.dart';
 import 'calendar/calendar_transferts.dart';
-import 'welcome_page.dart';
 
 class PlaningSecreen extends StatefulWidget {
   const PlaningSecreen({super.key});
@@ -254,38 +257,38 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
       );
     } else {
       return Scaffold(
-        // appBar: AppBar(
-        //   backgroundColor: const Color.fromARGB(255, 207, 207, 219),
-        //   title: Row(
-        //     children: [
-        //       AnimatedTextKit(
-        //         animatedTexts: [
-        //           TypewriterAnimatedText(
-        //             'Zenify', // Your text
-        //             textStyle: const TextStyle(
-        //               fontSize: 26,
-        //               letterSpacing: 24,
-        //               color: Color.fromARGB(255, 68, 5, 150),
-        //             ),
-        //             speed: const Duration(
-        //                 milliseconds: 200), // Adjust the animation speed
-        //           ),
-        //         ],
-        //         totalRepeatCount:
-        //             5, // Set the number of times the animation will repeat
-        //         pause: const Duration(
-        //             milliseconds:
-        //                 1000), // Duration before animation starts again
-        //         displayFullTextOnTap: true, // Display full text when tapped
-        //       ),
-        //       SvgPicture.asset(
-        //         'assets/Frame.svg',
-        //         fit: BoxFit.cover,
-        //         height: 36.0,
-        //       ),
-        //     ],
-        //   ),
-        // ),
+        appBar: AppBar(
+          backgroundColor: const Color.fromARGB(255, 207, 207, 219),
+          title: Row(
+            children: [
+              AnimatedTextKit(
+                animatedTexts: [
+                  TypewriterAnimatedText(
+                    'Zenify', // Your text
+                    textStyle: const TextStyle(
+                      fontSize: 26,
+                      letterSpacing: 24,
+                      color: Color.fromARGB(255, 68, 5, 150),
+                    ),
+                    speed: const Duration(
+                        milliseconds: 200), // Adjust the animation speed
+                  ),
+                ],
+                totalRepeatCount:
+                    5, // Set the number of times the animation will repeat
+                pause: const Duration(
+                    milliseconds:
+                        1000), // Duration before animation starts again
+                displayFullTextOnTap: true, // Display full text when tapped
+              ),
+              SvgPicture.asset(
+                'assets/Frame.svg',
+                fit: BoxFit.cover,
+                height: 36.0,
+              ),
+            ],
+          ),
+        ),
         body: Stack(
           children: [
             Center(
@@ -296,7 +299,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                   Container(
                     decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
-                      color: Color.fromARGB(244, 142, 172, 189),
+                      color: Color.fromARGB(244, 19, 123, 184),
                     ),
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(5.0),
@@ -313,11 +316,11 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(20)),
                                 dropdownColor:
-                                    const Color.fromARGB(244, 142, 172, 189),
+                                    Color.fromARGB(244, 19, 123, 184),
                                 iconEnabledColor:
                                     const Color.fromARGB(161, 0, 0, 0),
                                 iconDisabledColor:
-                                    const Color.fromARGB(255, 158, 158, 158),
+                                    Color.fromARGB(244, 19, 123, 184),
                                 value: selectedTouristGuide,
                                 items: touristGuides!.map((touristGuide) {
                                   return DropdownMenuItem<TouristGuide>(
@@ -393,7 +396,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                   Container(
                     decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
-                      color: Color.fromARGB(244, 142, 172, 189),
+                      color: Color.fromARGB(244, 19, 123, 184),
                     ),
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(5.0),
@@ -420,11 +423,11 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(20)),
                                 dropdownColor:
-                                    const Color.fromARGB(244, 142, 172, 189),
+                                    Color.fromARGB(244, 19, 123, 184),
                                 iconEnabledColor:
                                     const Color.fromARGB(161, 0, 0, 0),
                                 iconDisabledColor:
-                                    const Color.fromARGB(255, 158, 158, 158),
+                                    Color.fromARGB(244, 19, 123, 184),
                                 value: selectedTouristGroup,
                                 items: touristGroup!.map((touristGroup) {
                                   return DropdownMenuItem<TouristGroup>(
@@ -554,7 +557,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                   Container(
                     decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
-                      color: Color.fromARGB(244, 142, 172, 189),
+                      color: Color.fromARGB(244, 19, 123, 184),
                     ),
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(5.0),
@@ -582,11 +585,11 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                                 height: 60,
                                 child: DropdownButton<PlanningMainModel>(
                                   dropdownColor:
-                                      Color.fromARGB(244, 142, 172, 189),
+                                      const Color.fromARGB(244, 19, 123, 184),
                                   iconEnabledColor:
                                       const Color.fromARGB(161, 0, 0, 0),
                                   iconDisabledColor:
-                                      const Color.fromARGB(255, 158, 158, 158),
+                                      const Color.fromARGB(244, 19, 123, 184),
                                   borderRadius: const BorderRadius.all(
                                       Radius.circular(20)),
                                   value: selectedPlanning,
@@ -658,7 +661,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                                 style: ElevatedButton.styleFrom(
                                   foregroundColor: Colors.white,
                                   backgroundColor:
-                                      Color.fromARGB(255, 159, 161, 155),
+                                      Color.fromARGB(255, 207, 207, 206),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(30),
                                   ),
@@ -701,35 +704,6 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                                   ),
                                 ),
                               ),
-
-// to navigate to the second calendar
-
-// ),
-//                             SizedBox(
-//                               width: Get.width * 0.5,
-//                               height: Get.height * 0.06,
-//                             ),
-//                             ElevatedButton(
-//                               style: ButtonStyle(
-//                                 backgroundColor:
-//                                 //   planning: selectedPlanning,
-//                                 // ));
-//                                 Get.to(MyCalendarPage(
-//                                   planning:selectedPlanning,guid: selectedTouristGuide,
-//                                   planning: selectedPlanning,
-//                                   guid: selectedTouristGuide,
-//                                 ));
-//                               },
-//                               child: SizedBox(
-//                                       color: Color.fromARGB(227, 172, 2, 2),
-//                                     ), // Add the planning icon here
-//                                     // Add some spacing between the icon and text
-//                                     Text(
-//                                         'Go To MyCalendarPage',
-//                                     Text('Go To MyCalendarPage',
-//                                         style: TextStyle(
-//                                           color: Color.fromARGB(
-//                                               255, 235, 232, 226),
                             ),
                           ],
                         ),
@@ -740,6 +714,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
             )
           ],
         ),
+        //  bottomNavigationBar: AppBottomNavigationBar(),
       );
     }
   }

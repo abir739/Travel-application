@@ -5,10 +5,9 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'NetworkHandler.dart';
 import 'Secreens/Clientcalendar/TravellerFirstScreen.dart';
-import 'Secreens/Navigation/GoogleBottomBar.dart';
-import 'Secreens/NavigationRailPage.dart';
-import 'Secreens/PlannigSecreen.dart';
-import 'Secreens/guidPlannig.dart';
+
+import 'Secreens/acceuil/welcomPgeGuid.dart';
+
 import 'constent.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -20,7 +19,7 @@ class MyLogin extends StatefulWidget {
 }
 
 GlobalKey<FormState> formKey = GlobalKey<FormState>();
-// final _globalkey = GlobalKey<FormState>();
+
 TextEditingController emailController = TextEditingController();
 TextEditingController confirmController = TextEditingController();
 TextEditingController lastNameController = TextEditingController();
@@ -87,7 +86,7 @@ class _MyLoginState extends State<MyLogin> {
           // Get.to(() => GoogleBottomBar());
           if (Role == "Administrator") {
             // Get.to(() => PlaningSecreen());
-            Get.to(() => GoogleBottomBar());
+            Get.to(() => PlaningSecreen());
           } else {
             Get.to(() => TravellerFirstScreen());
           }

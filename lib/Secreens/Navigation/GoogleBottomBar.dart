@@ -1,9 +1,9 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
-import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
+
 import '../../modele/TouristGuide.dart';
 import '../../modele/planningmainModel.dart';
-import '../AccommodationSecreen.dart';
+
 import '../MyCalendarPage.dart';
 import '../Notification/PushNotificationScreen.dart';
 
@@ -24,11 +24,7 @@ class GoogleBottomBar extends StatefulWidget {
 class _GoogleBottomBarState extends State<GoogleBottomBar> {
   TouristGuide? selectedTouristGuide = TouristGuide();
   PlanningMainModel? selectedPlanning = PlanningMainModel();
-  final Widget _planningScreenContent = const PlaningSecreen();
-  final Widget _mainProfileScreenContent = MainProfile();
-  final Widget _concentricAnimationOnboardingScreenContent =
-      const ConcentricAnimationOnboarding();
-  final Widget _PushNotificationScreenState = PushNotificationScreen();
+
   int _selectedIndex = 0;
   final List<Widget> _screens = [
     const PlaningSecreen(),
