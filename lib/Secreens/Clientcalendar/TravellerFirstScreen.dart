@@ -1,7 +1,7 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
-
+import 'package:flutter_svg/svg.dart';
 import '../../HTTPHandlerObject.dart';
 import '../../modele/httpTravellerbyid.dart';
 import '../../modele/traveller/TravellerModel.dart';
@@ -31,8 +31,8 @@ class _TravellerFirstScreenState extends State<TravellerFirstScreen> {
     // String? accessToken = await getAccessToken();
     // print('${widget.token} token');
 
-    final travellerdetail =
-        await handler.fetchData("/api/travellers/UserId/$userId", Traveller.fromJson);
+    final travellerdetail = await handler.fetchData(
+        "/api/travellers/UserId/$userId", Traveller.fromJson);
 
     setState(() {
       traveller = travellerdetail;
@@ -110,13 +110,42 @@ class _TravellerFirstScreenState extends State<TravellerFirstScreen> {
     } else {
       return Scaffold(
         appBar: AppBar(
-          title: Text('Traveller First Screen'),
+          backgroundColor: const Color.fromARGB(255, 207, 207, 219),
+          title: Row(
+            children: [
+              AnimatedTextKit(
+                animatedTexts: [
+                  TypewriterAnimatedText(
+                    'Zenify', // Your text
+                    textStyle: const TextStyle(
+                      fontSize: 26,
+                      letterSpacing: 24,
+                      color: Color.fromARGB(255, 68, 5, 150),
+                    ),
+                    speed: const Duration(
+                        milliseconds: 200), // Adjust the animation speed
+                  ),
+                ],
+                totalRepeatCount:
+                    5, // Set the number of times the animation will repeat
+                pause: const Duration(
+                    milliseconds:
+                        1000), // Duration before animation starts again
+                displayFullTextOnTap: true, // Display full text when tapped
+              ),
+              SvgPicture.asset(
+                'assets/Frame.svg',
+                fit: BoxFit.cover,
+                height: 36.0,
+              ),
+            ],
+          ),
         ),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
+              const Text(
                 'Welcome to the Traveller First Screen!',
                 style: TextStyle(fontSize: 20),
               ),
@@ -127,13 +156,29 @@ class _TravellerFirstScreenState extends State<TravellerFirstScreen> {
                 ),
               SizedBox(height: 20),
               ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: const Color(0xFFEB5F52),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
                 onPressed: () {
                   // Add any navigation logic here
                   Get.to(TravellerCalendarPage(
                     group: traveller.touristGroupId,
                   ));
                 },
-                child: Text('Navigate '),
+                child: const Center(
+                  child: Text(
+                    'Navigate ',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
               ),
             ],
           ),

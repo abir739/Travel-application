@@ -854,40 +854,19 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                             }).toList(),
                             onChanged: (TouristGroup? newValue) {
                               setState(() {
-                                OneSignal.shared
-                                    .deleteTag('${selectedTouristGroup?.id}')
-                                    .then((success) {
-                                  print("Old tags deleted successfully");
-                                }).catchError((error) {
-                                  print("Error deleting old tags: $error");
-                                });
+                                // OneSignal.shared
+                                //     .deleteTag('${selectedTouristGroup?.id}')
+                                //     .then((success) {
+                                //   print("Old tags deleted successfully");
+                                // }).catchError((error) {
+                                //   print("Error deleting old tags: $error");
+                                // });
 
                                 selectedTouristGroup = newValue!;
                                 tag = newValue.id!;
                                 _loadDataplanning();
-                                if (selectedTouristGroup?.id != null) {
-                                  try {
-                                    OneSignal.shared.setAppId(
-                                        'ce7f9114-b051-4672-a9c5-0eec08d625e8');
-                                    OneSignal.shared.setSubscriptionObserver(
-                                        (OSSubscriptionStateChanges changes) {
-                                      print(
-                                          "SUBSCRIPTION STATE CHANGED: ${changes.jsonRepresentation()}");
-                                    });
-                                    OneSignal.shared
-                                        .promptUserForPushNotificationPermission();
-                                    OneSignal.shared.sendTags({
-                                      '${selectedTouristGroup?.id}':
-                                          '${selectedTouristGroup?.id}'
-                                    }).then((success) {
-                                      print("Tags created successfully");
-                                    }).catchError((error) {
-                                      print("Error creating tags: $error");
-                                    });
-                                  } catch (e) {
-                                    print('Error initializing OneSignal: $e');
-                                  }
-                                }
+                              
+                              
                                 print(selectedTouristGroup!.id);
                               });
                             },
