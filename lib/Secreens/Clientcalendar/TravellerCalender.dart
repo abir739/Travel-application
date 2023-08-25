@@ -1,17 +1,12 @@
-import 'package:analog_clock/analog_clock.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-import 'package:zenify_trip/modele/TouristGuide.dart';
-import 'package:zenify_trip/modele/touristGroup.dart';
 import 'package:zenify_trip/modele/transportmodel/transportModel.dart';
-
+import 'package:get/get.dart';
 import '../../modele/Event/Event.dart';
 import '../../modele/activitsmodel/httpTransfer.dart';
 import '../EventTransporClient.dart';
-import 'package:get/get.dart';
-
-
 
 class AppointmentDataSource extends CalendarDataSource {
   AppointmentDataSource(List<Appointment> source) {
@@ -41,10 +36,9 @@ class _TravellerCalendarPageState extends State<TravellerCalendarPage> {
     super.initState();
     _loadData();
     fetchData();
-    // startDate = widget.planning?.startDate ?? DateTime.now();
-    // endDate = widget.planning?.endDate ?? DateTime.now().add(Duration(days: 7));
   }
-List<CalendarEvent> convertToCalendarEvents(List<Transport> transfers) {
+
+  List<CalendarEvent> convertToCalendarEvents(List<Transport> transfers) {
     List<CalendarEvent> events = [];
 
     for (var transfer in transfers) {
@@ -87,7 +81,7 @@ List<CalendarEvent> convertToCalendarEvents(List<Transport> transfers) {
       return transferList; // Return the fetched data
     } catch (e) {
       if (transferList == null || transferList.isEmpty) {
-        // Get.to(MyLogin()); // Navigate to MyLogin page if transferlist is empty
+       
       }
       // Handle any errors that might occur during data fetching
       print("Error loading data: $e ${widget.group}");
@@ -102,7 +96,8 @@ List<CalendarEvent> convertToCalendarEvents(List<Transport> transfers) {
       appointments.add(Appointment(
           isAllDay: transfer.confirmed ?? true,
           id: transfer.id,
-          notes: transfer.note,recurrenceId:transfer,
+          notes: transfer.note,
+          recurrenceId: transfer,
           startTime: transfer.date ?? DateTime.now(),
           subject: 'from ${transfer.from} to ${transfer.to}',
           endTime:
@@ -127,7 +122,7 @@ List<CalendarEvent> convertToCalendarEvents(List<Transport> transfers) {
                 height: Get.height * 0.88,
                 child: SfCalendar(
                   todayHighlightColor: Color.fromARGB(255, 242, 186, 3),
-                  todayTextStyle: TextStyle(
+                  todayTextStyle: const TextStyle(
                       fontStyle: FontStyle.normal,
                       fontSize: 30,
                       fontWeight: FontWeight.w900,
@@ -138,8 +133,8 @@ List<CalendarEvent> convertToCalendarEvents(List<Transport> transfers) {
                     return Container(
                       decoration: BoxDecoration(
                         color: details.date.month == DateTime.now().month
-                            ? Color.fromARGB(255, 245, 242, 242)
-                            : Color.fromARGB(255, 242, 186, 3),
+                            ? const Color.fromARGB(255, 245, 242, 242)
+                            : const Color.fromARGB(255, 242, 186, 3),
                         border: Border.all(
                             color: Color.fromARGB(255, 20, 1, 1), width: 0.5),
                       ),
@@ -155,7 +150,7 @@ List<CalendarEvent> convertToCalendarEvents(List<Transport> transfers) {
                                   : Colors.grey,
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 20,
                           ),
                           Text(
@@ -174,35 +169,24 @@ List<CalendarEvent> convertToCalendarEvents(List<Transport> transfers) {
                   headerHeight: 30,
                   controller: _controller,
                   view: CalendarView.schedule,
-                  // onViewChanged: (ViewChangedDetails viewChangedDetails) {
-                  //   _headerText = DateFormat('MMMM yyyy', 'fr')
-                  //       .format(viewChangedDetails
-                  //       .visibleDates[viewChangedDetails.visibleDates
-                  //       .length ~/ 2])
-                  //       .toString();
-                  //   _string = _headerText![0].toUpperCase() +
-                  //       _headerText!.substring(1);
-                  //   SchedulerBinding.instance!.addPostFrameCallback((
-                  //       duration) {
-                  //     setState(() {});
-                  //   });
-                  // },
-                  scheduleViewMonthHeaderBuilder: (BuildContext context,
-                      ScheduleViewMonthHeaderDetails headerDetails ,) {
+                 
+                  scheduleViewMonthHeaderBuilder: (
+                    BuildContext context,
+                    ScheduleViewMonthHeaderDetails headerDetails,
+                  ) {
                     // You can return a custom widget here to be displayed as the header.
-              
-  return Container(
-         color: Color.fromARGB(255, 6, 164, 255),
-           child: Column(
-             children: [
-               Text(style:TextStyle(fontSize: 40),
-                            headerDetails.date.day.toString() + ' ,'+
-                 headerDetails.date.month.toString() + ' ,' +
-                    headerDetails.date.year.toString(),
-               ),
-             ],
-           ),
-         );
+
+                    return Container(
+                      color: Color.fromARGB(255, 6, 164, 255),
+                      child: Column(
+                        children: [
+                          Text(
+                            style: const TextStyle(fontSize: 40),
+                            '${headerDetails.date.day} ,${headerDetails.date.month} ,${headerDetails.date.year}',
+                          ),
+                        ],
+                      ),
+                    );
                   },
                   viewNavigationMode: ViewNavigationMode.snap,
                   onTap: (CalendarTapDetails details) {
@@ -210,7 +194,7 @@ List<CalendarEvent> convertToCalendarEvents(List<Transport> transfers) {
                         context, details); // Call your calendarTapped function
                   },
                   showDatePickerButton: true,
-                  resourceViewSettings: ResourceViewSettings(
+                  resourceViewSettings: const ResourceViewSettings(
                       visibleResourceCount: 4,
                       showAvatar: false,
                       displayNameTextStyle: TextStyle(
@@ -219,15 +203,11 @@ List<CalendarEvent> convertToCalendarEvents(List<Transport> transfers) {
                           color: Color.fromARGB(255, 250, 248, 246),
                           fontWeight: FontWeight.w400)),
 
-                  allowedViews: <CalendarView>[
+                  allowedViews: const <CalendarView>[
                     CalendarView.day,
                     CalendarView.week,
                     CalendarView.workWeek,
                     CalendarView.month,
-                    // CalendarView.timelineDay,
-                    // CalendarView.timelineWeek,
-                    // CalendarView.timelineWorkWeek,
-                    // CalendarView.timelineMonth,
                     CalendarView.schedule
                   ],
                   initialDisplayDate: DateTime.parse(dateString),
@@ -235,14 +215,11 @@ List<CalendarEvent> convertToCalendarEvents(List<Transport> transfers) {
                   monthViewSettings: MonthViewSettings(
                       navigationDirection: MonthNavigationDirection.horizontal,
                       showAgenda: true,
-                      // appointmentDisplayMode:
-                      //     MonthAppointmentDisplayMode.indicator,
+                
                       agendaItemHeight: Get.height * 0.1,
                       numberOfWeeksInView: 5,
-                      // agendaViewHeight: isLargeScreen
-                      //     ? Get.height * 0.18
-                      //     : Get.height * 0.28,
-                      monthCellStyle: MonthCellStyle(
+                     
+                      monthCellStyle: const MonthCellStyle(
                         todayBackgroundColor: Colors.red,
                         textStyle: TextStyle(
                             fontStyle: FontStyle.normal,
@@ -250,7 +227,7 @@ List<CalendarEvent> convertToCalendarEvents(List<Transport> transfers) {
                             fontWeight: FontWeight.w700,
                             color: Color.fromARGB(255, 243, 239, 239)),
                       ),
-                      agendaStyle: AgendaStyle(
+                      agendaStyle: const AgendaStyle(
                         backgroundColor: Color.fromARGB(218, 1, 9, 22),
                         appointmentTextStyle: TextStyle(
                             fontSize: 20,

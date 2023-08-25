@@ -25,8 +25,10 @@ class CalendarEvent {
       this.startTime,
       this.endTime,
       this.color,
-      this.id,this.recurrenceId,
+      this.id,
+      this.recurrenceId,
       this.note,
-      this.cardcolor,this.type,
+      this.cardcolor,
+      this.type,
       this.displayNameTextStyle});
 }

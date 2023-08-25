@@ -1,11 +1,9 @@
 import 'dart:convert';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
-import '../../buttonNavbar.dart';
 import '../../constent.dart';
 import '../../modele/TouristGuide.dart';
 import '../../modele/activitsmodel/httpActivites.dart';
@@ -13,10 +11,6 @@ import '../../modele/activitsmodel/httpToristGroup.dart';
 import '../../modele/activitsmodel/httpToristguid.dart';
 import '../../modele/planningmainModel.dart';
 import '../../modele/touristGroup.dart';
-import '../ConcentricAnimationOnboarding.dart';
-import '../Profile/editprofile.dart';
-import '../calendar/calendar_transferts.dart';
-import '../guidPlannig.dart';
 import 'package:flutter_svg/svg.dart';
 
 class PushNotificationScreen extends StatefulWidget {

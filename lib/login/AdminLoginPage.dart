@@ -4,87 +4,43 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
-import 'NetworkHandler.dart';
-import 'Secreens/Clientcalendar/TravellerFirstScreen.dart';
-
-import 'Secreens/PlannigSecreen.dart';
-
-import 'Secreens/guidPlannig.dart';
-import 'constent.dart';
 import 'package:permission_handler/permission_handler.dart';
+import '../NetworkHandler.dart';
+import '../Secreens/Clientcalendar/TravellerFirstScreen.dart';
+import '../Secreens/PlannigSecreen.dart';
+import '../Secreens/acceuil/welcomPgeGuid.dart';
+import '../constent.dart';
+import '../login.dart';
 
-class MyLogin extends StatefulWidget {
-  const MyLogin({Key? key}) : super(key: key);
-
+class AdminLoginPage extends StatefulWidget {
   @override
-  _MyLoginState createState() => _MyLoginState();
+  _AdminLoginPageState createState() => _AdminLoginPageState();
 }
-   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-// final _globalkey = GlobalKey<FormState>();
-TextEditingController emailController = TextEditingController();
-TextEditingController confirmController = TextEditingController();
-TextEditingController lastNameController = TextEditingController();
-TextEditingController firstNameController = TextEditingController();
 
-TextEditingController passwordController = TextEditingController();
-TextEditingController confirmPasswordController = TextEditingController();
-TextEditingController usernameController = TextEditingController();
-TextEditingController urlc = TextEditingController();
-int selectedRadio = 0;
-TextEditingController forgetEmailController = TextEditingController();
-bool circular = false;
-late String errorText;
-bool validate = false;
-NetworkHandler networkHandler = NetworkHandler();
-final storage = new FlutterSecureStorage();
+class _AdminLoginPageState extends State<AdminLoginPage> {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  NetworkHandler networkHandler = NetworkHandler();
+  final storage = new FlutterSecureStorage();
 
-class _MyLoginState extends State<MyLogin> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _requestPermission();
     emailController = TextEditingController();
     passwordController = TextEditingController();
     initPlatformState();
-    OneSignal.shared.setAppId(oneSignalAppId);
-    OneSignal.shared
-        .setSubscriptionObserver((OSSubscriptionStateChanges changes) {
-      print("SUBSCRIPTION STATE CHANGED: ${changes.jsonRepresentation()}");
-    });
   }
 
   Future<void> initPlatformState() async {
     OneSignal.shared.setAppId(
       oneSignalAppId,
-      
     );
 
-  
-    OneSignal.shared
-        .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
-      OSNotification notification1 = result.notification;
-
-      OSNotification notification = result.notification;
-      OSNotificationAction? action = result.action;
-
-      // Access notification properties
-      String notificationId = notification.notificationId;
-      String? title = notification.title;
-      String? body = notification.body;
-      Map<String, dynamic>? additionalData = notification.additionalData;
-
-      // Access action properties
-      OSNotificationActionType? actionType = action?.type;
-      String? actionId = action?.actionId;
-      // Map<String, dynamic>? actionData = action?.additionalData;
-      print('title $title bodys $body actionType $actionType');
-     
-    });
     OneSignal.shared.setNotificationOpenedHandler(
-      (OSNotificationOpenedResult result) async {
-        var data = result.notification.additionalData;
-       
+      (OSNotificationOpenedResult result) {
+        // Handle notification opening if needed
       },
     );
   }
@@ -106,28 +62,22 @@ class _MyLoginState extends State<MyLogin> {
         "username": emailController.text,
         "password": passwordController.text,
       };
+
       try {
         var response =
             await networkHandler.post("${baseUrls}/api/auth/login", data);
-
-        print(response.body);
 
         if (response.statusCode == 200 || response.statusCode == 201) {
           Map<String, dynamic> output =
               new Map<String, dynamic>.from(json.decode(response.body));
 
-          print(output["access_token"]);
-          print(output["data"]);
           storeAccessToken(output["access_token"]);
-          // await storage.write(
-          //     key: "access_token", value: output["access_token"]);
           await storage.write(key: "id", value: output["data"]["id"]);
           await storage.write(key: "Role", value: output["data"]["role"]);
-          String Role = output["data"]["role"];
-          // Navigator.pushNamed(context, 'register');
-          // Get.to(() => GoogleBottomBar());
-          if (Role == "Administrator") {
-          Get.off(() => PlaningSecreen());
+          String role = output["data"]["role"];
+
+          if (role == "Administrator") {
+            Get.off(() => PlaningSecreen());
           } else {
             Get.off(() => TravellerFirstScreen());
           }

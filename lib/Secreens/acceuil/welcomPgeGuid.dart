@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zenify_trip/NetworkHandler.dart';
-import 'package:zenify_trip/Secreens/MyCalendarPage.dart';
+
 
 import 'package:zenify_trip/modele/touristGroup.dart';
 
@@ -44,7 +44,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
   TextEditingController confirmPasswordController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
   int selectedRadio = 0;
-  late TouristGuide guid;
+  TouristGuide? guid;
   late Traveller travller;
   TextEditingController forgetEmailController = TextEditingController();
   NetworkHandler networkHandler = NetworkHandler();
@@ -102,28 +102,16 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
     _loadDataGuid();
     readRoleFromToken();
     initPlatformState();
-    // OneSignal.shared.setAppId('a83993b3-1680-49fa-a371-c5ad4c55849a');
-    // OneSignal.shared
-    //     .setSubscriptionObserver((OSSubscriptionStateChanges changes) {
-    //   print("SUBSCRIPTION STATE CHANGED: ${changes.jsonRepresentation()}");
-    // });
-    // OneSignal.shared.promptUserForPushNotificationPermission();
-    // organisation();
+  
   }
 
   Future<void> initPlatformState() async {
     OneSignal.shared.setAppId(
       oneSignalAppId,
-      // iOSSettings: {
-      //   OSiOSSettings.autoPrompt: true,
-      //   OSiOSSettings.inAppLaunchUrl: true
-      // },
+     
     );
 
-    // OneSignal.shared
-    //     .(OSNotificationDisplayType.notification);
-
-    //This method only work when app is in foreground.
+    
     OneSignal.shared
         .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
       OSNotification notification1 = result.notification;
@@ -142,27 +130,19 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
       String? actionId = action?.actionId;
       // Map<String, dynamic>? actionData = action?.additionalData;
       print('title $title bodys $body actionType $actionType');
-      // Perform your desired actions based on the notification and action data
-      // Navigator.push(context, MaterialPageRoute(builder: (_) => Planingtest()));
+     
     });
     OneSignal.shared.setNotificationOpenedHandler(
       (OSNotificationOpenedResult result) async {
         var data = result.notification.additionalData;
-        // globals.appNavigator.currentState.push(
-        // MaterialPageRoute(
-        //   builder: (context) => SecondPage(
-        //     postId: data['post_id'].toString(),
-        //   ),
-        // ),
-        // );
+        
       },
     );
   }
 
   Future<Traveller> _loadDataTraveller() async {
     final userId = await storage.read(key: "id");
-    // String? accessToken = await getAccessToken();
-    // print('${widget.token} token');
+    
     final travellerdetail =
         await Travelleruserid.fetchData("/api/travellers/UserId/$userId");
     setState(() {
@@ -177,8 +157,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
 
   Future<TouristGuide> _loadDataGuid() async {
     final userId = await storage.read(key: "id");
-    // String? accessToken = await getAccessToken();
-    // print('${widget.token} token');
+ 
     final toristguiddetail =
         await guidbyuserid.fetchData("/api/tourist-guides/UserIds/$userId");
     setState(() {
@@ -196,15 +175,9 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
       touristGuides = []; // initialize the list to an empty list
     });
     final data = await httpHandler.fetchData("/api/tourist-guides");
-    // randomImagePath =
-    //     selecterundomimagepath[random.nextInt(selecterundomimagepath.length)];
-    // print(randomImagePath);
+    
     if (data == null) {
-      // Data is null, navigate to the 'addtouristguid' screen
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(builder: (context) => AddTouristGuideScreen()),
-      // );
+     
       return; // Stop further execution of the function
     }
     setState(() {
@@ -219,7 +192,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
       touristGroup = []; // initialize the list to an empty list
     });
     final data = await httpHandlertorist
-        .fetchData("/api/tourist-groups/touristGuideId/${guid.id}");
+        .fetchData("/api/tourist-groups/touristGuideId/${guid?.id}");
     if (data == null) {
       // Data is null, navigate to the 'addtouristguid' screen
       // Navigator.push(
@@ -422,7 +395,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                           ? ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 foregroundColor: Colors.white,
-                                backgroundColor: Color.fromARGB(244, 78, 3, 73),
+                                backgroundColor: const Color.fromARGB(244, 78, 3, 73),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30),
                                 ),
@@ -622,8 +595,8 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                       ),
                     ),
                     planning!.isEmpty
-                        ? Column(
-                            children: const [
+                        ? const Column(
+                            children: [
                               SizedBox(height: 50),
                               Text(
                                   'Please Create tourist guid and plannig first',
@@ -658,8 +631,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                                           Icons.door_back_door_outlined,
                                           color:
                                               Color.fromARGB(225, 26, 24, 25),
-                                        ), // Add the planning icon here
-                                        // Add some spacing between the icon and text
+                                        ), 
                                         Text(
                                             'Go To ${selectedPlanning?.name ?? 'Transport'}',
                                             style: const TextStyle(
@@ -671,44 +643,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                                   ),
                                 ),
                               ),
-                              // SizedBox(
-                              //   width: Get.width * 0.5,
-                              //   height: Get.height * 0.06,
-                              // ),
-                              // ElevatedButton(
-                              //   style: ButtonStyle(
-                              //     backgroundColor:
-                              //         MaterialStateProperty.all<Color>(
-                              //       Color.fromARGB(0, 236, 230, 230),
-                              //     ),
-                              //   ),
-                              //   onPressed: () {
-                              //     Get.to(MyCalendarPage(
-                              //       planning: selectedPlanning,
-                              //       guid: guid,
-                              //     ));
-                              //   },
-                              //   child: SizedBox(
-                              //     width: Get.width * 0.8,
-                              //     height: Get.height * 0.06,
-                              //     child: Row(
-                              //       mainAxisAlignment:
-                              //           MainAxisAlignment.spaceAround,
-                              //       children: [
-                              //         const Icon(
-                              //           Icons.door_back_door_outlined,
-                              //           color: Color.fromARGB(225, 26, 24, 25),
-                              //         ), // Add the planning icon here
-
-                              //         Text('Go To Me Transport $guid',
-                              //             style: TextStyle(
-                              //               color: Color.fromARGB(
-                              //                   255, 235, 232, 226),
-                              //             )),
-                              //       ],
-                              //     ),
-                              //   ),
-                              // ),
+                             
                             ],
                           ),
                     const SizedBox(height: 50),
@@ -761,7 +696,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("${guid.id ?? " Finish your profile"}"),
+                    Text("${guid?.id ?? " Finish your profile"}"),
                     InkWell(
                       onTap: () {
                         showModalBottomSheet(
@@ -790,7 +725,8 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                 alignment: Alignment.center,
                 padding: const EdgeInsets.all(5.0),
                 margin: const EdgeInsets.only(left: 20, right: 20),
-                child: touristGroup!.isEmpty
+                child: (guid == null || touristGroup!.isEmpty)
+
                     ? ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,

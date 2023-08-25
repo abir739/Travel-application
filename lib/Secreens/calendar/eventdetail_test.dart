@@ -31,6 +31,7 @@ class _EventViewState extends State<EventView> {
   late TextEditingController titleController;
   late TextEditingController typeController;
   bool sendNotification = false;
+  bool showNotificationFields = false;
 
   @override
   void initState() {
@@ -238,32 +239,42 @@ class _EventViewState extends State<EventView> {
               ),
 
               const SizedBox(height: 18),
-              TextFormField(
-                controller: messageController,
-                decoration:
-                    const InputDecoration(labelText: 'Notification Message'),
+              Visibility(
+                visible: showNotificationFields,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 18),
+                    TextFormField(
+                      controller: messageController,
+                      decoration: const InputDecoration(
+                          labelText: 'Notification Message'),
+                    ),
+                    const SizedBox(height: 14),
+                    TextFormField(
+                      controller: titleController,
+                      decoration: const InputDecoration(
+                          labelText: 'Notification Title'),
+                    ),
+                    const SizedBox(height: 14),
+                    TextFormField(
+                      controller: typeController,
+                      decoration:
+                          const InputDecoration(labelText: 'Notification Type'),
+                    ),
+                  ],
+                ),
               ),
-              const SizedBox(height: 14),
-              TextFormField(
-                controller: titleController,
-                decoration:
-                    const InputDecoration(labelText: 'Notification Title'),
-              ),
-              const SizedBox(height: 14),
-              TextFormField(
-                controller: typeController,
-                decoration:
-                    const InputDecoration(labelText: 'Notification Type'),
-              ),
+
               Card(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.notification_add,
                       color: Colors.amber,
                     ),
-                    Text(
+                    const Text(
                       'Send notification',
                       style: TextStyle(
                         color: Colors.black12,
@@ -275,6 +286,8 @@ class _EventViewState extends State<EventView> {
                       onChanged: (val) {
                         setState(() {
                           sendNotification = val;
+                          showNotificationFields =
+                              val; // Update visibility state
                           print(sendNotification.toString());
                         });
                       },

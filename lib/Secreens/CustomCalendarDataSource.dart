@@ -46,6 +46,7 @@ class CustomCalendarDataSource extends CalendarDataSource {
   String getId(int index) {
     return appointments![index].id!;
   }
+
   @override
   String getSubject(int index) {
     return appointments![index].title!;
@@ -63,18 +64,19 @@ class CustomCalendarDataSource extends CalendarDataSource {
   String getSubjecs(int index) {
     return appointments![index].description;
   }
+
   // Override the appointmentTextStyleBuilder to apply custom colors
   @override
   TextStyle? appointmentTextStyleBuilder(
       BuildContext context, CalendarAppointmentDetails details) {
     CalendarEvent event = details.appointments.first;
-    return 
-TextStyle(
-        color: eventColors![event] ??
+    return TextStyle(
+      color: eventColors![event] ??
           Color.fromARGB(255, 210, 9, 9), // Default to blue if color not found
     );
   }
 }
+
 class DataSource extends CalendarDataSource {
   DataSource(List<Appointment> source, List<CalendarResource> resourceColl) {
     appointments = source;
