@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:zenify_trip/login/AdminLoginPage.dart';
-import 'package:zenify_trip/login/TravellerLoginPage.dart';
+// import 'package:zenify_trip/login/AdminLoginPage.dart';
+// import 'package:zenify_trip/login/TravellerLoginPage.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../login.dart';
+import 'TravellerLoginPage_test.dart';
+
 class RoleSelectionPage extends StatelessWidget {
+  const RoleSelectionPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,10 +48,11 @@ class RoleSelectionPage extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
-                  Get.to(() => AdminLoginPage());
+                  // Get.to(() => AdminLoginPage());
+                  Get.to(() => const MyLogin());
                 },
                 child: const Center(
-                  child: const Text(
+                  child: Text(
                     "Guide",
                     style: TextStyle(
                       color: Colors.white,
@@ -69,7 +75,7 @@ class RoleSelectionPage extends StatelessWidget {
                   Get.to(() => TravellerLoginPage());
                 },
                 child: const Center(
-                  child: const Text(
+                  child: Text(
                     "Traveller",
                     style: TextStyle(
                       color: Colors.white,

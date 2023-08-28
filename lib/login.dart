@@ -129,7 +129,7 @@ class _MyLoginState extends State<MyLogin> {
           if (Role == "Administrator") {
           Get.off(() => PlaningSecreen());
           } else {
-            Get.off(() => TravellerFirstScreen());
+            Get.off(() => TravellerFirstScreen(userList: [],));
           }
         } else {
           Map<String, dynamic> output =

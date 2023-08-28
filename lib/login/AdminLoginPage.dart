@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../NetworkHandler.dart';
-import '../Secreens/Clientcalendar/TravellerFirstScreen.dart';
 import '../Secreens/PlannigSecreen.dart';
 import '../Secreens/acceuil/welcomPgeGuid.dart';
 import '../constent.dart';
@@ -51,7 +50,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
   }
 
   Future<void> storeAccessToken(String token) async {
-    final storage = FlutterSecureStorage();
+    const storage = FlutterSecureStorage();
     await storage.write(key: 'access_token', value: token);
     print(token);
   }
@@ -65,11 +64,11 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
 
       try {
         var response =
-            await networkHandler.post("${baseUrls}/api/auth/login", data);
+            await networkHandler.post("$baseUrls/api/auth/login", data);
 
         if (response.statusCode == 200 || response.statusCode == 201) {
           Map<String, dynamic> output =
-              new Map<String, dynamic>.from(json.decode(response.body));
+              Map<String, dynamic>.from(json.decode(response.body));
 
           storeAccessToken(output["access_token"]);
           await storage.write(key: "id", value: output["data"]["id"]);
@@ -79,7 +78,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
           if (role == "Administrator") {
             Get.off(() => PlaningSecreen());
           } else {
-            Get.off(() => TravellerFirstScreen());
+            // Get.off(() => TravellerFirstScreen());
           }
         } else {
           Map<String, dynamic> output =

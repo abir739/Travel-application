@@ -2,9 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-import 'package:zenify_trip/Secreens/calendar/transfert_data.dart';
 import 'package:zenify_trip/modele/Event/Event.dart';
-import 'package:zenify_trip/modele/TouristGuide.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -13,26 +11,21 @@ import 'package:zenify_trip/modele/transportmodel/transportModel.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../constent.dart';
 import '../../modele/planningmainModel.dart';
-import '../ConcentricAnimationOnboarding.dart';
+import '../../modele/traveller/TravellerModel.dart';
 import '../CustomCalendarDataSource.dart';
-import '../Notification/PushNotificationScreen.dart';
-import '../Profile/editprofile.dart';
-import '../acceuil/welcomPgeGuid.dart';
-import 'eventdetail_test.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import '../calendar/transfert_data.dart';
+import 'event_detail_screen.dart';
 
-class PlanningScreen extends StatefulWidget {
-  String? Plannigid;
-  TouristGuide? guid;
+class TravellerCalendarPage extends StatefulWidget {
+  final String? group;
+
+  const TravellerCalendarPage({Key? key, this.group}) : super(key: key);
 
   @override
-  PlanningScreen(this.Plannigid, this.guid, {Key? key}) : super(key: key);
-
-  get handleEventSave => null;
-  _PlanningScreenState createState() => _PlanningScreenState();
+  _TravellerCalendarPageState createState() => _TravellerCalendarPageState();
 }
 
-class _PlanningScreenState extends State<PlanningScreen> {
+class _TravellerCalendarPageState extends State<TravellerCalendarPage> {
   final storage = const FlutterSecureStorage();
   final CalendarController _controller = CalendarController();
 
@@ -58,7 +51,6 @@ class _PlanningScreenState extends State<PlanningScreen> {
 
   get selectedPlanning => PlanningMainModel();
 
-  TouristGuide? get selectedTouristGuide => TouristGuide();
   // int completedCount = 0;
   @override
   void initState() {
@@ -75,7 +67,7 @@ class _PlanningScreenState extends State<PlanningScreen> {
       events.add(CalendarEvent(
         title: "T-R ${transfer.note}",
         id: transfer.id,
-        description: "Transfer Guid",
+        description: "Transfer",
         startTime: transfer.date,
         type: transfer,
         endTime:
@@ -88,8 +80,8 @@ class _PlanningScreenState extends State<PlanningScreen> {
 
   Future<void> fetchData() async {
     try {
-      transferList = await fetchTransfers(
-          "/api/transfers/touristGuidId/${widget.guid?.id}");
+      transferList =
+          await fetchTransfers("/api/transfers/touristgroups/${widget.group}");
       setState(() {
         List<CalendarEvent> events = transferList.cast<CalendarEvent>();
       });
@@ -102,7 +94,7 @@ class _PlanningScreenState extends State<PlanningScreen> {
   Future<Map<String, List<dynamic>>> fetchDataAndOrganizeEvents() async {
     try {
       List<Transport> transfersList = await fetchTransfers(
-        "/api/transfers/touristGuidId/${widget.guid!.id}",
+        "/api/transfers/touristgroups/${widget.group}",
       );
 
       List<CalendarEvent> events =
@@ -191,17 +183,27 @@ class _PlanningScreenState extends State<PlanningScreen> {
       ),
     ),
   };
-  void calendarTapped(
-      BuildContext context, CalendarTapDetails calendarTapDetails) {
-    if (calendarTapDetails.targetElement == CalendarElement.appointment) {
-      TransportEvent event =
-          calendarTapDetails.appointments![0] as TransportEvent;
+  void calendarTapped(BuildContext context, CalendarTapDetails details) {
+    if (details.targetElement == CalendarElement.appointment) {
+      final CalendarEvent tappedEvent = details.appointments?[0];
+
+      // Extract the necessary details from the CalendarEvent
+      DateTime? startTime = tappedEvent.startTime;
+      DateTime? endTime = tappedEvent.endTime;
+      String note = "Some note"; // Extract the note from the CalendarEvent
+
+      // Create a Transport instance using the extracted details
+      Transport transportEvent = Transport(
+        date: startTime,
+        durationHours: endTime?.difference(startTime!).inHours,
+        note: note,
+        // Set other properties accordingly
+      );
+
+      // Navigate to the event details screen and pass the Transport event
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => EventView(
-            event: event,
-            onSave: handleEventSave, // Pass the method
-          ),
+          builder: (context) => EventDetailScreen(event: transportEvent),
         ),
       );
     }
@@ -369,42 +371,6 @@ class _PlanningScreenState extends State<PlanningScreen> {
               ),
             ],
           ),
-        ),
-        bottomNavigationBar: CurvedNavigationBar(
-          backgroundColor: Colors.transparent,
-          items: const <Widget>[
-            Icon(Icons.home, size: 30),
-            Icon(Icons.calendar_month, size: 30),
-            // Icon(Icons.search, size: 30),
-            Icon(Icons.person, size: 30),
-            Icon(Icons.notifications_active, size: 30),
-            Icon(Icons.more_vert, size: 30),
-          ],
-          onTap: (index) {
-            switch (index) {
-              case 0:
-                // Navigate to home page
-                Get.to(const PlaningSecreen());
-                break;
-              case 1:
-                // Navigate to calendar page
-                Get.to(
-                    PlanningScreen(selectedPlanning!.id, selectedTouristGuide));
-                break;
-              case 2:
-                // Navigate to profile page
-                Get.to(MainProfile());
-                break;
-              case 3:
-                // Navigate to notifications page
-                Get.to(PushNotificationScreen());
-                break;
-              case 4:
-                // Navigate to more options page
-                Get.to(const ConcentricAnimationOnboarding());
-                break;
-            }
-          },
         ),
       ),
     );

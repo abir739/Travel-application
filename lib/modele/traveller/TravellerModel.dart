@@ -1,5 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import '../activitsmodel/usersmodel.dart';
+
 part 'TravellerModel.g.dart';
 
 @JsonSerializable()
@@ -9,19 +11,17 @@ class Traveller {
   String? code;
   String? userId;
   String? touristGroupId;
-  
+  User? user;
   bool? hasPartner;
-
 
   Traveller({
     this.id,
     this.code,
     this.title,
     this.userId,
-    
     this.hasPartner,
     this.touristGroupId,
-  
+    this.user,
   });
 
   factory Traveller.fromJson(Map<String, dynamic> json) =>

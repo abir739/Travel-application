@@ -6,10 +6,16 @@ import 'package:flutter_svg/svg.dart';
 import '../../HTTPHandlerObject.dart';
 import '../../modele/httpTravellerbyid.dart';
 import '../../modele/traveller/TravellerModel.dart';
-import 'TravellerCalender.dart';
+// import 'TravellerCalender.dart';
 import 'package:get/get.dart';
 
+import 'TravellerCalender_test.dart';
+
 class TravellerFirstScreen extends StatefulWidget {
+  final List<dynamic> userList; // Add this parameter
+
+  TravellerFirstScreen({required this.userList});
+
   @override
   _TravellerFirstScreenState createState() => _TravellerFirstScreenState();
 }
@@ -24,7 +30,7 @@ class _TravellerFirstScreenState extends State<TravellerFirstScreen> {
   @override
   void initState() {
     super.initState();
-    _loadDataTraveller(); // Load traveller data when the screen initializes
+    _loadDataTraveller(widget.userList); // Pass the user list
   }
 
   Future<void> sendtags(String? Groupids) async {
@@ -47,7 +53,7 @@ class _TravellerFirstScreenState extends State<TravellerFirstScreen> {
     });
   }
 
-  Future<Traveller> _loadDataTraveller() async {
+  Future<Traveller> _loadDataTraveller(List<dynamic> userList) async {
     final userId = await storage.read(key: "id");
 
     final travellerdetail = await handler.fetchData(
@@ -186,7 +192,6 @@ class _TravellerFirstScreenState extends State<TravellerFirstScreen> {
                               text: 'Traveller ID: ',
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
-                            
                             TextSpan(text: '\n${traveller.id}'),
                           ],
                         ),

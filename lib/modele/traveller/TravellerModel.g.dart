@@ -13,6 +13,9 @@ Traveller _$TravellerFromJson(Map<String, dynamic> json) => Traveller(
       userId: json['userId'] as String?,
       hasPartner: json['hasPartner'] as bool?,
       touristGroupId: json['touristGroupId'] as String?,
+      user: json['user'] == null
+          ? null
+          : User.fromJson(json['user'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$TravellerToJson(Traveller instance) => <String, dynamic>{
@@ -21,5 +24,6 @@ Map<String, dynamic> _$TravellerToJson(Traveller instance) => <String, dynamic>{
       'code': instance.code,
       'userId': instance.userId,
       'touristGroupId': instance.touristGroupId,
+      'user': instance.user,
       'hasPartner': instance.hasPartner,
     };

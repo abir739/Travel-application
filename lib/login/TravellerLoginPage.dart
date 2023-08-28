@@ -1,5 +1,9 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter/material.dart';
+import '../Secreens/PlannigSecreen.dart';
+import '../constent.dart';
 import '/Secreens/Clientcalendar/TravellerFirstScreen.dart';
 
 class TravellerLoginPage extends StatefulWidget {
@@ -10,24 +14,59 @@ class TravellerLoginPage extends StatefulWidget {
 class _TravellerLoginPageState extends State<TravellerLoginPage> {
   TextEditingController codeController = TextEditingController();
 
-  void _handleLogin() {
-    String enteredCode = codeController.text.trim();
-    // Assuming you have a logic to verify the code
-    // You can replace this with your actual code verification logic
+ void _handleLogin() async {
+  String enteredCode = codeController.text.trim();
 
-    if (enteredCode.isNotEmpty) {
-      // Navigate to the TravellerFirstScreen
-      Get.off(() => TravellerFirstScreen());
-    } else {
-      // Show an error message if the code is empty
+  if (enteredCode.isNotEmpty) {
+    try {
+      String? token = await storage.read(key: "access_token");
+      String formatter(String url) {
+        return baseUrls + url;
+      }
+
+      String url = formatter("/api/travellers?filters[code]=$enteredCode");
+
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {
+          "Authorization": "Bearer $token",
+        },
+      );
+
+     if (response.statusCode == 200) {
+        List<dynamic> userList = jsonDecode(response.body);
+        Get.to(
+          () => TravellerFirstScreen(
+            userList: userList,
+          ),
+        );
+      } else {
+        Get.snackbar(
+          'Error',
+          'Failed to fetch user data.',
+          colorText: Colors.white,
+          backgroundColor: Colors.red,
+        );
+      }
+    } catch (error) {
       Get.snackbar(
         'Error',
-        'Please enter a valid code.',
+        'An error occurred: $error',
         colorText: Colors.white,
         backgroundColor: Colors.red,
       );
     }
+  } else {
+    Get.snackbar(
+      'Error',
+      'Please enter a valid code.',
+      colorText: Colors.white,
+      backgroundColor: Colors.red,
+    );
   }
+}
+
+
 
   @override
   Widget build(BuildContext context) {
