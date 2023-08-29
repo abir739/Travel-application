@@ -1,16 +1,11 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:zenify_trip/Secreens/calendar/transfert_data.dart';
-import 'package:zenify_trip/modele/transportmodel/transportModel.dart';
 import 'package:http/http.dart' as http;
 import '../../constent.dart';
 import '../PlannigSecreen.dart';
 import 'package:flutter_svg/svg.dart';
 
-import 'package:zenify_trip/Secreens/calendar/transfert_data.dart';
-import 'package:zenify_trip/modele/Event/Event.dart';
-import 'package:zenify_trip/modele/transportmodel/transportModel.dart';
 
 class EventView extends StatefulWidget {
   final TransportEvent event;

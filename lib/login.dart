@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:zenify_trip/Secreens/Clientcalendar/TravellerFirstScreen.dart';
+import 'package:zenify_trip/Secreens/acceuil/welcomPgeGuid.dart';
 import 'NetworkHandler.dart';
-import 'Secreens/Clientcalendar/TravellerFirstScreen.dart';
 
 import 'Secreens/PlannigSecreen.dart';
 
-import 'Secreens/guidPlannig.dart';
 import 'constent.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -19,7 +19,8 @@ class MyLogin extends StatefulWidget {
   @override
   _MyLoginState createState() => _MyLoginState();
 }
-   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 // final _globalkey = GlobalKey<FormState>();
 TextEditingController emailController = TextEditingController();
 TextEditingController confirmController = TextEditingController();
@@ -57,10 +58,8 @@ class _MyLoginState extends State<MyLogin> {
   Future<void> initPlatformState() async {
     OneSignal.shared.setAppId(
       oneSignalAppId,
-      
     );
 
-  
     OneSignal.shared
         .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
       OSNotification notification1 = result.notification;
@@ -79,12 +78,10 @@ class _MyLoginState extends State<MyLogin> {
       String? actionId = action?.actionId;
       // Map<String, dynamic>? actionData = action?.additionalData;
       print('title $title bodys $body actionType $actionType');
-     
     });
     OneSignal.shared.setNotificationOpenedHandler(
       (OSNotificationOpenedResult result) async {
         var data = result.notification.additionalData;
-       
       },
     );
   }
@@ -95,7 +92,7 @@ class _MyLoginState extends State<MyLogin> {
   }
 
   Future<void> storeAccessToken(String token) async {
-    final storage = FlutterSecureStorage();
+    const storage = FlutterSecureStorage();
     await storage.write(key: 'access_token', value: token);
     print(token);
   }
@@ -114,7 +111,7 @@ class _MyLoginState extends State<MyLogin> {
 
         if (response.statusCode == 200 || response.statusCode == 201) {
           Map<String, dynamic> output =
-              new Map<String, dynamic>.from(json.decode(response.body));
+              Map<String, dynamic>.from(json.decode(response.body));
 
           print(output["access_token"]);
           print(output["data"]);
@@ -127,27 +124,29 @@ class _MyLoginState extends State<MyLogin> {
           // Navigator.pushNamed(context, 'register');
           // Get.to(() => GoogleBottomBar());
           if (Role == "Administrator") {
-          Get.off(() => PlaningSecreen());
+            Get.off(() => const PlaningSecreen());
           } else {
-            Get.off(() => TravellerFirstScreen(userList: [],));
+            Get.off(() => TravellerFirstScreen(
+                  userList: [],
+                ));
           }
         } else {
           Map<String, dynamic> output =
-              new Map<String, dynamic>.from(json.decode(response.body));
+              Map<String, dynamic>.from(json.decode(response.body));
 
           print(output);
-          Get.snackbar('Warning', '$errorText',
+          Get.snackbar('Warning', errorText,
               colorText: Colors.white,
-              backgroundColor: Color.fromARGB(255, 185, 4, 4));
+              backgroundColor: const Color.fromARGB(255, 185, 4, 4));
         }
       } catch (error) {
         print('Network request failed: $error');
         Get.snackbar('Warning', '$error',
-            backgroundGradient: LinearGradient(
+            backgroundGradient: const LinearGradient(
               colors: [Color(0xff979090), Color(0x31858489)],
             ),
             colorText: Colors.white,
-            backgroundColor: Color.fromARGB(255, 185, 4, 4));
+            backgroundColor: const Color.fromARGB(255, 185, 4, 4));
       }
     }
   }
@@ -155,7 +154,7 @@ class _MyLoginState extends State<MyLogin> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         image: DecorationImage(
             image: AssetImage('assets/login.png'), fit: BoxFit.cover),
       ),
@@ -165,8 +164,8 @@ class _MyLoginState extends State<MyLogin> {
           children: [
             Container(),
             Container(
-              padding: EdgeInsets.only(left: 35, top: 130),
-              child: Text(
+              padding: const EdgeInsets.only(left: 55, top: 150),
+              child: const Text(
                 'Welcome\nBack',
                 style: TextStyle(color: Colors.white, fontSize: 33),
               ),
@@ -181,11 +180,11 @@ class _MyLoginState extends State<MyLogin> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        margin: EdgeInsets.only(left: 35, right: 35),
+                        margin: const EdgeInsets.only(left: 35, right: 35),
                         child: Column(
                           children: [
                             TextFormField(
-                              style: TextStyle(color: Colors.black),
+                              style: const TextStyle(color: Colors.black),
                               controller: emailController,
                               validator: (value) {
                                 if (value!.isEmpty) {
@@ -201,11 +200,11 @@ class _MyLoginState extends State<MyLogin> {
                                     borderRadius: BorderRadius.circular(10),
                                   )),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 30,
                             ),
                             TextFormField(
-                              style: TextStyle(),
+                              style: const TextStyle(),
                               obscureText: true,
                               controller: passwordController,
                               validator: (value) {
@@ -222,13 +221,13 @@ class _MyLoginState extends State<MyLogin> {
                                     borderRadius: BorderRadius.circular(10),
                                   )),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 40,
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
+                                const Text(
                                   'Sign in',
                                   style: TextStyle(
                                       fontSize: 27,
@@ -236,17 +235,17 @@ class _MyLoginState extends State<MyLogin> {
                                 ),
                                 CircleAvatar(
                                   radius: 30,
-                                  backgroundColor: Color(0xff4c505b),
+                                  backgroundColor: const Color(0xff4c505b),
                                   child: IconButton(
                                       color: Colors.white,
                                       onPressed: _handleLogin,
-                                      icon: Icon(
+                                      icon: const Icon(
                                         Icons.arrow_forward,
                                       )),
                                 )
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 40,
                             ),
                             Row(
@@ -256,7 +255,8 @@ class _MyLoginState extends State<MyLogin> {
                                   onPressed: () {
                                     Navigator.pushNamed(context, 'register');
                                   },
-                                  child: Text(
+                                  style: const ButtonStyle(),
+                                  child: const Text(
                                     'Sign Up',
                                     textAlign: TextAlign.left,
                                     style: TextStyle(
@@ -264,11 +264,10 @@ class _MyLoginState extends State<MyLogin> {
                                         color: Color(0xff4c505b),
                                         fontSize: 18),
                                   ),
-                                  style: ButtonStyle(),
                                 ),
                                 TextButton(
                                     onPressed: () {},
-                                    child: Text(
+                                    child: const Text(
                                       'Forgot Password',
                                       style: TextStyle(
                                         decoration: TextDecoration.underline,

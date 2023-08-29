@@ -2,6 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'package:zenify_trip/Secreens/ConcentricAnimationOnboarding.dart';
+import 'package:zenify_trip/Secreens/Notification/PushNotificationScreen.dart';
+import 'package:zenify_trip/Secreens/Profile/editprofile.dart';
 import 'package:zenify_trip/Secreens/calendar/transfert_data.dart';
 import 'package:zenify_trip/modele/Event/Event.dart';
 import 'package:zenify_trip/modele/TouristGuide.dart';
@@ -13,13 +16,9 @@ import 'package:zenify_trip/modele/transportmodel/transportModel.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../constent.dart';
 import '../../modele/planningmainModel.dart';
-import '../ConcentricAnimationOnboarding.dart';
 import '../CustomCalendarDataSource.dart';
-import '../Notification/PushNotificationScreen.dart';
-import '../Profile/editprofile.dart';
-import '../acceuil/welcomPgeGuid.dart';
 import 'eventdetail_test.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:animations/animations.dart';
 
 class PlanningScreen extends StatefulWidget {
   String? Plannigid;
@@ -33,6 +32,30 @@ class PlanningScreen extends StatefulWidget {
 }
 
 class _PlanningScreenState extends State<PlanningScreen> {
+    bool _isDrawerOpen = false;
+
+  void _toggleDrawer() {
+    setState(() {
+      _isDrawerOpen = !_isDrawerOpen;
+    });
+  }
+  void _openDrawer() {
+    Scaffold.of(context).openDrawer();
+  }
+
+  void _onRailItemSelected(int index) {
+    // Implement navigation based on the selected rail item index
+    switch (index) {
+      case 0: // Example: Navigate to Home page
+        // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomeScreen()));
+        break;
+      case 1: // Example: Navigate to Settings page
+        // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => SettingsScreen()));
+        break;
+      // Add more cases for other pages
+    }
+  }
+
   final storage = const FlutterSecureStorage();
   final CalendarController _controller = CalendarController();
 
@@ -235,10 +258,85 @@ class _PlanningScreenState extends State<PlanningScreen> {
             ],
           ),
         ),
-        body: RefreshIndicator(
-          onRefresh: fetchData,
-          child: ListView(
+        drawer: Drawer(
+          child: Column(
             children: [
+              Expanded(
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  children: <Widget>[
+                    const DrawerHeader(
+                      decoration: BoxDecoration(
+                        color: Colors.blue,
+                      ),
+                      margin: EdgeInsets.only(bottom: 8.0),
+                      padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
+                      duration: Duration(milliseconds: 250),
+                      curve: Curves.fastOutSlowIn,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Customize the content of the drawer header
+                          Text(
+                            'Zenify Trip',
+                            style: TextStyle(fontSize: 24, color: Colors.white),
+                          ),
+                          SizedBox(height: 8),
+                          Text(
+                            'Additional Info',
+                            style: TextStyle(fontSize: 16, color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ),
+                    // Rest of the drawer items
+                    ListTile(
+                      leading: const Icon(Icons.calendar_today),
+                      title: const Text('Calendar'),
+                      onTap: () {
+                        // Handle drawer item click
+                        Navigator.pop(context); // Close the drawer
+                      },
+                    ),
+
+                    ListTile(
+                      leading: const Icon(Icons.person),
+                      title: const Text('Profil'),
+                      onTap: () {
+                        // Handle drawer item click
+                        Get.to(MainProfile()); // Close the drawer
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.notifications),
+                      title: const Text('Send Notification'),
+                      onTap: () {
+                        // Handle drawer item click
+                        Get.to(PushNotificationScreen()); // Close the drawer
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.more_horiz),
+                      title: const Text('More'),
+                      onTap: () {
+                        // Handle drawer item click
+                        Get.to(
+                            const ConcentricAnimationOnboarding()); // Close the drawer
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        body: AnimatedContainer(
+  duration: Duration(milliseconds: 300),
+  transform: Matrix4.translationValues(_isDrawerOpen ? 200 : 0, 0, 0),
+  child: RefreshIndicator(
+    onRefresh: fetchData,
+    child: ListView(
+      children: [
               SizedBox(
                 height: Get.height * 0.88,
                 child: SfCalendar(
@@ -288,7 +386,7 @@ class _PlanningScreenState extends State<PlanningScreen> {
                       ),
                     );
                   },
-                    headerHeight: 40,
+                  headerHeight: 40,
                   controller: _controller,
                   view: CalendarView.schedule,
                   scheduleViewMonthHeaderBuilder: (BuildContext context,
@@ -371,42 +469,54 @@ class _PlanningScreenState extends State<PlanningScreen> {
             ],
           ),
         ),
-        bottomNavigationBar: CurvedNavigationBar(
-          backgroundColor: Colors.transparent,
-          items: const <Widget>[
-            Icon(Icons.home, size: 30),
-            Icon(Icons.calendar_month, size: 30),
-            // Icon(Icons.search, size: 30),
-            Icon(Icons.person, size: 30),
-            Icon(Icons.notifications_active, size: 30),
-            Icon(Icons.more_vert, size: 30),
-          ],
-          onTap: (index) {
-            switch (index) {
-              case 0:
-                // Navigate to home page
-                Get.to(const PlaningSecreen());
-                break;
-              case 1:
-                // Navigate to calendar page
-                Get.to(
-                    PlanningScreen(selectedPlanning!.id, selectedTouristGuide));
-                break;
-              case 2:
-                // Navigate to profile page
-                Get.to(MainProfile());
-                break;
-              case 3:
-                // Navigate to notifications page
-                Get.to(PushNotificationScreen());
-                break;
-              case 4:
-                // Navigate to more options page
-                Get.to(const ConcentricAnimationOnboarding());
-                break;
-            }
-          },
-        ),
+      ),
+      // drawer: Container(
+      //   width: 200,
+      //   child: Drawer(
+      //     child: Column(
+      //       children: [
+      //         Container(
+      //           height: 100,
+      //           color: Colors.blue,
+      //           child: const Center(
+      //             child: Text(
+      //               'Drawer Header',
+      //               style: TextStyle(
+      //                 color: Colors.white,
+      //                 fontSize: 18,
+      //                 fontWeight: FontWeight.bold,
+      //               ),
+      //             ),
+      //           ),
+      //         ),
+      //         ListTile(
+      //           leading: const Icon(Icons.home),
+      //           title: const Text('Home'),
+      //           onTap: () {
+      //             // Handle drawer item click
+      //             _toggleDrawer();
+      //           },
+      //         ),
+      //         ListTile(
+      //           leading: const Icon(Icons.star),
+      //           title: const Text('Favorites'),
+      //           onTap: () {
+      //             // Handle drawer item click
+      //             _toggleDrawer();
+      //           },
+      //         ),
+      //         ListTile(
+      //           leading: const Icon(Icons.settings),
+      //           title: const Text('Settings'),
+      //           onTap: () {
+      //             // Handle drawer item click
+      //             _toggleDrawer();
+      //           },
+      //         ),
+      //       ],
+      //     ),
+      //   ),
+      // ),
       ),
     );
   }

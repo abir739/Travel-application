@@ -1,22 +1,14 @@
-import 'dart:convert';
 import 'dart:math';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zenify_trip/NetworkHandler.dart';
-
-
 import 'package:zenify_trip/modele/touristGroup.dart';
-
 import 'package:get/get.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
-
 import '../../modele/HttpPlaning.dart';
 import '../../modele/TouristGuide.dart';
 import '../../modele/activitsmodel/httpActivites.dart';
@@ -26,7 +18,8 @@ import '../../modele/httpTouristguidByid.dart';
 import '../../modele/httpTravellerbyid.dart';
 import '../../modele/planningmainModel.dart';
 import '../../modele/traveller/TravellerModel.dart';
-import '../calendar/calendar_transferts.dart';
+import '../calendar/menu.dart';
+// import '../calendar/calendar_transferts.dart';
 
 class PlaningSecreen extends StatefulWidget {
   const PlaningSecreen({super.key});
@@ -102,16 +95,13 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
     _loadDataGuid();
     readRoleFromToken();
     initPlatformState();
-  
   }
 
   Future<void> initPlatformState() async {
     OneSignal.shared.setAppId(
       oneSignalAppId,
-     
     );
 
-    
     OneSignal.shared
         .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
       OSNotification notification1 = result.notification;
@@ -130,19 +120,17 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
       String? actionId = action?.actionId;
       // Map<String, dynamic>? actionData = action?.additionalData;
       print('title $title bodys $body actionType $actionType');
-     
     });
     OneSignal.shared.setNotificationOpenedHandler(
       (OSNotificationOpenedResult result) async {
         var data = result.notification.additionalData;
-        
       },
     );
   }
 
   Future<Traveller> _loadDataTraveller() async {
     final userId = await storage.read(key: "id");
-    
+
     final travellerdetail =
         await Travelleruserid.fetchData("/api/travellers/UserId/$userId");
     setState(() {
@@ -157,7 +145,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
 
   Future<TouristGuide> _loadDataGuid() async {
     final userId = await storage.read(key: "id");
- 
+
     final toristguiddetail =
         await guidbyuserid.fetchData("/api/tourist-guides/UserIds/$userId");
     setState(() {
@@ -175,9 +163,8 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
       touristGuides = []; // initialize the list to an empty list
     });
     final data = await httpHandler.fetchData("/api/tourist-guides");
-    
+
     if (data == null) {
-     
       return; // Stop further execution of the function
     }
     setState(() {
@@ -395,7 +382,8 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                           ? ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 foregroundColor: Colors.white,
-                                backgroundColor: const Color.fromARGB(244, 78, 3, 73),
+                                backgroundColor:
+                                    const Color.fromARGB(244, 78, 3, 73),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30),
                                 ),
@@ -631,7 +619,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                                           Icons.door_back_door_outlined,
                                           color:
                                               Color.fromARGB(225, 26, 24, 25),
-                                        ), 
+                                        ),
                                         Text(
                                             'Go To ${selectedPlanning?.name ?? 'Transport'}',
                                             style: const TextStyle(
@@ -643,7 +631,6 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                                   ),
                                 ),
                               ),
-                             
                             ],
                           ),
                     const SizedBox(height: 50),
@@ -726,7 +713,6 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                 padding: const EdgeInsets.all(5.0),
                 margin: const EdgeInsets.only(left: 20, right: 20),
                 child: (guid == null || touristGroup!.isEmpty)
-
                     ? ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
@@ -801,8 +787,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                                 selectedTouristGroup = newValue!;
                                 tag = newValue.id!;
                                 _loadDataplanning();
-                              
-                              
+
                                 print(selectedTouristGroup!.id);
                               });
                             },

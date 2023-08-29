@@ -14,8 +14,11 @@ class TransportEvent extends CalendarEvent {
           description: "Transfer Guid",
           startTime: transport.date,
           type: transport,
-          endTime: transport.date!.add(Duration(hours: transport.durationHours ?? 0)),
-          note: "From ${transport.from} to ${transport.to}", // Corrected the note string
-          color: const Color.fromARGB(200, 2, 152, 172), // Adjust this according to your Transport class
+          endTime: transport.date!
+              .add(Duration(hours: transport.durationHours ?? 0)),
+          note:
+              "From ${transport.from} to ${transport.to}", // Corrected the note string
+          color: const Color.fromARGB(200, 2, 152,
+              172), // Adjust this according to your Transport class
         );
 }

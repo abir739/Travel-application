@@ -11,6 +11,7 @@ import '../../constent.dart';
 import '../PlannigSecreen.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:zenify_trip/modele/touristGroup.dart';
+import 'package:zenify_trip/modele/transportmodel/transportModel.dart';
 
 class EventView extends StatefulWidget {
   final TransportEvent event;
@@ -26,7 +27,6 @@ class _EventViewState extends State<EventView> {
 
   late TextEditingController _noteController;
   late TextEditingController _durationController;
-
   late TextEditingController messageController;
   late TextEditingController titleController;
   late TextEditingController typeController;
@@ -84,7 +84,7 @@ class _EventViewState extends State<EventView> {
   }
 
   // Define a function to update the event details
-  void updateEventDetails(String newNote, int newDuration, int newstartTime) {
+  void updateEventDetails(String newNote, int newDuration) {
     widget.event.transport.note = newNote;
     widget.event.transport.durationHours = newDuration;
   }
@@ -109,7 +109,7 @@ class _EventViewState extends State<EventView> {
         "message": messageController.text,
         "title": titleController.text,
         "type": typeController.text,
-        "sendNotification": true,
+        "sendNotification": sendNotification
         // },
       };
       String? token = await storage.read(key: "access_token");
@@ -129,6 +129,8 @@ class _EventViewState extends State<EventView> {
         // Successfully updated
         // You might want to refetch the data after saving
         //await fetchDataAndOrganizeEvents();
+        Navigator.pop(context);
+
         print(updatePayload);
         print(response.body);
         // Navigator.pop(

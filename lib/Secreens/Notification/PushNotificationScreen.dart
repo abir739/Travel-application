@@ -23,12 +23,10 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
   TouristGroup? selectedTouristGroup = TouristGroup();
   TouristGuide? selectedTouristGuide = TouristGuide();
   final count = HTTPHandlerCount();
-  TextEditingController _messageController = TextEditingController();
-  TextEditingController _titleController = TextEditingController();
-  TextEditingController _androidAccentColorController = TextEditingController();
-  TextEditingController _bigPictureController = TextEditingController();
-  TextEditingController _linkUrlController = TextEditingController();
-  TextEditingController _tagsController = TextEditingController();
+  final TextEditingController _messageController = TextEditingController();
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _bigPictureController = TextEditingController();
+  final TextEditingController _linkUrlController = TextEditingController();
   final httpHandler = HTTPHandlerhttpToristguid();
   List<TouristGuide>? touristGuides;
   List<TouristGroup>? group;
@@ -48,6 +46,7 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
     }
   }
 
+  // ignore: non_constant_identifier_names
   List<String> Tags = [];
 
   Set<TouristGroup> selectedGroup = {};
@@ -114,7 +113,7 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
         Uri.parse('$baseUrls/api/push-notifications/notification'),
         headers: {
           "Authorization":
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMwZjkxMTkyLTUzYWItNGUzZC1iM2EwLTM1NDNkNDk5YWVmZCIsInN1YiI6IjMwZjkxMTkyLTUzYWItNGUzZC1iM2EwLTM1NDNkNDk5YWVmZCIsInVzZXJuYW1lIjoiYWJpcjExMSIsImVtYWlsIjoiYWJpcjExMUBnbWFpbC5jb20iLCJyb2xlIjoiQWRtaW5pc3RyYXRvciIsImZpcnN0TmFtZSI6IkFiaXIiLCJsYXN0TmFtZSI6ImNoZXJpZmZmIiwiZXhwaXJlcyI6MTY5MjcwMTMzNSwiY3JlYXRlZCI6MTY5MjYxNDkzNSwiaWF0IjoxNjkyNjE0OTM1LCJleHAiOjE2OTI3MDEzMzV9.o_a0AoDvZCBcDi9BPRkHVBkRcek3kOKz24q19F95oqA",
+              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMwZjkxMTkyLTUzYWItNGUzZC1iM2EwLTM1NDNkNDk5YWVmZCIsInN1YiI6IjMwZjkxMTkyLTUzYWItNGUzZC1iM2EwLTM1NDNkNDk5YWVmZCIsInVzZXJuYW1lIjoiYWJpcjExMSIsImVtYWlsIjoiYWJpcjExMUBnbWFpbC5jb20iLCJyb2xlIjoiQWRtaW5pc3RyYXRvciIsImZpcnN0TmFtZSI6IkFiaXIiLCJsYXN0TmFtZSI6ImNoZXJpZmZmIiwiZXhwaXJlcyI6MTY5MzM4NzAzNSwiY3JlYXRlZCI6MTY5MzMwMDYzNSwiaWF0IjoxNjkzMzAwNjM1LCJleHAiOjE2OTMzODcwMzV9.uJ5AoF2-MPoNf9lB0k2nwzCAv0uSYyWKL1FzMZLow_g",
           "Content-Type": "application/json"
         },
         body: json.encode({

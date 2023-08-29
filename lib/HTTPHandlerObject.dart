@@ -4,7 +4,6 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../constent.dart';
 
-
 class HTTPHandler<T> {
   final storage = const FlutterSecureStorage();
 
@@ -25,10 +24,17 @@ class HTTPHandler<T> {
 
     print(response.statusCode);
     if (response.statusCode == 200) {
+      print("${response.body} body"); // Print the response body for debugging
       final data = json.decode(response.body);
-      return fromJson(
+      final result = fromJson(
           data); // Convert the data using the provided fromJson function
-    } else {
+      return result; // Convert the data using the provided fromJson function
+    } 
+// else if(response.statusCode == 200) {
+//        final data = json.decode(response.body);
+//    return data; 
+//     }
+else{
       throw Exception('${response.statusCode}');
     }
   }

@@ -291,21 +291,22 @@ class _CalendarPageState extends State<CalendarPage> {
                       ),
                     );
                   },
-                  headerHeight: 38,
+                  headerHeight: 40,
                   controller: _controller,
                   view: CalendarView.schedule,
                   scheduleViewMonthHeaderBuilder: (BuildContext context,
                       ScheduleViewMonthHeaderDetails details) {
                     // You can return a custom widget here to be displayed as the header.
                     return Container(
-                      color: const Color.fromARGB(
-                          255, 215, 8, 46), // Set your desired background color
+                      color: const Color.fromARGB(255, 184, 139,
+                          243), // Set your desired background color
                       child: const Center(
                         child: Text(
-                          'Custom Header', // Set your desired header text
+                          'Zenify Trip', // Set your desired header text
                           style: TextStyle(
                             color: Colors.white, // Set your desired text color
                             fontWeight: FontWeight.bold,
+                            fontSize: 14,
                           ),
                         ),
                       ),
