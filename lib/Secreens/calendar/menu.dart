@@ -6,6 +6,8 @@ import 'package:zenify_trip/Secreens/ConcentricAnimationOnboarding.dart';
 import 'package:zenify_trip/Secreens/Notification/PushNotificationScreen.dart';
 import 'package:zenify_trip/Secreens/Profile/editprofile.dart';
 import 'package:zenify_trip/Secreens/calendar/transfert_data.dart';
+import 'package:zenify_trip/Secreens/guide_Screens/travellers_list_screen.dart';
+import 'package:zenify_trip/login.dart';
 import 'package:zenify_trip/modele/Event/Event.dart';
 import 'package:zenify_trip/modele/TouristGuide.dart';
 import 'dart:convert';
@@ -41,7 +43,7 @@ class _PlanningScreenState extends State<PlanningScreen> {
   double activityProgress = 0.0;
   Map<CalendarEvent, Color> eventColors = {};
   double gethigth = Get.height * 0.185 / Get.height;
-
+  bool _isTouristGroupsDropdownOpen = false;
   bool isweek = true;
   List<CalendarEvent> CalendarEvents = [];
   String dateString = DateTime.now().toString();
@@ -205,6 +207,13 @@ class _PlanningScreenState extends State<PlanningScreen> {
     }
   }
 
+  Divider _buildDivider() {
+    const Color divider = Color.fromARGB(255, 51, 14, 218);
+    return const Divider(
+      color: divider,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -238,85 +247,187 @@ class _PlanningScreenState extends State<PlanningScreen> {
             child: Column(
               children: [
                 Expanded(
-                  child: SafeArea(
                     child: ListView(
-                      padding: EdgeInsets.zero,
-                      children: <Widget>[
-                        const DrawerHeader(
-                          decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 184, 139, 243),
+                  padding: EdgeInsets.zero,
+                  children: <Widget>[
+                    const DrawerHeader(
+                      decoration: BoxDecoration(
+                        color: Color.fromARGB(255, 184, 139, 243),
+                      ),
+                      margin: EdgeInsets.only(bottom: 15.0),
+                      padding: EdgeInsets.fromLTRB(86.0, 56.0, 16.0, 8.0),
+                      duration: Duration(milliseconds: 250),
+                      curve: Curves.fastOutSlowIn,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Zenify Trip',
+                            style: TextStyle(fontSize: 24, color: Colors.white),
                           ),
-                          margin: EdgeInsets.only(bottom: 15.0),
-                          padding: EdgeInsets.fromLTRB(86.0, 56.0, 16.0, 8.0),
-                          duration: Duration(milliseconds: 250),
-                          curve: Curves.fastOutSlowIn,
+                          SizedBox(
+                            height: 10,
+                            width: 99,
+                          ),
+                          Text(
+                            'Additional Info',
+                            style: TextStyle(fontSize: 14, color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.calendar_today),
+                      title: const Text('Calendar'),
+                      onTap: () {
+                        // Handle drawer item click
+                        Navigator.pop(context); // Close the drawer
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.person),
+                      title: const Text('Profil'),
+                      onTap: () {
+                        // Handle drawer item click
+                        Get.to(MainProfile()); // Close the drawer
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.notification_add),
+                      title: const Text('Send Notification'),
+                      onTap: () {
+                        // Handle drawer item click
+                        Get.to(PushNotificationScreen()); // Close the drawer
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.groups),
+                      title: const Text('Tourist Groups'),
+                      onTap: () {
+                        // Toggle the dropdown's visibility
+                        setState(() {
+                          _isTouristGroupsDropdownOpen =
+                              !_isTouristGroupsDropdownOpen;
+                        });
+                      },
+                      // Add a trailing icon to indicate that this item has a dropdown
+                      trailing: const Icon(Icons.expand_more),
+                    ),
+
+                    // Wrap the options in an ExpansionTile to create a dropdown
+                    if (_isTouristGroupsDropdownOpen) // Render only if the dropdown is open
+                      ExpansionTile(
+                        title: const Text(''),
+                        initiallyExpanded: true,
+                        children: [
+                          ListTile(
+                            leading: const Icon(Icons.calendar_view_day),
+                            title: const Text('Filtre Calendar'),
+                            onTap: () {
+                              // Handle option 1 click
+                              // Close the dropdown
+                              Navigator.pop(context);
+                            },
+                          ),
+                          ListTile(
+                            leading: const Icon(Icons.person_search),
+                            title: const Text('Travellers List'),
+                            onTap: () {
+                              Navigator.pop(context); // Close the drawer
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => TravellersListScreen(
+                                      guideId: widget.guid?.id),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+
+                    ListTile(
+                      leading: const Icon(Icons.more_horiz),
+                      title: const Text('More'),
+                      onTap: () {
+                        // Handle drawer item click
+                        Get.to(
+                            const ConcentricAnimationOnboarding()); // Close the drawer
+                      },
+                    ),
+
+                    _buildDivider(),
+                    const SizedBox(height: 20.0),
+                    ListTile(
+                      leading: const Icon(
+                        Icons.notifications_active,
+                        color: Color.fromARGB(255, 233, 206, 85),
+                        size: 26,
+                      ),
+                      title: const Text(
+                        'Notifications',
+                        style: TextStyle(
+                            fontFamily: 'Bahij Janna',
+                            fontWeight: FontWeight.w900,
+                            fontSize: 16),
+                      ),
+                      onTap: () {
+                        // Handle drawer item click
+                        // Get.to(
+                        //     const ConcentricAnimationOnboarding()); // Close the drawer
+                      },
+                    ),
+                    const SizedBox(height: 160.0),
+                    Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        elevation: 0,
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                Color.fromARGB(255, 35, 2, 143),
+                                Color.fromARGB(255, 184, 139, 243),
+                              ],
+                            ),
+                          ),
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Zenify Trip',
-                                style: TextStyle(
-                                    fontSize: 24, color: Colors.white),
-                              ),
+                            children: <Widget>[
+                              ListTile(
+                                  leading: const Icon(Icons.person,
+                                      size: 30,
+                                      color:
+                                          Color.fromARGB(255, 221, 224, 230)),
+                                  title: const Text(
+                                    'Log out',
+                                    style: TextStyle(
+                                      fontFamily: 'Bahij Janna',
+                                      fontWeight: FontWeight.w900,
+                                      fontSize: 18,
+                                      color: Color.fromARGB(255, 237, 226, 226),
+                                    ),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                  trailing: const Icon(Icons.logout_outlined,
+                                      size: 24, color: Colors.red),
+                                  onTap: () async {
+                                    await storage.delete(key: "access_token");
+                                    // await FacebookAuth.instance.logOut();
+                                    // _accessToken = null;
+                                    Get.to(const MyLogin());
+                                  }),
                               SizedBox(
-                                height: 10,
-                                width: 99,
-                              ),
-                              Text(
-                                'Additional Info',
-                                style: TextStyle(
-                                    fontSize: 14, color: Colors.white),
-                              ),
+                                height: MediaQuery.of(context).padding.bottom,
+                              )
                             ],
                           ),
-                        ),
-                        ListTile(
-                          leading: const Icon(Icons.calendar_today),
-                          title: const Text('Calendar'),
-                          onTap: () {
-                            // Handle drawer item click
-                            Navigator.pop(context); // Close the drawer
-                          },
-                        ),
-                        ListTile(
-                          leading: const Icon(Icons.person),
-                          title: const Text('Profil'),
-                          onTap: () {
-                            // Handle drawer item click
-                            Get.to(MainProfile()); // Close the drawer
-                          },
-                        ),
-                        ListTile(
-                          leading: const Icon(Icons.notifications),
-                          title: const Text('Send Notification'),
-                          onTap: () {
-                            // Handle drawer item click
-                            Get.to(
-                                PushNotificationScreen()); // Close the drawer
-                          },
-                        ),
-                        ListTile(
-                          leading: const Icon(Icons.groups),
-                          title: const Text('Tourist Groups'),
-                          onTap: () {
-                            // Handle drawer item click
-                            // Get.to(
-                            //     PushNotificationScreen()); // Close the drawer
-                          },
-                        ),
-                        ListTile(
-                          leading: const Icon(Icons.more_horiz),
-                          title: const Text('More'),
-                          onTap: () {
-                            // Handle drawer item click
-                            Get.to(
-                                const ConcentricAnimationOnboarding()); // Close the drawer
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                        ))
+                  ],
+                )),
               ],
             ),
           ),

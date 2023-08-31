@@ -31,7 +31,6 @@ class PlaningSecreen extends StatefulWidget {
 class _PlaningSecreenState extends State<PlaningSecreen> {
   TextEditingController groupkeycontroller = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  // final _globalkey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
@@ -44,30 +43,16 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
   final httpHandler = HTTPHandlerhttpToristguid();
   final guidbyuserid = HTTPHandlerToristGuidbyId();
   final Travelleruserid = HTTPHandlerTravellerbyId();
-  // String baseUrl = "http://192.168.1.14:3000/";
-  // final httpHandler = HTTPHandlerhttpToristguid();
   final httpHandlertoristguid = HTTPHandlerhttpToristguid();
   final httpHandlertorist = HTTPHandlerhttpGroup();
   final httpHandlerPlanning = HTTPHandlerplaning();
   final count = HTTPHandlerCount();
-  // late List<TouristGuide> touristGuides;
-  // late TouristGuide selectedTouristGuide;
   List<TouristGuide>? touristGuides;
   List<TouristGroup>? touristGroup;
   List<PlanningMainModel>? planning;
   TouristGuide? selectedTouristGuide = TouristGuide();
   TouristGroup? selectedTouristGroup = TouristGroup();
   PlanningMainModel? selectedPlanning = PlanningMainModel();
-// TouristGuide? selectedTouristGuide=
-// TouristGuide(
-//   id: "default_id",
-//   name: "default_name",
-//   fullName: "default_full_name",
-//   logo: "default_logo",
-//   primaryColor: "default_primary_color",
-//   secondaryColor: "default_secondary_color",
-//   subDomain: "default_sub_domain",
-// );
   int subscriptionCount = 0;
   final storage = new FlutterSecureStorage();
   late String errorText;
@@ -181,11 +166,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
     final data = await httpHandlertorist
         .fetchData("/api/tourist-groups/touristGuideId/${guid?.id}");
     if (data == null) {
-      // Data is null, navigate to the 'addtouristguid' screen
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(builder: (context) => AddTouristGuideScreen()),
-      // );
+ 
       return; // Stop further execution of the function
     }
     setState(() {
@@ -270,62 +251,60 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
             ],
           ),
         ),
-        body: Container(
-          child: Center(
-            child: FutureBuilder(
-              future: Future.delayed(Duration(seconds: 5)),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  // Show a loading indicator or any other widget while waiting
-                  return Center(
-                    child: CircularProgressIndicator(
-                      backgroundColor: Color.fromARGB(255, 219, 10, 10),
-                      valueColor: new AlwaysStoppedAnimation<Color>(
-                          Color.fromARGB(255, 24, 10, 221)),
-                    ),
-                  );
-                } else {
-                  // After the delay, show the "Submit" button
-                  return Center(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: Get.width * 0.7,
-                        ),
-                        Text('session Tim out.... ',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w900,
-                                fontSize: 20,
-                                color: Color.fromARGB(255, 90, 3, 203))),
-                        ElevatedButton(
-                          child: Text('Logout'),
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors
-                                .red, // Change the button's background color
-                            onPrimary: Colors.white, // Change the text color
-                            textStyle: TextStyle(
-                                fontSize: 16), // Change the text style
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 16), // Adjust the padding
-                            minimumSize: Size(120,
-                                40), // Set a minimum width and height for the button
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                  20), // Adjust the border radius
-                            ),
+        body: Center(
+          child: FutureBuilder(
+            future: Future.delayed(const Duration(seconds: 5)),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                // Show a loading indicator or any other widget while waiting
+                return const Center(
+                  child: CircularProgressIndicator(
+                    backgroundColor: Color.fromARGB(255, 219, 10, 10),
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                        Color.fromARGB(255, 24, 10, 221)),
+                  ),
+                );
+              } else {
+                // After the delay, show the "Submit" button
+                return Center(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: Get.width * 0.7,
+                      ),
+                      const Text('session Tim out.... ',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w900,
+                              fontSize: 20,
+                              color: Color.fromARGB(255, 90, 3, 203))),
+                      ElevatedButton(
+                        child: const Text('Logout'),
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors
+                              .red, // Change the button's background color
+                          onPrimary: Colors.white, // Change the text color
+                          textStyle: const TextStyle(
+                              fontSize: 16), // Change the text style
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16), // Adjust the padding
+                          minimumSize: const Size(120,
+                              40), // Set a minimum width and height for the button
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                                20), // Adjust the border radius
                           ),
-                          onPressed: () async {
-                            await storage.delete(key: "access_token");
-                            // Get.to(LoginView());
-                          },
                         ),
-                      ],
-                    ),
-                  );
-                }
-              },
-            ),
+                        onPressed: () async {
+                          await storage.delete(key: "access_token");
+                          // Get.to(LoginView());
+                        },
+                      ),
+                    ],
+                  ),
+                );
+              }
+            },
           ),
         ),
       );
@@ -392,7 +371,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                                 // Handle button press, navigate to desired screen or perform any action
                                 // Get.to(AddTouristGroupScreen());
                               },
-                              child: Text('you are not effect  group'),
+                              child: const Text('you are not effect  group'),
                             )
                           : Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -401,11 +380,11 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                                   borderRadius: const BorderRadius.all(
                                       Radius.circular(20)),
                                   dropdownColor:
-                                      Color.fromARGB(244, 19, 123, 184),
+                                      const Color.fromARGB(244, 19, 123, 184),
                                   iconEnabledColor:
                                       const Color.fromARGB(161, 0, 0, 0),
                                   iconDisabledColor:
-                                      Color.fromARGB(244, 19, 123, 184),
+                                      const Color.fromARGB(244, 19, 123, 184),
                                   value: selectedTouristGroup,
                                   items: touristGroup!.map((touristGroup) {
                                     return DropdownMenuItem<TouristGroup>(
@@ -594,40 +573,38 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                         : Column(
                             children: [
                               const SizedBox(height: 90),
-                              Container(
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    foregroundColor: Colors.white,
-                                    backgroundColor:
-                                        Color.fromARGB(255, 207, 207, 206),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(30),
-                                    ),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  foregroundColor: Colors.white,
+                                  backgroundColor:
+                                      const Color.fromARGB(255, 207, 207, 206),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30),
                                   ),
-                                  onPressed: () {
-                                    Get.to(PlanningScreen(
-                                        selectedPlanning!.id, guid));
-                                  },
-                                  child: SizedBox(
-                                    width: Get.width * 0.8,
-                                    height: Get.height * 0.06,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        const Icon(
-                                          Icons.door_back_door_outlined,
-                                          color:
-                                              Color.fromARGB(225, 26, 24, 25),
-                                        ),
-                                        Text(
-                                            'Go To ${selectedPlanning?.name ?? 'Transport'}',
-                                            style: const TextStyle(
-                                              color: Color.fromARGB(
-                                                  255, 235, 232, 226),
-                                            )),
-                                      ],
-                                    ),
+                                ),
+                                onPressed: () {
+                                  Get.to(PlanningScreen(
+                                      selectedPlanning!.id, guid));
+                                },
+                                child: SizedBox(
+                                  width: Get.width * 0.8,
+                                  height: Get.height * 0.06,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      const Icon(
+                                        Icons.door_back_door_outlined,
+                                        color:
+                                            Color.fromARGB(225, 26, 24, 25),
+                                      ),
+                                      Text(
+                                          'Go To ${selectedPlanning?.name ?? 'Transport'}',
+                                          style: const TextStyle(
+                                            color: Color.fromARGB(
+                                                255, 235, 232, 226),
+                                          )),
+                                    ],
                                   ),
                                 ),
                               ),

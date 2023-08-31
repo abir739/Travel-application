@@ -65,7 +65,7 @@ class RoleSelectionPage extends StatelessWidget {
                         ),
                       ),
                       onPressed: () {
-                        Get.to(() => TravellerLoginPage());
+                        Get.to(() => const TravellerLoginPage());
                       },
                       child: const Text(
                         "          Traveller           ",

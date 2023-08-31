@@ -2,6 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'package:zenify_trip/Secreens/ConcentricAnimationOnboarding.dart';
+import 'package:zenify_trip/Secreens/Profile/editprofile.dart';
+import 'package:zenify_trip/login.dart';
 import 'package:zenify_trip/modele/Event/Event.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -47,7 +50,7 @@ class _CalendarPageState extends State<CalendarPage> {
   Map<DateTime, List<CalendarEvent>> eventsByDate = {};
   final List<String> viewOptions = ['Day', 'Week', 'Month', 'All DAta'];
   String selectedView = 'Month'; // Default selected view is Month
-  Color cardcolor = Color.fromARGB(255, 21, 19, 1);
+  Color cardcolor = const Color.fromARGB(255, 21, 19, 1);
   bool loading = false;
 
   get selectedPlanning => PlanningMainModel();
@@ -210,6 +213,13 @@ class _CalendarPageState extends State<CalendarPage> {
     }
   }
 
+  Divider _buildDivider() {
+    const Color divider = Color.fromARGB(255, 51, 14, 218);
+    return const Divider(
+      color: divider,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -236,6 +246,141 @@ class _CalendarPageState extends State<CalendarPage> {
                 ),
               ),
             ],
+          ),
+        ),
+        drawer: SafeArea(
+          child: Drawer(
+            child: Column(
+              children: [
+                Expanded(
+                    child: ListView(
+                  padding: EdgeInsets.zero,
+                  children: <Widget>[
+                    const DrawerHeader(
+                      decoration: BoxDecoration(
+                        color: Color.fromARGB(255, 184, 139, 243),
+                      ),
+                      margin: EdgeInsets.only(bottom: 15.0),
+                      padding: EdgeInsets.fromLTRB(86.0, 56.0, 16.0, 8.0),
+                      duration: Duration(milliseconds: 250),
+                      curve: Curves.fastOutSlowIn,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Zenify Trip',
+                            style: TextStyle(fontSize: 24, color: Colors.white),
+                          ),
+                          SizedBox(
+                            height: 10,
+                            width: 99,
+                          ),
+                          Text(
+                            'Additional Info',
+                            style: TextStyle(fontSize: 14, color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.calendar_today),
+                      title: const Text('Calendar'),
+                      onTap: () {
+                        // Handle drawer item click
+                        Navigator.pop(context); // Close the drawer
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.person),
+                      title: const Text('Profil'),
+                      onTap: () {
+                        // Handle drawer item click
+                        Get.to(MainProfile()); // Close the drawer
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.more_horiz),
+                      title: const Text('More'),
+                      onTap: () {
+                        // Handle drawer item click
+                        Get.to(
+                            const ConcentricAnimationOnboarding()); // Close the drawer
+                      },
+                    ),
+                    _buildDivider(),
+                    const SizedBox(height: 20.0),
+                    ListTile(
+                      leading: const Icon(
+                        Icons.notifications_active,
+                        color: Color.fromARGB(255, 233, 206, 85),
+                        size: 26,
+                      ),
+                      title: const Text(
+                        'Notifications',
+                        style: TextStyle(
+                            fontFamily: 'Bahij Janna',
+                            fontWeight: FontWeight.w900,
+                            fontSize: 16),
+                      ),
+                      onTap: () {
+                        // Handle drawer item click
+                        // Get.to(
+                        //     const ConcentricAnimationOnboarding()); // Close the drawer
+                      },
+                    ),
+                    const SizedBox(height: 250.0),
+                    Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        elevation: 0,
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                Color.fromARGB(255, 35, 2, 143),
+                                Color.fromARGB(255, 184, 139, 243),
+                              ],
+                            ),
+                          ),
+                          child: Column(
+                            children: <Widget>[
+                              ListTile(
+                                  leading: const Icon(Icons.person,
+                                      size: 30,
+                                      color:
+                                          Color.fromARGB(255, 221, 224, 230)),
+                                  title: const Text(
+                                    'Log out',
+                                    style: TextStyle(
+                                      fontFamily: 'Bahij Janna',
+                                      fontWeight: FontWeight.w900,
+                                      fontSize: 18,
+                                      color: Color.fromARGB(255, 237, 226, 226),
+                                    ),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                  trailing: const Icon(Icons.logout_outlined,
+                                      size: 24, color: Colors.red),
+                                  onTap: () async {
+                                    await storage.delete(key: "access_token");
+                                    // await FacebookAuth.instance.logOut();
+                                    // _accessToken = null;
+                                    Get.to(const MyLogin());
+                                  }),
+                              SizedBox(
+                                height: MediaQuery.of(context).padding.bottom,
+                              )
+                            ],
+                          ),
+                        ))
+                  ],
+                )),
+              ],
+            ),
           ),
         ),
         body: RefreshIndicator(
