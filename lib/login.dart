@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
-import 'package:zenify_trip/Secreens/Clientcalendar/TravellerFirstScreen.dart';
+import 'package:zenify_trip/traveller_Screens/Clientcalendar/TravellerFirstScreen.dart';
 import 'package:zenify_trip/Secreens/acceuil/welcomPgeGuid.dart';
 import 'NetworkHandler.dart';
 

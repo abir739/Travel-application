@@ -1,11 +1,10 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'package:zenify_trip/Secreens/AccommodationSecreen.dart';
 import 'Secreens/ConcentricAnimationOnboarding.dart';
 import 'Secreens/Notification/PushNotificationScreen.dart';
 import 'Secreens/Profile/editprofile.dart';
-import 'Secreens/calendar/calendar_transferts.dart';
 import 'Secreens/guidPlannig.dart';
 import 'modele/TouristGuide.dart';
 import 'modele/planningmainModel.dart'; // Import the necessary package

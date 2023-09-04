@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:zenify_trip/Secreens/guide_Screens/travelers_list_screen.dart';
+import 'package:zenify_trip/guide_Screens/travelers_list_screen.dart';
 import 'package:zenify_trip/constent.dart';
 import 'package:zenify_trip/login.dart';
 import 'dart:convert';
 import 'package:flutter_svg/svg.dart';
 import 'package:zenify_trip/modele/touristGroup.dart';
-import 'package:zenify_trip/modele/traveller/TravellerModel.dart';
-
-// Import your tourist group model
 
 class TravellersListScreen extends StatefulWidget {
   final String? guideId;

@@ -1,39 +1,25 @@
-import 'dart:convert';
+
 import 'dart:math';
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zenify_trip/NetworkHandler.dart';
 import 'package:zenify_trip/Secreens/AddPlanningScreen.dart';
-import 'package:zenify_trip/Secreens/MyCalendarPage.dart';
-
+import 'package:zenify_trip/guide_Screens/calendar/calendar_transferts.dart';
 import 'package:zenify_trip/modele/touristGroup.dart';
-import 'package:flutter_avif/flutter_avif.dart';
-import '../NetworkHandler.dart';
-import '../buttonNavbar.dart';
 import '../modele/HttpPlaning.dart';
 import '../modele/TouristGuide.dart';
 import '../modele/activitsmodel/httpActivites.dart';
 import '../modele/activitsmodel/httpToristGroup.dart';
 import '../modele/activitsmodel/httpToristguid.dart';
 import '../modele/planningmainModel.dart';
-
 import 'package:get/get.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
-
-//import 'AccommodationSecreen.dart';
 import 'AddToristGroupScreen.dart';
-import 'ConcentricAnimationOnboarding.dart';
-import 'Notification/PushNotificationScreen.dart';
-import 'Profile/editprofile.dart';
-import 'calendar/calendar_transferts.dart';
+
 
 class PlaningSecreen extends StatefulWidget {
   const PlaningSecreen({super.key});

@@ -1,60 +1,28 @@
 import 'dart:async';
 import 'dart:convert';
-// import 'package:badges/badges.dart' as badges;
-import 'dart:math';
-// import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
-// import 'package:flutter_animated_icons/icons8.dart';
-// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_svg/svg.dart';
-// import 'package:geocoding/geocoding.dart' as geocoding;
-import 'package:location/location.dart' as location;
 import 'package:get/get.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-// import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:jwt_decode/jwt_decode.dart';
-// import 'package:zenify_trip_mobile/Secreen/PushNotificationScreen.dart';
-// import 'package:zenify_trip_mobile/modele/activitsmodel/activitesmodel.dart';
-// import 'package:location/location.dart';
-// import '../Secreen/services/FileUploadScreen.dart';
-// import 'package:lottie/lottie.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
-
 import '../constent.dart';
 import '../modele/HttpUserHandler.dart';
-import '../modele/accommodationsModel/accommodationModel.dart';
 import '../modele/activitsmodel/activitesmodel.dart';
 import '../modele/activitsmodel/activityTempModel.dart';
 import '../modele/activitsmodel/httpActivitesTempid.dart';
 import '../modele/activitsmodel/usersmodel.dart';
-
 import '../modele/touristGroup.dart';
-import '../modele/transportmodel/transportModel.dart';
-
-import 'Profile/CreatProfile.dart';
 import 'Profile/MainProfile.dart';
-import 'Profile/UpdateActivityDetailDialog.dart';
-
 import '../modele/HttpPlaning.dart';
-import '../modele/PlanningHandler.dart';
 import '../modele/activitsmodel/httpActivites.dart';
 import '../modele/activitsmodel/listactivitey.dart';
 import '../modele/item.dart';
 import '../modele/listPlannig.dart';
-import '../modele/planning_model.dart';
 import '../modele/planningmainModel.dart';
-import '../modele/plannings.dart';
-
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
-// import 'GenerateQRPage.dart';
-// import 'Notivificationactivity.dart';
-// import 'constants.dart';
-// import 'login_signup.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';

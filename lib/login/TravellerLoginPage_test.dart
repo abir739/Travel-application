@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_svg/svg.dart';
 // import '../Secreens/Clientcalendar/client_calendar.dart';
-import '../Secreens/Clientcalendar/tourist_calendar.dart';
+import 'package:zenify_trip/traveller_Screens/Clientcalendar/tourist_calendar.dart';
 import '../constent.dart';
 import '../modele/traveller/TravellerModel.dart';
 

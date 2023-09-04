@@ -4,6 +4,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zenify_trip/NetworkHandler.dart';
+import 'package:zenify_trip/guide_Screens/calendar/menu.dart';
+
 import 'package:zenify_trip/modele/touristGroup.dart';
 import 'package:get/get.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -18,8 +20,6 @@ import '../../modele/httpTouristguidByid.dart';
 import '../../modele/httpTravellerbyid.dart';
 import '../../modele/planningmainModel.dart';
 import '../../modele/traveller/TravellerModel.dart';
-import '../calendar/menu.dart';
-// import '../calendar/calendar_transferts.dart';
 
 class PlaningSecreen extends StatefulWidget {
   const PlaningSecreen({super.key});
@@ -166,7 +166,6 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
     final data = await httpHandlertorist
         .fetchData("/api/tourist-groups/touristGuideId/${guid?.id}");
     if (data == null) {
- 
       return; // Stop further execution of the function
     }
     setState(() {
@@ -595,8 +594,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                                     children: [
                                       const Icon(
                                         Icons.door_back_door_outlined,
-                                        color:
-                                            Color.fromARGB(225, 26, 24, 25),
+                                        color: Color.fromARGB(225, 26, 24, 25),
                                       ),
                                       Text(
                                           'Go To ${selectedPlanning?.name ?? 'Transport'}',

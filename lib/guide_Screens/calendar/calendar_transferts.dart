@@ -1,39 +1,150 @@
-import 'dart:convert';
-import 'package:get/get.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-import '../../constent.dart';
-import '../../modele/Event/Event.dart';
-import '../../modele/transportmodel/transportModel.dart';
-import '../../modele/traveller/TravellerModel.dart';
+import 'package:zenify_trip/Secreens/ConcentricAnimationOnboarding.dart';
+import 'package:zenify_trip/Secreens/CustomCalendarDataSource.dart';
+import 'package:zenify_trip/Secreens/Notification/PushNotificationScreen.dart';
+import 'package:zenify_trip/Secreens/Profile/editprofile.dart';
+import 'package:zenify_trip/Secreens/acceuil/welcomPgeGuid.dart';
+import 'package:zenify_trip/guide_Screens/calendar/transfert_data.dart';
+import 'package:zenify_trip/constent.dart';
+import 'package:zenify_trip/modele/Event/Event.dart';
+import 'package:zenify_trip/modele/TouristGuide.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:get/get.dart';
+import 'package:zenify_trip/modele/planningmainModel.dart';
+import 'package:zenify_trip/modele/transportmodel/transportModel.dart';
 import 'package:flutter_svg/svg.dart';
-import '../CustomCalendarDataSource.dart';
 
-class CalendarPage extends StatefulWidget {
-  final Traveller selectedTraveller;
+import 'eventdetail_test.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
-  const CalendarPage({required this.selectedTraveller, Key? key})
-      : super(key: key);
+class PlanningScreen extends StatefulWidget {
+  String? Plannigid;
+  TouristGuide? guid;
 
   @override
-  _CalendarPageState createState() => _CalendarPageState();
+  PlanningScreen(this.Plannigid, this.guid, {Key? key}) : super(key: key);
+
+  get handleEventSave => null;
+  _PlanningScreenState createState() => _PlanningScreenState();
 }
 
-class _CalendarPageState extends State<CalendarPage> {
-  List<Transport> transfers =
-      []; // Create a Transfer class to hold transfer data
+class _PlanningScreenState extends State<PlanningScreen> {
+  final storage = const FlutterSecureStorage();
   final CalendarController _controller = CalendarController();
-  Map<DateTime, List<CalendarEvent>> eventsByDate = {};
+
+  String? date;
+
+  List<Transport> transferList = [];
+  int selectedIndex = 0;
+  double activityProgress = 0.0;
   Map<CalendarEvent, Color> eventColors = {};
+  double gethigth = Get.height * 0.185 / Get.height;
+
+  bool isweek = true;
+  List<CalendarEvent> CalendarEvents = [];
   String dateString = DateTime.now().toString();
+  // DateTime initialDate = DateTime.parse(dateString);
+  CalendarController calendarController = CalendarController();
+  List<CalendarEvent> calendarEvents = [];
+  Map<DateTime, List<CalendarEvent>> eventsByDate = {};
+  final List<String> viewOptions = ['Day', 'Week', 'Month', 'All DAta'];
+  String selectedView = 'Month'; // Default selected view is Month
+  Color cardcolor = Color.fromARGB(255, 21, 19, 1);
+  bool loading = false;
+
+  get selectedPlanning => PlanningMainModel();
+
+  TouristGuide? get selectedTouristGuide => TouristGuide();
+  // int completedCount = 0;
   @override
   void initState() {
     super.initState();
+    fetchData();
+    fetchDataAndOrganizeEvents();
+  }
 
-    fetchTransfers();
+  List<CalendarEvent> convertToCalendarEvents(
+    List<Transport> transfers,
+  ) {
+    List<CalendarEvent> events = [];
+    for (var transfer in transfers) {
+      events.add(CalendarEvent(
+        title: "T-R ${transfer.note}",
+        id: transfer.id,
+        description: "Transfer Guid",
+        startTime: transfer.date,
+        type: transfer,
+        endTime:
+            transfer.date!.add(Duration(hours: transfer.durationHours ?? 0)),
+        color: const Color.fromARGB(200, 2, 152, 172),
+      ));
+    }
+    return events;
+  }
+
+  Future<void> fetchData() async {
+    try {
+      transferList = await fetchTransfers(
+          "/api/transfers/touristGuidId/${widget.guid?.id}");
+      setState(() {
+        List<CalendarEvent> events = transferList.cast<CalendarEvent>();
+      });
+    } catch (e) {
+      // Handle error
+      print("Handle error $e");
+    }
+  }
+
+  Future<Map<String, List<dynamic>>> fetchDataAndOrganizeEvents() async {
+    try {
+      List<Transport> transfersList = await fetchTransfers(
+        "/api/transfers/touristGuidId/${widget.guid!.id}",
+      );
+
+      List<CalendarEvent> events =
+          transfersList.map((transport) => TransportEvent(transport)).toList();
+
+      for (var event in events) {
+        if (event.startTime != null) {
+          DateTime dateKey = DateTime(
+            event.startTime!.year,
+            event.startTime!.month,
+            event.startTime!.day,
+          );
+
+          if (!eventsByDate.containsKey(dateKey)) {
+            eventsByDate[dateKey] = [];
+          }
+          eventsByDate[dateKey]!.add(event);
+        } else {
+          print(event.description);
+        }
+      }
+
+      return {
+        'transfers': transfersList,
+      };
+    } catch (e) {
+      // Handle error
+      print("Error fetching data111: $e");
+      rethrow;
+    }
+  }
+
+  void handleEventSave(TransportEvent updatedEvent) {
+    setState(() {
+      // Update the event list with the changes
+      int index = transferList
+          .indexWhere((element) => element.id == updatedEvent.transport.id);
+      if (index != -1) {
+        transferList[index] = updatedEvent.transport;
+      }
+    });
   }
 
   CalendarDataSource _getCalendarDataSource() {
@@ -46,49 +157,57 @@ class _CalendarPageState extends State<CalendarPage> {
     return CustomCalendarDataSource(events, eventColors);
   }
 
-  Future<void> fetchTransfers() async {
-    print("${widget.selectedTraveller.touristGroupId}");
-    final url = Uri.parse(
-      '$baseUrls/api/transfers/touristgroups/${widget.selectedTraveller.touristGroupId}',
-    );
+  Future<List<Transport>> fetchTransfers(String url) async {
+    List<Transport> transferList = [];
+    String? token = await storage.read(key: "access_token");
+    String formatter(String url) {
+      return baseUrls + url;
+    }
 
-    try {
-      final response = await http.get(url);
+    url = formatter(url);
+    final response = await http
+        .get(headers: {"Authorization": "Bearer $token"}, Uri.parse(url));
 
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        final responseData = json.decode(response.body);
-        final List<dynamic> transferData = responseData["data"];
-
-        setState(() {
-          transfers =
-              transferData.map((data) => Transport.fromJson(data)).toList();
-          print("${transfers[0]}");
-        });
-      } else {
-        // Handle error case
-      }
-    } catch (error) {
-      // Handle error case
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      var data = jsonDecode(response.body);
+      List<dynamic> resultList = data["results"];
+      transferList = resultList.map((e) => Transport.fromJson(e)).toList();
+      return transferList;
+    } else {
+      throw Exception('${response.statusCode}');
     }
   }
-  List<CalendarEvent> convertToCalendarEvents(
-    List<Transport> transfers,
-  ) {
-    List<CalendarEvent> events = [];
-    for (var transfer in transfers) {
-      events.add(CalendarEvent(
-        title: "T-R ${transfer.note}",
-        id: transfer.id,
-        description: "Transfer Group",
-        startTime: transfer.date,
-        type: transfer,
-        endTime:
-            transfer.date!.add(Duration(hours: transfer.durationHours ?? 0)),
-        color: const Color.fromARGB(200, 2, 152, 172),
-      ));
+
+  final Map<int, Widget> segmentWidgets = {
+    1: const Expanded(
+      child: Column(
+        children: [
+          SizedBox(height: 14.0),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            child: Text('Transfers'),
+          ),
+          SizedBox(height: 14.0),
+        ],
+      ),
+    ),
+  };
+  void calendarTapped(
+      BuildContext context, CalendarTapDetails calendarTapDetails) {
+    if (calendarTapDetails.targetElement == CalendarElement.appointment) {
+      TransportEvent event =
+          calendarTapDetails.appointments![0] as TransportEvent;
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => EventView(
+            event: event,
+            onSave: handleEventSave, // Pass the method
+          ),
+        ),
+      );
     }
-    return events;
   }
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -118,7 +237,7 @@ class _CalendarPageState extends State<CalendarPage> {
           ),
         ),
         body: RefreshIndicator(
-          onRefresh: fetchTransfers,
+          onRefresh: fetchData,
           child: ListView(
             children: [
               SizedBox(
@@ -170,27 +289,32 @@ class _CalendarPageState extends State<CalendarPage> {
                       ),
                     );
                   },
-                  headerHeight: 38,
+                    headerHeight: 40,
                   controller: _controller,
                   view: CalendarView.schedule,
                   scheduleViewMonthHeaderBuilder: (BuildContext context,
                       ScheduleViewMonthHeaderDetails details) {
                     // You can return a custom widget here to be displayed as the header.
                     return Container(
-                      color: const Color.fromARGB(
-                          255, 215, 8, 46), // Set your desired background color
+                      color: const Color.fromARGB(255, 184, 139,
+                          243), // Set your desired background color
                       child: const Center(
                         child: Text(
-                          'Custom Header', // Set your desired header text
+                          'Zenify Trip', // Set your desired header text
                           style: TextStyle(
                             color: Colors.white, // Set your desired text color
                             fontWeight: FontWeight.bold,
+                            fontSize: 14,
                           ),
                         ),
                       ),
                     );
                   },
                   viewNavigationMode: ViewNavigationMode.snap,
+                  onTap: (CalendarTapDetails details) {
+                    calendarTapped(
+                        context, details); // Call your calendarTapped function
+                  },
                   showDatePickerButton: true,
                   resourceViewSettings: const ResourceViewSettings(
                       visibleResourceCount: 4,
@@ -247,6 +371,42 @@ class _CalendarPageState extends State<CalendarPage> {
               ),
             ],
           ),
+        ),
+        bottomNavigationBar: CurvedNavigationBar(
+          backgroundColor: Colors.transparent,
+          items: const <Widget>[
+            Icon(Icons.home, size: 30),
+            Icon(Icons.calendar_month, size: 30),
+            // Icon(Icons.search, size: 30),
+            Icon(Icons.person, size: 30),
+            Icon(Icons.notifications_active, size: 30),
+            Icon(Icons.more_vert, size: 30),
+          ],
+          onTap: (index) {
+            switch (index) {
+              case 0:
+                // Navigate to home page
+                Get.to(const PlaningSecreen());
+                break;
+              case 1:
+                // Navigate to calendar page
+                Get.to(
+                    PlanningScreen(selectedPlanning!.id, selectedTouristGuide));
+                break;
+              case 2:
+                // Navigate to profile page
+                Get.to(MainProfile());
+                break;
+              case 3:
+                // Navigate to notifications page
+                Get.to(PushNotificationScreen());
+                break;
+              case 4:
+                // Navigate to more options page
+                Get.to(const ConcentricAnimationOnboarding());
+                break;
+            }
+          },
         ),
       ),
     );
