@@ -113,7 +113,7 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
         Uri.parse('$baseUrls/api/push-notifications/notification'),
         headers: {
           "Authorization":
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMwZjkxMTkyLTUzYWItNGUzZC1iM2EwLTM1NDNkNDk5YWVmZCIsInN1YiI6IjMwZjkxMTkyLTUzYWItNGUzZC1iM2EwLTM1NDNkNDk5YWVmZCIsInVzZXJuYW1lIjoiYWJpcjExMSIsImVtYWlsIjoiYWJpcjExMUBnbWFpbC5jb20iLCJyb2xlIjoiQWRtaW5pc3RyYXRvciIsImZpcnN0TmFtZSI6IkFiaXIiLCJsYXN0TmFtZSI6ImNoZXJpZmZmIiwiZXhwaXJlcyI6MTY5MzM4NzAzNSwiY3JlYXRlZCI6MTY5MzMwMDYzNSwiaWF0IjoxNjkzMzAwNjM1LCJleHAiOjE2OTMzODcwMzV9.uJ5AoF2-MPoNf9lB0k2nwzCAv0uSYyWKL1FzMZLow_g",
+              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMwZjkxMTkyLTUzYWItNGUzZC1iM2EwLTM1NDNkNDk5YWVmZCIsInN1YiI6IjMwZjkxMTkyLTUzYWItNGUzZC1iM2EwLTM1NDNkNDk5YWVmZCIsInVzZXJuYW1lIjoiYWJpcjExMSIsImVtYWlsIjoiYWJpcjExMUBnbWFpbC5jb20iLCJyb2xlIjoiQWRtaW5pc3RyYXRvciIsImZpcnN0TmFtZSI6IkFiaXIiLCJsYXN0TmFtZSI6ImNoZXJpZmZmIiwiZXhwaXJlcyI6MTY5MzkyMDEwNCwiY3JlYXRlZCI6MTY5MzgzMzcwNCwiaWF0IjoxNjkzODMzNzA0LCJleHAiOjE2OTM5MjAxMDR9.dAXK5-uccSaTnR3k3O2tM4UZxwFNLcNZulQTNwVwYFc",
           "Content-Type": "application/json"
         },
         body: json.encode({

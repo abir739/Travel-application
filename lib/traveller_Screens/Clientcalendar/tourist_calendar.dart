@@ -85,7 +85,7 @@ class _CalendarPageState extends State<CalendarPage> {
   Future<void> fetchData() async {
     try {
       transferList = await fetchTransfers(
-          "/api/transfers/touristgroups/${widget.selectedTraveller.touristGroupId}");
+          "/api/transfers-mobile/touristgroups/${widget.selectedTraveller.touristGroupId}");
       setState(() {
         List<CalendarEvent> events = transferList.cast<CalendarEvent>();
       });
@@ -98,7 +98,7 @@ class _CalendarPageState extends State<CalendarPage> {
   Future<Map<String, List<dynamic>>> fetchDataAndOrganizeEvents() async {
     try {
       List<Transport> transfersList = await fetchTransfers(
-        "/api/transfers/touristgroups/${widget.selectedTraveller.touristGroupId}",
+        "/api/transfers-mobile/touristgroups/${widget.selectedTraveller.touristGroupId}",
       );
 
       List<CalendarEvent> events =

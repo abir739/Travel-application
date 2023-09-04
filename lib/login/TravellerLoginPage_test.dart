@@ -20,7 +20,8 @@ class _TravellerLoginPageState extends State<TravellerLoginPage> {
   String errorMessage = '';
 
   Future<void> fetchTravellersByCode(String code) async {
-    final url = Uri.parse('$baseUrls/api/travellersMobile?filters[code]=$code');
+    final url =
+        Uri.parse('$baseUrls/api/travellers-mobile?filters[code]=$code');
 
     try {
       final response = await http.get(

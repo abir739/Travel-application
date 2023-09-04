@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zenify_trip/modele/traveller/TravellerModel.dart';
+import 'package:flutter_svg/svg.dart';
 
 class TravelerProfileScreen extends StatelessWidget {
   final Traveller traveler;
@@ -11,6 +12,26 @@ class TravelerProfileScreen extends StatelessWidget {
     double widthC = MediaQuery.of(context).size.width * 100;
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 186, 137, 219),
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 207, 207, 219),
+        title: Row(
+          children: [
+            SvgPicture.asset(
+              'assets/Frame.svg',
+              fit: BoxFit.cover,
+              height: 36.0,
+            ),
+            const SizedBox(width: 40),
+            const Text(
+              "Traveller Profil",
+              style: TextStyle(
+                color: Color.fromARGB(255, 68, 5, 150),
+                fontSize: 18,
+              ),
+            ),
+          ],
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[

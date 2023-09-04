@@ -12,7 +12,6 @@ import '../../modele/transportmodel/transportModel.dart';
 import '../../modele/traveller/TravellerModel.dart';
 import 'package:flutter_svg/svg.dart';
 
-
 class CalendarPage extends StatefulWidget {
   final Traveller selectedTraveller;
 
@@ -50,7 +49,7 @@ class _CalendarPageState extends State<CalendarPage> {
   Future<void> fetchTransfers() async {
     print("${widget.selectedTraveller.touristGroupId}");
     final url = Uri.parse(
-      '$baseUrls/api/transfers/touristgroups/${widget.selectedTraveller.touristGroupId}',
+      '$baseUrls/api/transfers-mobile/touristgroups/${widget.selectedTraveller.touristGroupId}',
     );
 
     try {
@@ -72,6 +71,7 @@ class _CalendarPageState extends State<CalendarPage> {
       // Handle error case
     }
   }
+
   List<CalendarEvent> convertToCalendarEvents(
     List<Transport> transfers,
   ) {
@@ -90,6 +90,7 @@ class _CalendarPageState extends State<CalendarPage> {
     }
     return events;
   }
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;

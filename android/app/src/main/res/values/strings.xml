@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<!-- <string name="app_name">zenify_trip_mobile</string>
+<string name="facebook_app_id">961596891674273</string>
+<string name="fb_login_protocol_scheme">fb961596891674273</string>
+<string name="facebook_client_token">d68d2f143d88e0d36eaa2fe45f109a6a</string> -->
+ <string name="onesignal_notification_accent_color">FF00FF00</string>
+</resources>
+<!-- <?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">voyage</string>
+
+
+    <string name="facebook_app_id">591818172779135</string>
+
+ 
+
+<string name="facebook_client_token">93c6a54826373d9b4340a1bea2f7993b</string>
+    <string name="fb_login_protocol_scheme">fb591818172779135</string>
+
+</resources> -->

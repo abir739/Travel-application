@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -7,7 +6,6 @@ import 'package:zenify_trip/modele/transportmodel/transportModel.dart';
 import 'package:get/get.dart';
 import '../../modele/Event/Event.dart';
 import '../../modele/activitsmodel/httpTransfer.dart';
-
 
 class AppointmentDataSource extends CalendarDataSource {
   AppointmentDataSource(List<Appointment> source) {
@@ -51,7 +49,7 @@ class _TravellerCalendarPageState extends State<TravellerCalendarPage> {
         type: transfer,
         endTime:
             transfer.date!.add(Duration(hours: transfer.durationHours ?? 0)),
-        color: Color.fromARGB(200, 2, 152, 172),
+        color: const Color.fromARGB(200, 2, 152, 172),
       ));
     }
 
@@ -61,7 +59,7 @@ class _TravellerCalendarPageState extends State<TravellerCalendarPage> {
   Future<void> fetchData() async {
     try {
       transferList = await transporthandler
-          .fetchData("/api/transfers/touristgroups/${widget.group}");
+          .fetchData("/api/transfers-mobile/touristgroups/${widget.group}");
       setState(() {
         List<CalendarEvent> events = convertToCalendarEvents(transferList);
       });
@@ -75,15 +73,13 @@ class _TravellerCalendarPageState extends State<TravellerCalendarPage> {
     try {
       // Fetch data using transporthandler and API endpoint
       transferList = await transporthandler
-          .fetchData("/api/transfers/touristgroups/${widget.group}");
+          .fetchData("/api/transfers-mobile/touristgroups/${widget.group}");
 
       // Update the transferlist with fetched data
 
       return transferList; // Return the fetched data
     } catch (e) {
-      if (transferList == null || transferList.isEmpty) {
-       
-      }
+      if (transferList == null || transferList.isEmpty) {}
       // Handle any errors that might occur during data fetching
       print("Error loading data: $e ${widget.group}");
       return []; // Return an empty list in case of an error
@@ -103,7 +99,7 @@ class _TravellerCalendarPageState extends State<TravellerCalendarPage> {
           subject: 'from ${transfer.from} to ${transfer.to}',
           endTime:
               transfer.date!.add(Duration(hours: transfer.durationHours ?? 0)),
-          color: Color.fromARGB(255, 245, 205, 7)));
+          color: const Color.fromARGB(255, 245, 205, 7)));
     }
 
     return AppointmentDataSource(appointments);
@@ -113,16 +109,16 @@ class _TravellerCalendarPageState extends State<TravellerCalendarPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Calendar Page'),
+          title: const Text('Calendar Page'),
         ),
         body: RefreshIndicator(
           onRefresh: fetchData,
           child: ListView(
             children: [
-              Container(
+              SizedBox(
                 height: Get.height * 0.88,
                 child: SfCalendar(
-                  todayHighlightColor: Color.fromARGB(255, 242, 186, 3),
+                  todayHighlightColor: const Color.fromARGB(255, 242, 186, 3),
                   todayTextStyle: const TextStyle(
                       fontStyle: FontStyle.normal,
                       fontSize: 30,
@@ -137,7 +133,8 @@ class _TravellerCalendarPageState extends State<TravellerCalendarPage> {
                             ? const Color.fromARGB(255, 245, 242, 242)
                             : const Color.fromARGB(255, 242, 186, 3),
                         border: Border.all(
-                            color: Color.fromARGB(255, 20, 1, 1), width: 0.5),
+                            color: const Color.fromARGB(255, 20, 1, 1),
+                            width: 0.5),
                       ),
                       alignment: Alignment.center,
                       child: Column(
@@ -159,8 +156,8 @@ class _TravellerCalendarPageState extends State<TravellerCalendarPage> {
                             style: TextStyle(
                               fontSize: 14,
                               color: details.visibleDates.contains(details.date)
-                                  ? Color.fromARGB(255, 236, 2, 2)
-                                  : Color.fromARGB(255, 248, 2, 2),
+                                  ? const Color.fromARGB(255, 236, 2, 2)
+                                  : const Color.fromARGB(255, 248, 2, 2),
                             ),
                           ),
                         ],
@@ -170,7 +167,6 @@ class _TravellerCalendarPageState extends State<TravellerCalendarPage> {
                   headerHeight: 30,
                   controller: _controller,
                   view: CalendarView.schedule,
-                 
                   scheduleViewMonthHeaderBuilder: (
                     BuildContext context,
                     ScheduleViewMonthHeaderDetails headerDetails,
@@ -178,7 +174,7 @@ class _TravellerCalendarPageState extends State<TravellerCalendarPage> {
                     // You can return a custom widget here to be displayed as the header.
 
                     return Container(
-                      color: Color.fromARGB(255, 6, 164, 255),
+                      color: const Color.fromARGB(255, 6, 164, 255),
                       child: Column(
                         children: [
                           Text(
@@ -203,7 +199,6 @@ class _TravellerCalendarPageState extends State<TravellerCalendarPage> {
                           fontSize: 12,
                           color: Color.fromARGB(255, 250, 248, 246),
                           fontWeight: FontWeight.w400)),
-
                   allowedViews: const <CalendarView>[
                     CalendarView.day,
                     CalendarView.week,
@@ -216,10 +211,8 @@ class _TravellerCalendarPageState extends State<TravellerCalendarPage> {
                   monthViewSettings: MonthViewSettings(
                       navigationDirection: MonthNavigationDirection.horizontal,
                       showAgenda: true,
-                
                       agendaItemHeight: Get.height * 0.1,
                       numberOfWeeksInView: 5,
-                     
                       monthCellStyle: const MonthCellStyle(
                         todayBackgroundColor: Colors.red,
                         textStyle: TextStyle(
