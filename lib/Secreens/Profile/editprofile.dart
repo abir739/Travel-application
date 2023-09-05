@@ -58,7 +58,7 @@ class _MainProfileState extends State<MainProfile> {
         selectedUser = user;
         circular = false;
       });
-      if (user.gender == null) {
+      if (user.email == null) {
         // ignore: use_build_context_synchronously
         Navigator.pushReplacement(
           context,

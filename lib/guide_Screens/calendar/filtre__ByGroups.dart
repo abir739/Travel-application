@@ -1,24 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:zenify_trip/guide_Screens/travelers_list_screen.dart';
+
 import 'package:zenify_trip/constent.dart';
+import 'package:zenify_trip/guide_Screens/calendar/Group_Calendar.dart';
 import 'package:zenify_trip/login.dart';
 import 'dart:convert';
 import 'package:flutter_svg/svg.dart';
 import 'package:zenify_trip/modele/touristGroup.dart';
 
-class TravellersListScreen extends StatefulWidget {
+class GroupsListScreen extends StatefulWidget {
   final String? guideId;
+  
 
-  const TravellersListScreen({super.key, required this.guideId});
+  const GroupsListScreen({super.key, required this.guideId});
 
   @override
   // ignore: library_private_types_in_public_api
-  _TravellersListScreenState createState() => _TravellersListScreenState();
+  _GroupsListScreenState createState() => _GroupsListScreenState();
 }
 
-class _TravellersListScreenState extends State<TravellersListScreen> {
+class _GroupsListScreenState extends State<GroupsListScreen> {
   List<TouristGroup> _touristGroups = [];
+
+
 
   @override
   void initState() {
@@ -101,16 +105,16 @@ class _TravellersListScreenState extends State<TravellersListScreen> {
                   ),
                 ),
                 // You can add more content here like trailing icons, etc.
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => TravelersListScreen(
-                        selectedtouristGroupId: group.id,
-                      ),
-                    ),
-                  );
-                },
+               onTap: () {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => GroupCalendarScreen(
+        selectedtouristGroupId: group.id,
+      ),
+    ),
+  );
+},
               ),
             );
           },

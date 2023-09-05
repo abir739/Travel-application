@@ -1,22 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:zenify_trip/modele/TouristGuide.dart';
-
 import '../../modele/activitsmodel/pushnotificationmodel.dart';
 import '../../modele/httpNotificationId.dart';
-import '../../modele/httpTouristguidByid.dart';
-import '../../modele/httpTravellerbyid.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class ActivityDetailScreen extends StatefulWidget {
   final String? id;
 
-  const ActivityDetailScreen({this.id});
+  const ActivityDetailScreen({super.key, this.id});
 
   @override
+  // ignore: library_private_types_in_public_api
   _ActivityDetailScreenState createState() => _ActivityDetailScreenState();
 }
 
 class _ActivityDetailScreenState extends State<ActivityDetailScreen> {
+  // ignore: non_constant_identifier_names
   final NotificationH =
       HTTPHandlerNotificationId(); // Initialize your HTTP handler
   late PushNotification activityDetails;
@@ -24,19 +23,9 @@ class _ActivityDetailScreenState extends State<ActivityDetailScreen> {
   @override
   void initState() {
     super.initState();
-    // final Map<String, dynamic>? arguments =
-    //     ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
-    // ids    = arguments?['id'] as String?;
-    // // Fetch activity details using the provided ID
-    // print("${widget.id} widget.id" );
-    // fetchActivityDetails(ids);
-    // final Map<String, dynamic>? arguments =
-    //     ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
-    // ids = arguments?['id'] as String?;
-    // print("ids $ids");
-    // Fetch activity details using the extracted 'id'
     fetchActivityDetails(ids);
   }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -45,30 +34,9 @@ class _ActivityDetailScreenState extends State<ActivityDetailScreen> {
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
     ids = arguments?['id'] as String?;
     print("ids $ids");
-    // Fetch activity details using the extracted 'id'
     fetchActivityDetails(ids);
   }
 
-//   Future<PushNotification> fetchActivityDetails(String id) async {
-//     try {
-//       // Use your HTTP handler to fetch activity details by ID
-//       final activityDetails = await NotificationH.fetchData(id);
-//       // Update the state or display the activity details here
-//     } catch (error) {
-//       // Handle any errors or show an error message
-//     }
-// return activityDetails;
-//   }
-// Future<void> fetchActivityDetails(String id) async {
-//     try {
-//       final details = await NotificationH.fetchData(id);
-//       setState(() {
-//         activityDetails = details as PushNotification;
-//       });
-//     } catch (error) {
-//       // Handle any errors or show an error message
-//     }
-//   }
   Future<PushNotification> fetchActivityDetails(String? id) async {
     try {
       final details =
@@ -76,8 +44,7 @@ class _ActivityDetailScreenState extends State<ActivityDetailScreen> {
 
       return details; // Return the fetched data
     } catch (error) {
-      // Handle any errors or show an error message
-      throw error; // You should throw the error to propagate it
+      rethrow; // You should throw the error to propagate it
     }
   }
 
@@ -85,38 +52,98 @@ class _ActivityDetailScreenState extends State<ActivityDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Activity Detail'),
+        backgroundColor: const Color(0xFFCFCFDB),
+        title: Row(
+          children: [
+            SvgPicture.asset(
+              'assets/Frame.svg',
+              fit: BoxFit.cover,
+              height: 36.0,
+            ),
+            const SizedBox(width: 40),
+            const Text(
+              'Notification Detail',
+              style: TextStyle(
+                color: Color(0xFF440596),
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: FutureBuilder<PushNotification>(
-          future: fetchActivityDetails(widget.id),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              // While data is being fetched, display a loading indicator
-              return CircularProgressIndicator();
-            } else if (snapshot.hasError) {
-              // If there's an error, display an error message
-              return Text('Error: ${snapshot.error}');
-            } else {
-              // Once data is fetched, display the activity details
-              final details = snapshot.data;
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    details?.message ?? 'No Data',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
+      body: Container(
+        decoration: const BoxDecoration(
+          // Add a background gradient
+          gradient: LinearGradient(
+            colors: [
+              Color.fromARGB(255, 180, 212, 238),
+              Color.fromARGB(255, 130, 146, 238)
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(26.0),
+          child: FutureBuilder<PushNotification>(
+            future: fetchActivityDetails(widget.id),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(
+                    color: Colors.white,
                   ),
-                  SizedBox(height: 8.0),
-                  // Add more widgets here to display additional details if needed
-                ],
-              );
-            }
-          },
+                );
+              } else if (snapshot.hasError) {
+                return Center(
+                  child: Text(
+                    'Error: ${snapshot.error}',
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                );
+              } else {
+                final details = snapshot.data;
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Display notification icon and additional details here
+                    // Apply custom fonts, styles, and animations as needed
+                    Text(
+                      details!.title as String,
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(255, 30, 15, 243),
+                      ),
+                    ),
+                    const Divider(),
+                    const SizedBox(height: 22.0),
+                    Text(
+                      details?.type ?? 'No Data',
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(255, 67, 21, 233),
+                      ),
+                    ),
+                    const SizedBox(height: 22.0),
+                    Text(
+                      details?.message ?? 'No Data',
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(height: 16.0),
+
+                    // Add buttons or actions for user interaction
+                  ],
+                );
+              }
+            },
+          ),
         ),
       ),
     );

@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
@@ -7,9 +6,7 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:zenify_trip/traveller_Screens/Clientcalendar/TravellerFirstScreen.dart';
 import 'package:zenify_trip/Secreens/acceuil/welcomPgeGuid.dart';
 import 'NetworkHandler.dart';
-
 import 'Secreens/PlannigSecreen.dart';
-
 import 'constent.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -21,12 +18,10 @@ class MyLogin extends StatefulWidget {
 }
 
 final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-// final _globalkey = GlobalKey<FormState>();
 TextEditingController emailController = TextEditingController();
 TextEditingController confirmController = TextEditingController();
 TextEditingController lastNameController = TextEditingController();
 TextEditingController firstNameController = TextEditingController();
-
 TextEditingController passwordController = TextEditingController();
 TextEditingController confirmPasswordController = TextEditingController();
 TextEditingController usernameController = TextEditingController();

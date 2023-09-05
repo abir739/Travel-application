@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zenify_trip/NetworkHandler.dart';
 import 'package:zenify_trip/guide_Screens/calendar/menu.dart';
-
+import 'package:zenify_trip/main.dart';
 import 'package:zenify_trip/modele/touristGroup.dart';
 import 'package:get/get.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -82,34 +82,21 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
     initPlatformState();
   }
 
+  Future<void> logout() async {
+    // Delete sensitive data from secure storage
+    await storage.deleteAll();
+
+    void logout() async {
+      await storage.delete(key: "access_token");
+      await storage.delete(key: "Role");
+      Get.toNamed('login');
+      Get.off(SplashScreen());
+    }
+  }
+
   Future<void> initPlatformState() async {
     OneSignal.shared.setAppId(
       oneSignalAppId,
-    );
-
-    OneSignal.shared
-        .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
-      OSNotification notification1 = result.notification;
-
-      OSNotification notification = result.notification;
-      OSNotificationAction? action = result.action;
-
-      // Access notification properties
-      String notificationId = notification.notificationId;
-      String? title = notification.title;
-      String? body = notification.body;
-      Map<String, dynamic>? additionalData = notification.additionalData;
-
-      // Access action properties
-      OSNotificationActionType? actionType = action?.type;
-      String? actionId = action?.actionId;
-      // Map<String, dynamic>? actionData = action?.additionalData;
-      print('title $title bodys $body actionType $actionType');
-    });
-    OneSignal.shared.setNotificationOpenedHandler(
-      (OSNotificationOpenedResult result) async {
-        var data = result.notification.additionalData;
-      },
     );
   }
 
@@ -182,8 +169,6 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
 
     final data = await httpHandlerPlanning.fetchData("/api/plannings");
 
-// /touristGroupId/${selectedTouristGroup!.id}");
-
     setState(() {
       print('$data data1');
       planning = data.cast<PlanningMainModel>();
@@ -194,10 +179,6 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
       } else {
         print('$data data');
         selectedPlanning = null;
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(builder: (context) => AddPlanningScreen()),
-        // );
       }
     });
   }
@@ -278,11 +259,9 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                               fontSize: 20,
                               color: Color.fromARGB(255, 90, 3, 203))),
                       ElevatedButton(
-                        child: const Text('Logout'),
                         style: ElevatedButton.styleFrom(
-                          primary: Colors
-                              .red, // Change the button's background color
-                          onPrimary: Colors.white, // Change the text color
+                          foregroundColor: Colors.white,
+                          primary: Colors.red, // Change the text color
                           textStyle: const TextStyle(
                               fontSize: 16), // Change the text style
                           padding: const EdgeInsets.symmetric(
@@ -295,9 +274,11 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                           ),
                         ),
                         onPressed: () async {
-                          await storage.delete(key: "access_token");
+                          // await storage.delete(key: "access_token");
                           // Get.to(LoginView());
+                          logout();
                         },
+                        child: const Text('Logout'),
                       ),
                     ],
                   ),

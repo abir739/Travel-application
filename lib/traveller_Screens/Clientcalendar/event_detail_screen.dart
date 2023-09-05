@@ -13,7 +13,7 @@ class EventDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFFCFCFDB),
+        backgroundColor: const Color(0xFFCFCFDB),
         title: Row(
           children: [
             SvgPicture.asset(
@@ -21,7 +21,7 @@ class EventDetailScreen extends StatelessWidget {
               fit: BoxFit.cover,
               height: 36.0,
             ),
-            SizedBox(width: 40),
+            const SizedBox(width: 40),
             const Text(
               'Event Details',
               style: TextStyle(

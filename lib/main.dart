@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
       routes: {
         'register': (context) => const MyRegister(),
         'login': (context) => const RoleSelectionPage(),
-        'planning': (context) => const PlaningSecreen(), // Add this route
+        // 'planning': (context) => const PlaningSecreen(), // Add this route
         'Traveller': (context) => TravellerFirstScreen(
               userList: const [],
             ), // Add this route

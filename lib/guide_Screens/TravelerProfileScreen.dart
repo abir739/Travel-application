@@ -164,7 +164,7 @@ class TravelerProfileScreen extends StatelessWidget {
                 title: const Text("Phone Number"),
                 subtitle: Text(traveler.user!.phone ?? 'N/A'),
               ),
-              Divider(),
+              const Divider(),
               ListTile(
                 leading: const Icon(
                   Icons.cake,

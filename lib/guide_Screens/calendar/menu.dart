@@ -6,6 +6,7 @@ import 'package:zenify_trip/Secreens/ConcentricAnimationOnboarding.dart';
 import 'package:zenify_trip/Secreens/CustomCalendarDataSource.dart';
 import 'package:zenify_trip/Secreens/Notification/PushNotificationScreen.dart';
 import 'package:zenify_trip/Secreens/Profile/editprofile.dart';
+import 'package:zenify_trip/guide_Screens/calendar/filtre__ByGroups.dart';
 import 'package:zenify_trip/guide_Screens/calendar/transfert_data.dart';
 import 'package:zenify_trip/guide_Screens/travellers_list_screen.dart';
 import 'package:zenify_trip/constent.dart';
@@ -328,6 +329,13 @@ class _PlanningScreenState extends State<PlanningScreen> {
                               // Handle option 1 click
                               // Close the dropdown
                               Navigator.pop(context);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => GroupsListScreen(
+                                      guideId: widget.guid?.id),
+                                ),
+                              );
                             },
                           ),
                           ListTile(
