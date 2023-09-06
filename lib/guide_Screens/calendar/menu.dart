@@ -20,7 +20,7 @@ import 'package:get/get.dart';
 import 'package:zenify_trip/modele/planningmainModel.dart';
 import 'package:zenify_trip/modele/transportmodel/transportModel.dart';
 import 'package:flutter_svg/svg.dart';
-
+//import 'package:zenify_trip/modele/transportmodel/transportModel.dart';
 import 'eventdetail_test.dart';
 
 class PlanningScreen extends StatefulWidget {
