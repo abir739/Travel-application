@@ -114,6 +114,7 @@ class _EventViewState extends State<EventView> {
         "message": _messageController.text,
         "title": _titleController.text,
         "type": _typeController.text,
+        "Screen": _messageController.text,
         "sendNotification": sendNotification
       };
       final newData = {

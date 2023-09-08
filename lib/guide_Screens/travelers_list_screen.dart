@@ -190,10 +190,18 @@ class _TravelersListScreenState extends State<TravelersListScreen> {
                             12), // Add padding to the card's content
                         child: ListTile(
                           leading: CircleAvatar(
-                            backgroundImage:
-                                NetworkImage("${traveler.user!.picture}"),
+                            backgroundImage: traveler.user!.picture != null
+                                ? NetworkImage("${traveler.user!.picture}")
+                                : null, // Use null if there is no picture
                             radius:
                                 40, // Increase the radius for a bigger profile picture
+                            child: traveler.user!.picture == null
+                                ? Text(
+                                    '${traveler.user!.firstName?[0]}${traveler.user!.lastName?[0]}',
+                                    style: const TextStyle(
+                                        fontSize: 20, color: Colors.white),
+                                  ) // Display initials if no picture
+                                : null, // Use null if there is a picture
                           ),
                           title: Text(
                             '${traveler.user!.firstName} ${traveler.user!.lastName}',

@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:zenify_trip/guide_Screens/firstpage.dart';
+
+
 import 'package:zenify_trip/traveller_Screens/Clientcalendar/TravellerFirstScreen.dart';
-import 'package:zenify_trip/Secreens/acceuil/welcomPgeGuid.dart';
+
 import 'NetworkHandler.dart';
 import 'Secreens/PlannigSecreen.dart';
 import 'constent.dart';
@@ -19,6 +22,7 @@ class MyLogin extends StatefulWidget {
 
 final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 TextEditingController emailController = TextEditingController();
+TextEditingController emailtester = TextEditingController();
 TextEditingController confirmController = TextEditingController();
 TextEditingController lastNameController = TextEditingController();
 TextEditingController firstNameController = TextEditingController();
@@ -41,6 +45,7 @@ class _MyLoginState extends State<MyLogin> {
     super.initState();
     _requestPermission();
     emailController = TextEditingController();
+    emailtester = TextEditingController();
     passwordController = TextEditingController();
     initPlatformState();
     OneSignal.shared.setAppId(oneSignalAppId);
@@ -115,7 +120,7 @@ class _MyLoginState extends State<MyLogin> {
           //     key: "access_token", value: output["access_token"]);
           await storage.write(key: "id", value: output["data"]["id"]);
           await storage.write(key: "Role", value: output["data"]["role"]);
-          String Role = output["data"]["role"];
+          String? Role = output["data"]["role"];
           // Navigator.pushNamed(context, 'register');
           // Get.to(() => GoogleBottomBar());
           if (Role == "Administrator") {
@@ -143,6 +148,44 @@ class _MyLoginState extends State<MyLogin> {
             colorText: Colors.white,
             backgroundColor: const Color.fromARGB(255, 185, 4, 4));
       }
+    }
+  }
+
+  void _handlePassword() async {
+    Map<String, String> data = {
+      "email": "abir.cherif@ensi-uma.tn",
+    };
+    try {
+      print("${emailtester.text}");
+      var response = await networkHandler.post(
+          "${baseUrls}/api/auth/forgot-password", data);
+
+      print(response.body);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        Map<String, dynamic> output =
+            Map<String, dynamic>.from(json.decode(response.body));
+
+        print(output["message"]);
+      } else {
+        Map<String, dynamic> output =
+            Map<String, dynamic>.from(json.decode(response.body));
+
+        print(output);
+
+        // Display an error message using Get.snackbar or any other method you prefer.
+        Get.snackbar('Warning', 'Error: ${output["message"]}',
+            colorText: Colors.white,
+            backgroundColor: const Color.fromARGB(255, 185, 4, 4));
+      }
+    } catch (error) {
+      print('Network request failed: $error');
+      Get.snackbar('Warning', 'Network request failed: $error',
+          backgroundGradient: const LinearGradient(
+            colors: [Color(0xff979090), Color(0x31858489)],
+          ),
+          colorText: Colors.white,
+          backgroundColor: const Color.fromARGB(255, 185, 4, 4));
     }
   }
 
@@ -261,15 +304,56 @@ class _MyLoginState extends State<MyLogin> {
                                   ),
                                 ),
                                 TextButton(
-                                    onPressed: () {},
-                                    child: const Text(
-                                      'Forgot Password',
-                                      style: TextStyle(
-                                        decoration: TextDecoration.underline,
-                                        color: Color(0xff4c505b),
-                                        fontSize: 18,
-                                      ),
-                                    )),
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: const Text("Forgot Password"),
+                                          content: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              const Text(
+                                                  "Please enter your email to reset your password:"),
+                                              TextFormField(
+                                                // Add your TextFormField properties here for email input
+                                                // Example: keyboardType, controller, validation, etc.
+                                                controller:
+                                                    emailController, // Use your email input controller
+                                              ),
+                                            ],
+                                          ),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                _handlePassword(); // Call your function to send the reset email
+                                                Navigator.of(context)
+                                                    .pop(); // Close the dialog
+                                              },
+                                              child: const Text(
+                                                  "Send a reset email"),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context)
+                                                    .pop(); // Close the dialog
+                                              },
+                                              child: const Text("Cancel"),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: const Text(
+                                    'Forgot Password',
+                                    style: TextStyle(
+                                      decoration: TextDecoration.underline,
+                                      color: Color(0xff4c505b),
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ),
                               ],
                             )
                           ],

@@ -5,9 +5,10 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:zenify_trip/guide_Screens/firstpage.dart';
 import '../NetworkHandler.dart';
 import '../Secreens/PlannigSecreen.dart';
-import '../Secreens/acceuil/welcomPgeGuid.dart';
+
 import '../constent.dart';
 import '../login.dart';
 

@@ -1,20 +1,3 @@
-// import 'package:flutter/material.dart';
-// import 'package:zenify_trip/register.dart';
-// import 'package:get/get.dart';
-
-// import 'login.dart';
-// import 'login/RoleSelectionPage.dart';
-
-// void main() {
-//   runApp(GetMaterialApp(
-//     debugShowCheckedModeBanner: false,
-//     home: RoleSelectionPage(),
-//     routes: {
-//       'register': (context) => const MyRegister(),
-//       'login': (context) => const RoleSelectionPage(),
-//     },
-//   ));
-// }
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -22,13 +5,13 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:zenify_trip/Secreens/Notification/NotificationDetails.dart';
 import 'package:zenify_trip/Secreens/TouristGroupProvider.dart';
+import 'package:zenify_trip/guide_Screens/firstpage.dart';
 import 'package:zenify_trip/login/RoleSelectionPage.dart';
 import 'package:zenify_trip/register.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:zenify_trip/traveller_Screens/Clientcalendar/TravellerFirstScreen.dart';
 
-import 'Secreens/acceuil/welcomPgeGuid.dart';
 import 'constent.dart';
 import 'onesignal_handler.dart';
 
@@ -53,13 +36,13 @@ class MyApp extends StatelessWidget {
       routes: {
         'register': (context) => const MyRegister(),
         'login': (context) => const RoleSelectionPage(),
-        // 'planning': (context) => const PlaningSecreen(), // Add this route
+        'planning': (context) => const PlaningSecreen(), // Add this route
         'Traveller': (context) => TravellerFirstScreen(
               userList: const [],
             ), // Add this route
         'SplashScreen': (context) => SplashScreen(), // Add this route
-        'GuideHome': (context) =>
-            const PlaningSecreen(), // Add this routeActivityDetailScreen
+        // 'GuideHome': (context) =>
+        //     const PlaningSecreen(), // Add this routeActivityDetailScreen
         'notification': (context) {
           final args =
               Get.arguments; // Get the arguments passed when navigating

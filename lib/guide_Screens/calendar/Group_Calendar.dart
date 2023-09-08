@@ -81,7 +81,7 @@ class _GroupCalendarScreenState extends State<GroupCalendarScreen> {
   Future<void> fetchData() async {
     try {
       transferList = await fetchTransfers(
-          "  /api/transfers-mobile/touristgroups/${widget.selectedtouristGroupId}");
+          "/api/transfers-mobile/touristgroups/${widget.selectedtouristGroupId}");
       setState(() {
         List<CalendarEvent> events = transferList.cast<CalendarEvent>();
       });
