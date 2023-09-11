@@ -1,6 +1,5 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'ConcentricAnimationOnboarding.dart';
@@ -8,6 +7,8 @@ import 'Profile/MainProfile.dart';
 import 'PushNotificationScreen.dart';
 
 class CalendarPage extends StatefulWidget {
+  const CalendarPage({super.key});
+
   @override
   _CalendarPageState createState() => _CalendarPageState();
 }
@@ -17,9 +18,9 @@ class _CalendarPageState extends State<CalendarPage> {
   final List<Widget> _pages = [
     
     const ConcentricAnimationOnboarding(),
-    MainProfile(),
-    PushNotificationScreen(),
-    MainProfile(), // Add your other pages here
+    const MainProfile(),
+    const PushNotificationScreen(),
+    const MainProfile(), // Add your other pages here
   ];
 
   @override

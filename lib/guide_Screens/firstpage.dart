@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:zenify_trip/NetworkHandler.dart';
 import 'package:zenify_trip/guide_Screens/calendar/menu.dart';
 import 'package:zenify_trip/main.dart';
@@ -10,7 +10,7 @@ import 'package:zenify_trip/modele/touristGroup.dart';
 import 'package:get/get.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jwt_decode/jwt_decode.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
+// import 'package:onesignal_flutter/onesignal_flutter.dart';
 import '../../modele/HttpPlaning.dart';
 import '../../modele/TouristGuide.dart';
 import '../../modele/activitsmodel/httpActivites.dart';
@@ -79,7 +79,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
     _loadDataplanning();
     _loadDataGuid();
     readRoleFromToken();
-    initPlatformState();
+    // initPlatformState();
   }
 
   Future<void> logout() async {
@@ -96,9 +96,9 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
 
   Future<void> initPlatformState() async {
     OneSignal.shared.setAppId(
-      oneSignalAppId,
+     oneSignalAppId,
     );
-  }
+   }
 
   Future<Traveller> _loadDataTraveller() async {
     final userId = await storage.read(key: "id");
@@ -141,7 +141,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
     }
     setState(() {
       touristGuides = data.cast<TouristGuide>();
-      selectedTouristGuide = data.first as TouristGuide;
+      selectedTouristGuide = data.first;
       isLoading = false;
     });
   }
@@ -261,7 +261,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
-                          primary: Colors.red, // Change the text color
+                          backgroundColor: Colors.red, // Change the text color
                           textStyle: const TextStyle(
                               fontSize: 16), // Change the text style
                           padding: const EdgeInsets.symmetric(
@@ -337,8 +337,9 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                           const SizedBox(height: 70),
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              primary: const Color.fromARGB(255, 207, 207, 206),
-                              onPrimary: Colors.white,
+                              foregroundColor: Colors.white,
+                              backgroundColor:
+                                  const Color.fromARGB(255, 207, 207, 206),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30),
                               ),
@@ -350,21 +351,19 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                             child: SizedBox(
                               width: Get.width * 0.8,
                               height: Get.height * 0.06,
-                              child: Row(
+                              child: const Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
                                 children: [
                                   Icon(
                                     Icons.door_back_door_outlined,
-                                    color:
-                                        const Color.fromARGB(255, 26, 24, 25),
+                                    color: Color.fromARGB(255, 26, 24, 25),
                                     size: 24,
                                   ),
                                   Text(
                                     'Let\'s Go Travel!',
                                     style: TextStyle(
-                                      color:
-                                          const Color.fromARGB(255, 42, 9, 60),
+                                      color: Color.fromARGB(255, 42, 9, 60),
                                       fontSize: 20,
                                     ),
                                   ),

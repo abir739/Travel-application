@@ -61,6 +61,37 @@ class _TravellerLoginPageState extends State<TravellerLoginPage> {
     );
   }
 
+  void _handleSearchButton() {
+    String code = codeController.text;
+    if (code.isNotEmpty) {
+      fetchTravellersByCode(code);
+    } else {
+      // Show the AlertDialog for empty code
+      _showInvalidCodeDialog();
+    }
+  }
+
+  void _showInvalidCodeDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Invalid Code'),
+          content:
+              Text('Please verify the code or enter another correct code.'),
+          actions: <Widget>[
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,14 +128,9 @@ class _TravellerLoginPageState extends State<TravellerLoginPage> {
             const SizedBox(height: 20),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: const Color.fromARGB(255, 68, 5, 150),
+                backgroundColor: const Color.fromARGB(255, 68, 5, 150),
               ),
-              onPressed: () {
-                String code = codeController.text;
-                if (code.isNotEmpty) {
-                  fetchTravellersByCode(code);
-                }
-              },
+              onPressed: _handleSearchButton, // Use the new method
               child: const Text('Search'),
             ),
             const SizedBox(height: 20),

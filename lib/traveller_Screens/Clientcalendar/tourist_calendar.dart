@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -295,7 +294,7 @@ class _CalendarPageState extends State<CalendarPage> {
                       title: const Text('Profil'),
                       onTap: () {
                         // Handle drawer item click
-                        Get.to(MainProfile()); // Close the drawer
+                        Get.to(const MainProfile()); // Close the drawer
                       },
                     ),
                     ListTile(

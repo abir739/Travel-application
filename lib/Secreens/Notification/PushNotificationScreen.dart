@@ -14,6 +14,8 @@ import '../../modele/touristGroup.dart';
 import 'package:flutter_svg/svg.dart';
 
 class PushNotificationScreen extends StatefulWidget {
+  const PushNotificationScreen({super.key});
+
   @override
   _PushNotificationScreenState createState() => _PushNotificationScreenState();
 }
@@ -65,7 +67,7 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
 
     setState(() {
       touristGuides = data.cast<TouristGuide>();
-      selectedTouristGuide = data.first as TouristGuide;
+      selectedTouristGuide = data.first;
     });
     _loadDatagroup(); // Call _loadDatagroup after loading data
   }
@@ -84,7 +86,7 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
 
     setState(() {
       touristGroup = data.cast<TouristGroup>();
-      selectedTouristGroup = data.first as TouristGroup;
+      selectedTouristGroup = data.first;
       group = touristGroup;
       initializeMultiSelectItems();
     });
@@ -176,14 +178,14 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
         ),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Card(
-              margin: EdgeInsets.all(14),
+              margin: const EdgeInsets.all(14),
               shape: RoundedRectangleBorder(
-                side: BorderSide(color: Color.fromARGB(235, 79, 2, 2)),
+                side: const BorderSide(color: Color.fromARGB(235, 79, 2, 2)),
                 borderRadius: BorderRadius.circular(15),
               ),
               child: MultiSelectDialogField<TouristGroup>(
@@ -191,17 +193,17 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
                 isDismissible: false,
                 initialValue: selectedGroup.toList(),
                 dialogHeight: Get.height * 0.2,
-                barrierColor: Color.fromARGB(146, 129, 129, 129),
-                title: Text('group List'),
+                barrierColor: const Color.fromARGB(146, 129, 129, 129),
+                title: const Text('group List'),
                 separateSelectedItems: true,
                 selectedColor: Colors.purple,
                 searchable: true,
-                selectedItemsTextStyle: TextStyle(
+                selectedItemsTextStyle: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
                   color: Color.fromARGB(255, 133, 3, 133),
                 ),
-                unselectedColor: Color.fromARGB(255, 8, 88, 180),
+                unselectedColor: const Color.fromARGB(255, 8, 88, 180),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please select at least one group';
@@ -223,7 +225,7 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
                   color: Color.fromARGB(47, 181, 89, 3),
                 ),
                 alignment: Alignment.center,
-                padding: EdgeInsets.all(2.0),
+                padding: const EdgeInsets.all(2.0),
                 margin: const EdgeInsets.only(left: 20, right: 20),
                 child: touristGuides!.isEmpty
                     ? ElevatedButton(
@@ -242,7 +244,7 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
                             DropdownButton<TouristGuide>(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(20)),
-                              dropdownColor: Color.fromARGB(255, 229, 224, 224),
+                              dropdownColor: const Color.fromARGB(255, 229, 224, 224),
                               iconEnabledColor:
                                   const Color.fromARGB(160, 245, 241, 241),
                               iconDisabledColor:

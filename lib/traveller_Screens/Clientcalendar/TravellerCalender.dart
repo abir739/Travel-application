@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:zenify_trip/Secreens/EventTransporClient.dart';
 import 'package:zenify_trip/modele/transportmodel/transportModel.dart';
@@ -79,7 +78,7 @@ class _TravellerCalendarPageState extends State<TravellerCalendarPage> {
 
       return transferList; // Return the fetched data
     } catch (e) {
-      if (transferList == null || transferList.isEmpty) {}
+      if (transferList.isEmpty) {}
       // Handle any errors that might occur during data fetching
       print("Error loading data: $e ${widget.group}");
       return []; // Return an empty list in case of an error

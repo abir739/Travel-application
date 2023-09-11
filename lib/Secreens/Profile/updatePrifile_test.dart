@@ -1,23 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:intl/intl.dart';
 import '../../NetworkHandler.dart';
 import '../../constent.dart';
 import '../../login.dart';
 import '../../modele/HttpUserHandler.dart';
 import '../../modele/activitsmodel/usersmodel.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:timezone/timezone.dart' as tz;
-import 'package:timezone/data/latest.dart' as tz;
 import 'CreatProfile.dart';
-import 'UpdateUserDetailDialog.dart';
 
 String? baseUrl = "";
 
 class MainProfile extends StatefulWidget {
-  MainProfile({Key? key}) : super(key: key);
+  const MainProfile({Key? key}) : super(key: key);
 
   @override
   _MainProfileState createState() => _MainProfileState();
@@ -34,16 +29,16 @@ class _MainProfileState extends State<MainProfile> {
   User? selectedUser = User();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   // final _globalkey = GlobalKey<FormState>();
-  TextEditingController _name = TextEditingController();
-  TextEditingController _profession = TextEditingController();
-  TextEditingController _dob = TextEditingController();
-  TextEditingController _title = TextEditingController();
-  TextEditingController _about = TextEditingController();
+  final TextEditingController _name = TextEditingController();
+  final TextEditingController _profession = TextEditingController();
+  final TextEditingController _dob = TextEditingController();
+  final TextEditingController _title = TextEditingController();
+  final TextEditingController _about = TextEditingController();
 
   NetworkHandler networkHandler = NetworkHandler();
   // ProfileModel profileModel = ProfileModel();
 
-  FlutterSecureStorage storage = FlutterSecureStorage();
+  FlutterSecureStorage storage = const FlutterSecureStorage();
 
   @override
   void initState() {
@@ -71,7 +66,7 @@ class _MainProfileState extends State<MainProfile> {
       if (user.gender == null) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => CreatProfile()),
+          MaterialPageRoute(builder: (context) => const CreatProfile()),
         );
       }
     } catch (error) {
@@ -83,7 +78,7 @@ class _MainProfileState extends State<MainProfile> {
     final userId =
         await storage.read(key: "id"); // Replace with the actual user ID
     baseUrl = await storage.read(key: "baseurl");
-    final String apiUrl = '${baseUrls}/api/users/$userId';
+    final String apiUrl = '$baseUrls/api/users/$userId';
     token = (await storage.read(key: "access_token"))!;
     try {
       final response = await http.patch(
@@ -101,10 +96,10 @@ class _MainProfileState extends State<MainProfile> {
         });
       } else {
         print('Failed to update phone number');
-        print('$token');
+        print(token);
         print('$userId');
-        print('${baseUrls}');
-        print('$apiUrl');
+        print(baseUrls);
+        print(apiUrl);
         print('Failed to update phone number');
       }
     } catch (error) {
@@ -116,12 +111,12 @@ class _MainProfileState extends State<MainProfile> {
     final String? userId =
         await storage.read(key: "id"); // Replace with the actual user ID
     final String? baseUrl = await storage.read(key: "baseurl");
-    final String? apiUrl = '${baseUrls}/api/users/$userId';
+    final String apiUrl = '$baseUrls/api/users/$userId';
     final String? token = await storage.read(key: "access_token");
 
     try {
       final response = await http.patch(
-        Uri.parse(apiUrl!),
+        Uri.parse(apiUrl),
         headers: {
           'Authorization': 'Bearer $token',
         },
@@ -163,7 +158,7 @@ class _MainProfileState extends State<MainProfile> {
         print('Failed to update $field');
         print('Token: $token');
         print('User ID: $userId');
-        print('Base URL: ${baseUrls}');
+        print('Base URL: $baseUrls');
         print('API URL: $apiUrl');
       }
     } catch (error) {
@@ -191,14 +186,14 @@ class _MainProfileState extends State<MainProfile> {
       body: Padding(
         padding: const EdgeInsets.all(14.0),
         child: circular
-            ? Center(child: CircularProgressIndicator())
+            ? const Center(child: CircularProgressIndicator())
             : ListView(
                 children: <Widget>[
                   Card(
-                    margin: EdgeInsets.only(top: 10),
+                    margin: const EdgeInsets.only(top: 10),
                     shape: BeveledRectangleBorder(
                       side:
-                          BorderSide(color: Color.fromARGB(255, 239, 236, 236)),
+                          const BorderSide(color: Color.fromARGB(255, 239, 236, 236)),
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
@@ -207,7 +202,7 @@ class _MainProfileState extends State<MainProfile> {
                   ),
                   Row(
                     children: [
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       const Icon(
                         Icons.email,
                         color: Color.fromARGB(210, 13, 2, 165),
@@ -225,14 +220,14 @@ class _MainProfileState extends State<MainProfile> {
                         onPressed: () {
                           showPasswordUpdateDialog(context); // Pass the context
                         },
-                        child: Text('Change Password'),
+                        child: const Text('Change Password'),
                       )
                     ],
                   ),
                   const SizedBox(height: 20),
                   Text(
                     "Phone: ${selectedUser?.phone ?? 'No phone available'}",
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                       color: Color.fromARGB(210, 14, 14, 15),
@@ -242,17 +237,17 @@ class _MainProfileState extends State<MainProfile> {
                   InkWell(
                     child: Row(
                       children: [
-                        SizedBox(width: 10),
-                        Icon(
+                        const SizedBox(width: 10),
+                        const Icon(
                           Icons.person,
                           color: Color.fromARGB(210, 13, 2, 165),
                         ),
-                        SizedBox(
+                        const SizedBox(
                             width:
                                 8), // Adding some spacing between icon and text
                         Text(
                           'lastName: ${selectedUser?.lastName ?? ""}',
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                             color: Color.fromARGB(
@@ -276,7 +271,7 @@ class _MainProfileState extends State<MainProfile> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Update Phone Number'),
+          title: const Text('Update Phone Number'),
           content: TextField(
             controller: TextEditingController(text: updatedPhoneNumber),
             onChanged: (value) {
@@ -288,7 +283,7 @@ class _MainProfileState extends State<MainProfile> {
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
               },
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
             ElevatedButton(
               onPressed: () {
@@ -296,7 +291,7 @@ class _MainProfileState extends State<MainProfile> {
                 updatePhoneNumber(updatedPhoneNumber);
                 Navigator.of(context).pop(); // Close the dialog
               },
-              child: Text('Update'),
+              child: const Text('Update'),
             ),
           ],
         );
@@ -314,7 +309,7 @@ void showPasswordUpdateDialog(BuildContext context) {
         String confirmPassword = '';
 
         return AlertDialog(
-          title: Text('Change Password'),
+          title: const Text('Change Password'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -323,21 +318,21 @@ void showPasswordUpdateDialog(BuildContext context) {
                 onChanged: (value) {
                   oldPassword = value;
                 },
-                decoration: InputDecoration(labelText: 'Old Password'),
+                decoration: const InputDecoration(labelText: 'Old Password'),
               ),
               TextField(
                 obscureText: true,
                 onChanged: (value) {
                   newPassword = value;
                 },
-                decoration: InputDecoration(labelText: 'New Password'),
+                decoration: const InputDecoration(labelText: 'New Password'),
               ),
               TextField(
                 obscureText: true,
                 onChanged: (value) {
                   confirmPassword = value;
                 },
-                decoration: InputDecoration(labelText: 'Confirm New Password'),
+                decoration: const InputDecoration(labelText: 'Confirm New Password'),
               ),
             ],
           ),
@@ -347,7 +342,7 @@ void showPasswordUpdateDialog(BuildContext context) {
                 // Close the dialog
                 Navigator.of(context).pop();
               },
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -357,7 +352,7 @@ void showPasswordUpdateDialog(BuildContext context) {
                 // Close the dialog
                 Navigator.of(context).pop();
               },
-              child: Text('Update'),
+              child: const Text('Update'),
             ),
           ],
         );
@@ -367,7 +362,7 @@ void showPasswordUpdateDialog(BuildContext context) {
 Future<void> updatePassword(String oldPassword, String newPassword) async {
   final String? userId = await storage.read(key: "id");
   final String? baseUrl = await storage.read(key: "baseurl");
-  final String apiUrl = '${baseUrls}/api/users/$userId';
+  final String apiUrl = '$baseUrls/api/users/$userId';
   final String? token = await storage.read(key: "access_token");
 
   try {

@@ -12,7 +12,7 @@ import 'package:flutter_svg/svg.dart';
 class TravelersListScreen extends StatefulWidget {
   final String? selectedtouristGroupId;
 
-  TravelersListScreen({required this.selectedtouristGroupId});
+  const TravelersListScreen({super.key, required this.selectedtouristGroupId});
 
   @override
   _TravelersListScreenState createState() => _TravelersListScreenState();

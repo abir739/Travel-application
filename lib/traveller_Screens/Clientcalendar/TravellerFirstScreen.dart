@@ -12,7 +12,7 @@ import 'package:get/get.dart';
 class TravellerFirstScreen extends StatefulWidget {
   final List<dynamic> userList; // Add this parameter
 
-  TravellerFirstScreen({required this.userList});
+  const TravellerFirstScreen({super.key, required this.userList});
 
   @override
   _TravellerFirstScreenState createState() => _TravellerFirstScreenState();
@@ -22,7 +22,7 @@ class _TravellerFirstScreenState extends State<TravellerFirstScreen> {
   late Traveller traveller; // Declare the Traveller variable
   final Travelleruserid = HTTPHandlerTravellerbyId();
   HTTPHandler<Traveller> handler = HTTPHandler<Traveller>();
-  final storage = new FlutterSecureStorage();
+  final storage = const FlutterSecureStorage();
   bool isLoading = true;
   late String? Groupid;
   @override
@@ -75,14 +75,14 @@ class _TravellerFirstScreenState extends State<TravellerFirstScreen> {
         body: Container(
           child: Center(
             child: FutureBuilder(
-              future: Future.delayed(Duration(seconds: 5)),
+              future: Future.delayed(const Duration(seconds: 5)),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   // Show a loading indicator or any other widget while waiting
-                  return Center(
+                  return const Center(
                     child: CircularProgressIndicator(
                       backgroundColor: Color.fromARGB(255, 219, 10, 10),
-                      valueColor: new AlwaysStoppedAnimation<Color>(
+                      valueColor: AlwaysStoppedAnimation<Color>(
                           Color.fromARGB(255, 24, 10, 221)),
                     ),
                   );
@@ -101,11 +101,9 @@ class _TravellerFirstScreenState extends State<TravellerFirstScreen> {
                                 fontSize: 20,
                                 color: Color.fromARGB(255, 90, 3, 203))),
                         ElevatedButton(
-                          child: Text('Logout'),
                           style: ElevatedButton.styleFrom(
-                            primary: Colors
-                                .red, // Change the button's background color
-                            onPrimary: Colors.white, // Change the text color
+                            foregroundColor: Colors.white, backgroundColor: Colors
+                                .red, // Change the text color
                             textStyle: const TextStyle(
                                 fontSize: 16), // Change the text style
                             padding: const EdgeInsets.symmetric(
@@ -121,6 +119,7 @@ class _TravellerFirstScreenState extends State<TravellerFirstScreen> {
                             await storage.delete(key: "access_token");
                             // Get.to(LoginView());
                           },
+                          child: const Text('Logout'),
                         ),
                       ],
                     ),
@@ -176,27 +175,27 @@ class _TravellerFirstScreenState extends State<TravellerFirstScreen> {
                   style: TextStyle(fontSize: 20),
                 ),
                 const SizedBox(height: 20),
-                if (traveller != null) // Display traveller data if available
-                  Column(
-                    children: [
-                      RichText(
-                        text: TextSpan(
-                          style: const TextStyle(
-                            fontSize: 16,
-                            color: Colors.black, // Set the text color to black
-                          ),
-                          children: [
-                            const TextSpan(
-                              text: 'Traveller ID: ',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            TextSpan(text: '\n${traveller.id}'),
-                          ],
+                // Display traveller data if available
+                Column(
+                  children: [
+                    RichText(
+                      text: TextSpan(
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.black, // Set the text color to black
                         ),
+                        children: [
+                          const TextSpan(
+                            text: 'Traveller ID: ',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          TextSpan(text: '\n${traveller.id}'),
+                        ],
                       ),
-                      const SizedBox(height: 20),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(height: 20),
+                  ],
+                ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,

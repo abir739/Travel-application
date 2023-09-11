@@ -1,16 +1,12 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
-
+import 'package:zenify_trip/guide_Screens/firstpage.dart';
 import '../../modele/TouristGuide.dart';
 import '../../modele/planningmainModel.dart';
-
 import '../MyCalendarPage.dart';
 import '../Notification/PushNotificationScreen.dart';
-
 import '../Profile/editprofile.dart';
-import '../guidPlannig.dart';
 import '../ConcentricAnimationOnboarding.dart';
-// ignore: depend_on_referenced_packages
 import 'package:flutter_svg/svg.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
@@ -29,8 +25,8 @@ class _GoogleBottomBarState extends State<GoogleBottomBar> {
   final List<Widget> _screens = [
     const PlaningSecreen(),
     const MyCalendarPage(),
-    MainProfile(),
-    PushNotificationScreen(),
+    const MainProfile(),
+    const PushNotificationScreen(),
     const ConcentricAnimationOnboarding(),
   ];
   @override

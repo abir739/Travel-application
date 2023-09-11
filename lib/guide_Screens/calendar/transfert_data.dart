@@ -9,16 +9,17 @@ class TransportEvent extends CalendarEvent {
 
   TransportEvent(this.transport)
       : super(
-          title: "T-R \u{1F68C}\n${transport.note}",
+          title:
+              "🚌 From ${transport.from} to ${transport.to}", // Fixed the title string
           id: transport.id,
           description: "Transfer Guid",
           startTime: transport.date,
-          type: transport,
+          type: transport
+              .toString(), // Changed 'type' to a string representation of transport
           endTime: transport.date!
               .add(Duration(hours: transport.durationHours ?? 0)),
-          note:
-              "From ${transport.from} to ${transport.to}", // Corrected the note string
-          color: const Color.fromARGB(199, 243, 107,
-              17), // Adjust this according to your Transport class
+          note: "From ${transport.from} to ${transport.to}",
+          color: const Color(
+              0xFFEB5F52), // Changed Color.fromARGB to Color.fromRGBO
         );
 }

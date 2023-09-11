@@ -17,7 +17,7 @@ import 'package:flutter_svg/svg.dart';
 String? baseUrl = "";
 
 class MainProfile extends StatefulWidget {
-  MainProfile({Key? key}) : super(key: key);
+  const MainProfile({Key? key}) : super(key: key);
 
   @override
   _MainProfileState createState() => _MainProfileState();
@@ -62,7 +62,7 @@ class _MainProfileState extends State<MainProfile> {
         // ignore: use_build_context_synchronously
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => CreatProfile()),
+          MaterialPageRoute(builder: (context) => const CreatProfile()),
         );
       }
     } catch (error) {
@@ -74,12 +74,12 @@ class _MainProfileState extends State<MainProfile> {
     final String? userId =
         await storage.read(key: "id"); // Replace with the actual user ID
     final String? baseUrl = await storage.read(key: "baseurl");
-    final String? apiUrl = '${baseUrls}/api/users/$userId';
+    final String apiUrl = '$baseUrls/api/users/$userId';
     final String? token = await storage.read(key: "access_token");
 
     try {
       final response = await http.patch(
-        Uri.parse(apiUrl!),
+        Uri.parse(apiUrl),
         headers: {
           'Authorization': 'Bearer $token',
         },
@@ -124,7 +124,7 @@ class _MainProfileState extends State<MainProfile> {
         print('Failed to update $field');
         print('Token: $token');
         print('User ID: $userId');
-        print('Base URL: ${baseUrls}');
+        print('Base URL: $baseUrls');
         print('API URL: $apiUrl');
       }
     } catch (error) {
@@ -254,7 +254,7 @@ class _MainProfileState extends State<MainProfile> {
                     },
                     child: Row(
                       children: [
-                        SizedBox(width: 10),
+                        const SizedBox(width: 10),
                         const Icon(
                           Icons.person,
                           color: Color.fromARGB(210, 13, 2, 165),
@@ -291,7 +291,7 @@ class _MainProfileState extends State<MainProfile> {
                         },
                         child: Row(
                           children: [
-                            SizedBox(width: 10),
+                            const SizedBox(width: 10),
                             const Icon(
                               Icons.man,
                               color: Color.fromARGB(210, 13, 2, 165),
@@ -348,7 +348,7 @@ class _MainProfileState extends State<MainProfile> {
                     },
                     child: Row(
                       children: [
-                        SizedBox(width: 10), // Adding space before the icon
+                        const SizedBox(width: 10), // Adding space before the icon
                         const Icon(
                           Icons.location_on_outlined,
                           color: Color.fromARGB(210, 13, 2, 165),
@@ -471,7 +471,7 @@ class _MainProfileState extends State<MainProfile> {
                             fit: BoxFit.cover,
                           )
                         : Image.network(
-                            '${baseUrls}/assets/uploads/Mobile/picture/${selectedUser?.picture}',
+                            '$baseUrls/assets/uploads/Mobile/picture/${selectedUser?.picture}',
                             headers: {
                               'Authorization': 'Bearer $token',
                             },
@@ -661,7 +661,7 @@ class _MainProfileState extends State<MainProfile> {
   Future<void> updatePassword(String oldPassword, String newPassword) async {
     final String? userId = await storage.read(key: "id");
     final String? baseUrl = await storage.read(key: "baseurl");
-    final String apiUrl = '${baseUrls}/api/users/$userId/update-password';
+    final String apiUrl = '$baseUrls/api/users/$userId/update-password';
     final String? token = await storage.read(key: "access_token");
 
     try {

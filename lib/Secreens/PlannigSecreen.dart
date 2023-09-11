@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:flutter/cupertino.dart';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -41,13 +40,13 @@ late AnimationController _animationControllerL;
 HTTPHandlerplaning httpHandlerp = HTTPHandlerplaning();
 HTTPHandlerActivites activiteshanhler = HTTPHandlerActivites();
 HTTPHandlerActivitestempId activiteshanhlertemp = HTTPHandlerActivitestempId();
-final storage = const FlutterSecureStorage();
+const storage = FlutterSecureStorage();
 
 late Future<List<Item>> item;
 //the same
 // final httpHandlerp = Get.put(HTTPHandlerplaning());
 // late TabController _tabController;
-late List<Tab> tabs = [];
+List<Tab> tabs = [];
 late List<Widget> tabViews;
 ListPlannings plannig = ListPlannings();
 ListActivity activ = ListActivity();
@@ -73,7 +72,7 @@ List<User>? users;
 User? selectedUser = User();
 final http1 = Get.put(HTTPHandlerItem());
 late bool _showCartBadge;
-final String oneSignalAppId = 'a83993b3-1680-49fa-a371-c5ad4c55849a';
+const String oneSignalAppId = 'ce7f9114-b051-4672-a9c5-0eec08d625e8';
 
 class _PlaningtestState extends State<Planingtest>
     with TickerProviderStateMixin {
@@ -161,14 +160,13 @@ class _PlaningtestState extends State<Planingtest>
   }
 
   Future<void> initializeAsyncState() async {
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
     startDate = await getstartDate();
     endDate = await getenddate();
 
-    print("**********startDate*************************** " +
-        startDate.toString());
+    print("**********startDate*************************** $startDate");
 
-    Future.delayed(Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 3), () {
       setState(() {});
     });
   }
@@ -193,7 +191,7 @@ class _PlaningtestState extends State<Planingtest>
         "https://api.zenify-trip.continuousnet.com/api/plannings/$planningid";
 
     final respond = await http.get(
-      Uri.parse("${baseUrls}/api/plannings/$planningid"),
+      Uri.parse("$baseUrls/api/plannings/$planningid"),
       headers: {
         "Authorization": "Bearer $token",
         "Accept": "application/json, text/plain, */*",
@@ -220,7 +218,7 @@ class _PlaningtestState extends State<Planingtest>
     String baseurlb =
         "https://api.zenify-trip.continuousnet.com/api/plannings/$planningid";
     final respond = await http.get(
-      Uri.parse("${baseUrls}/api/plannings/$planningid"),
+      Uri.parse("$baseUrls/api/plannings/$planningid"),
       headers: {
         "Authorization": "Bearer $token",
         "Accept": "application/json, text/plain, */*",
@@ -246,7 +244,7 @@ class _PlaningtestState extends State<Planingtest>
     List<Tab> tabs = [];
     for (var date = startDate;
         date!.isBefore(endDate!);
-        date = date.add(Duration(days: 1))) {
+        date = date.add(const Duration(days: 1))) {
       tabs.add(Tab(text: '${date.day}/${date.month}'));
     }
     tabViews.add(_buildTabView(endDate!));
@@ -258,11 +256,11 @@ class _PlaningtestState extends State<Planingtest>
         length: tabs.length,
         child: Scaffold(
             appBar: PreferredSize(
-              preferredSize: Size.fromHeight(70),
+              preferredSize: const Size.fromHeight(70),
               child: AppBar(
                 automaticallyImplyLeading: false,
                 flexibleSpace: Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
@@ -342,13 +340,13 @@ class _PlaningtestState extends State<Planingtest>
 
                               // Get.to(PushNotificationScreen());
                             },
-                            icon: Icon(Icons.notification_add),
+                            icon: const Icon(Icons.notification_add),
                           ),
 
                           IconButton(
                             splashRadius: 40,
                             iconSize: 30,
-                            color: Color.fromARGB(255, 209, 204, 204),
+                            color: const Color.fromARGB(255, 209, 204, 204),
                             onPressed: () {
                               // _animationControllerL.reset();
                               // _animationControllerL.forward();
@@ -357,8 +355,8 @@ class _PlaningtestState extends State<Planingtest>
                               // });
                               _showMenu(context);
                             },
-                            icon: Padding(
-                                padding: const EdgeInsets.all(2.0),
+                            icon: const Padding(
+                                padding: EdgeInsets.all(2.0),
                                 child: Icon(Icons.dashboard)),
                           ),
                           // IconButton(
@@ -382,7 +380,7 @@ class _PlaningtestState extends State<Planingtest>
                     ],
                   ),
                 ],
-                backgroundColor: Color.fromARGB(255, 242, 242, 244),
+                backgroundColor: const Color.fromARGB(255, 242, 242, 244),
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -402,7 +400,7 @@ class _PlaningtestState extends State<Planingtest>
                         // Image.asset('assets/LL.jpg'),
                       ),
                     ),
-                    Column(
+                    const Column(
                       children: [
                         Row(
                           children: [
@@ -434,7 +432,7 @@ class _PlaningtestState extends State<Planingtest>
                   ],
                 ),
                 // const Text('Plannig'),
-                bottom: PreferredSize(
+                bottom: const PreferredSize(
                   preferredSize: Size.fromHeight(kToolbarHeight),
                   child: Column(
                     children: [
@@ -458,14 +456,14 @@ class _PlaningtestState extends State<Planingtest>
   }
 
   Widget datashow(Activity obj) {
-    return Container(
+    return SizedBox(
       height: 200,
       child: Card(
         color: Colors.amber,
         child: Column(
           children: [
-            Text("id :${obj!.agencyId}"),
-            Text("creatorUser :${obj!.creatorUserId}"),
+            Text("id :${obj.agencyId}"),
+            Text("creatorUser :${obj.creatorUserId}"),
             Text("creatorUser :${obj.agency!.id}"),
             Text("startDate:$startDate"),
             Text("enddate:$endDate"),
@@ -490,9 +488,10 @@ class _PlaningtestState extends State<Planingtest>
     // Fetch the activity data for the given date from the API
     Future<List<String>> _fetchActivityData(DateTime date) async {
       // Replace this with your actual API call to fetch activity data
-      await Future.delayed(Duration(seconds: 2)); // Simulate a network delay
+      await Future.delayed(
+          const Duration(seconds: 2)); // Simulate a network delay
       return List.generate(
-          10, (index) => 'Activity $index on ${startDate}/${date.month}');
+          10, (index) => 'Activity $index on $startDate/${date.month}');
     }
 
     // Build the list view for each tab
@@ -500,7 +499,7 @@ class _PlaningtestState extends State<Planingtest>
       future: _fetchActivityData(date),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else {
@@ -529,10 +528,10 @@ class _PlaningtestState extends State<Planingtest>
       child: Row(
         mainAxisSize: MainAxisSize.max,
         children: [
-          Icon(Icons.image),
+          const Icon(Icons.image),
           Text('Item$index'),
           Text(item),
-          Icon(Icons.list_alt_sharp),
+          const Icon(Icons.list_alt_sharp),
         ],
       ),
     );
@@ -550,13 +549,15 @@ class MyScaffold extends StatefulWidget {
   PlanningMainModel? planning;
   TouristGroup? touristGroup;
   MyScaffold(
-      {this.startDate,
+      {super.key,
+      this.startDate,
       this.endDate,
       this.activityList,
       this.planningId,
       this.planning,
       this.touristGroup});
 
+  @override
   _MyScaffoldState createState() => _MyScaffoldState();
 }
 
@@ -566,7 +567,7 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
   late ActivityTemplate activites;
   Future<String?> getActivityTemplateId(String activityId) async {
     final String? baseUrl = await storage.read(key: "baseurl");
-    final String url = '${baseUrls}/api/activities/$activityId';
+    final String url = '$baseUrls/api/activities/$activityId';
 
     try {
       final http.Response response = await http
@@ -594,7 +595,7 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
       if (activityTemplateId != null) {
         final String? baseUrl = await storage.read(key: "baseurl");
         final String activityTemplateUrl =
-            '${baseUrls}/api/activity-templates/$activityTemplateId';
+            '$baseUrls/api/activity-templates/$activityTemplateId';
 
         final http.Response response = await http.get(
             headers: {"Authorization": "Bearer $token"},
@@ -615,6 +616,7 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
     }
   }
 
+  @override
   void initState() {
     super.initState();
     // data();
@@ -624,14 +626,14 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
     data();
   }
 
-  Color pickerColor = Color(0xff443a49);
-  Color currentColor = Color(0xff443a49);
+  Color pickerColor = const Color(0xff443a49);
+  Color currentColor = const Color(0xff443a49);
 
   void changeColor(Color color) {
     setState(() => pickerColor = color);
   }
 
-  String _primaryColor = "";
+  final String _primaryColor = "";
 
   List<double> parseCoordinates(String binaryCoordinates) {
     final jsonMap = jsonDecode(binaryCoordinates);
@@ -661,7 +663,7 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
       url += '&marker=$color'; // Add the marker with the coordinates
     }
     if (placeQuery != null) {
-      placeQuery = placeQuery!.replaceAll('{latitude}', '$latitude');
+      placeQuery = placeQuery.replaceAll('{latitude}', '$latitude');
       placeQuery = placeQuery.replaceAll('{longitude}', '$longitude');
       url +=
           '&q=$placeQuery'; // Add the q parameter with the modified place query
@@ -774,12 +776,13 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
 //         ? Center(child: CircularProgressIndicator())
         // :
         DefaultTabController(
-      length: endDate!.difference(startDate!.add(Duration(days: -1))).inDays,
+      length:
+          endDate!.difference(startDate!.add(const Duration(days: -1))).inDays,
       child: Scaffold(
           appBar: AppBar(
             automaticallyImplyLeading: false,
             flexibleSpace: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
@@ -793,7 +796,7 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
               onTap: () {
                 print("hi");
               },
-              child: SizedBox(
+              child: const SizedBox(
                 width: 200,
                 height: 200,
               ),
@@ -801,7 +804,7 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
+                const Row(
                   children: [
                     SizedBox(width: 5),
                     Text('Planning'),
@@ -813,13 +816,13 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                   children: [
                     Text(
                       DateFormat('  MMMM  d ,y ').format(startDate!),
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 18,
                           color: Color.fromARGB(255, 240, 238, 238)),
                     ),
                     Text(
                       DateFormat('   ~   MMMM  d ,y ').format(endDate!),
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 18,
                           color: Color.fromARGB(255, 248, 247, 247)),
                     ),
@@ -828,9 +831,9 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
               ],
             ),
             bottom: PreferredSize(
-              preferredSize: Size.fromHeight(50),
+              preferredSize: const Size.fromHeight(50),
               child: Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
@@ -863,8 +866,9 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
           .where((activity) =>
               activity.departureDate != null &&
               activity.returnDate != null &&
-              activity.departureDate!.isBefore(date.add(Duration(days: 1))) &&
-              activity.returnDate!.isAfter(date.add(Duration(days: 0))))
+              activity.departureDate!
+                  .isBefore(date.add(const Duration(days: 1))) &&
+              activity.returnDate!.isAfter(date.add(const Duration(days: 0))))
           .toList();
     }
 
@@ -875,15 +879,15 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
         future: _fetchActivityData(date),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(
                 backgroundColor: Color.fromARGB(255, 245, 243, 243),
-                valueColor: new AlwaysStoppedAnimation<Color>(
+                valueColor: AlwaysStoppedAnimation<Color>(
                     Color.fromARGB(255, 24, 10, 221)),
               ),
             );
           } else if (snapshot.hasError) {
-            return Center(
+            return const Center(
                 child: Column(
               children: [
                 // if (snapshot
@@ -923,31 +927,30 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
 
                     Text(
                       'No activities  for this Day ${DateFormat('EEE, MMM d').format(date)}',
-                      style: TextStyle(fontSize: 20, color: Colors.brown),
+                      style: const TextStyle(fontSize: 20, color: Colors.brown),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary:
-                            pickerColor, // Set the button's background color
-                        onPrimary: Colors.white, // Set the text color
+                        foregroundColor: Colors.white,
+                        backgroundColor: pickerColor, // Set the text color
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(
                               10), // Set button corner radius
                         ),
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                             horizontal: 20, vertical: 10), // Button padding
-                        textStyle:
-                            TextStyle(fontSize: 18), // Text style of the button
+                        textStyle: const TextStyle(
+                            fontSize: 18), // Text style of the button
                       ),
                       onPressed: () {
                         // Get.to(AddActivityScreen(
                         //   touristGroup: widget.touristGroup,
                         // )) as String;
                       },
-                      child: Text('Clik to Add Activity'),
+                      child: const Text('Clik to Add Activity'),
                     ),
                     // Text('Error: ${snapshot.error}'),
                   ],
@@ -959,10 +962,10 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
             return Column(
               children: [
                 Container(
-                    margin:
-                        EdgeInsets.only(top: 10, bottom: 10, left: 5, right: 5),
-                    padding: EdgeInsets.only(top: 1, bottom: 1),
-                    decoration: BoxDecoration(
+                    margin: const EdgeInsets.only(
+                        top: 10, bottom: 10, left: 5, right: 5),
+                    padding: const EdgeInsets.only(top: 1, bottom: 1),
+                    decoration: const BoxDecoration(
                       gradient: LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
@@ -974,13 +977,13 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                     )),
                 Expanded(
                   child: ListView.separated(
-                    padding: EdgeInsets.only(top: 10),
+                    padding: const EdgeInsets.only(top: 10),
                     separatorBuilder: (context, index) {
                       return Container(
-                          margin: EdgeInsets.only(
+                          margin: const EdgeInsets.only(
                               top: 10, bottom: 10, left: 5, right: 5),
-                          padding: EdgeInsets.only(top: 1, bottom: 1),
-                          decoration: BoxDecoration(
+                          padding: const EdgeInsets.only(top: 1, bottom: 1),
+                          decoration: const BoxDecoration(
                             gradient: LinearGradient(
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
@@ -1010,10 +1013,10 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
     Activity activity,
     index,
   ) {
-    bool _isLoading = false;
+    bool isLoading = false;
     void changedata() {
       setState(() {
-        _isLoading = false;
+        isLoading = false;
       });
     }
 
@@ -1021,25 +1024,25 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
       // Update the screen detail based on the field and updated value
       setState(() {
         if (field == 'name') {
-          activity?.name = updatedValue;
+          activity.name = updatedValue;
         } else if (field == 'babyPrice') {
-          activity?.babyPrice = double.tryParse(updatedValue);
+          activity.babyPrice = double.tryParse(updatedValue);
         } else if (field == 'childPrice') {
-          activity?.childPrice = double.tryParse(updatedValue);
+          activity.childPrice = double.tryParse(updatedValue);
         } else if (field == 'primaryColor') {
-          activity?.primaryColor = updatedValue;
+          activity.primaryColor = updatedValue;
         } else if (field == 'secondaryColor') {
-          activity?.primaryColor = updatedValue;
+          activity.primaryColor = updatedValue;
         }
         // Add more conditions for other fields if needed
       });
     }
 
-    return _isLoading
-        ? Center(
+    return isLoading
+        ? const Center(
             child: CircularProgressIndicator(
               backgroundColor: Color.fromARGB(255, 219, 10, 10),
-              valueColor: new AlwaysStoppedAnimation<Color>(
+              valueColor: AlwaysStoppedAnimation<Color>(
                   Color.fromARGB(255, 24, 10, 221)),
             ),
           )
@@ -1055,13 +1058,13 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                           activity.activityTemplate!.primaryColor!.substring(1),
                           radix: 16))
                       .withOpacity(0.55)
-                  : Color.fromARGB(0, 14, 197, 197),
+                  : const Color.fromARGB(0, 14, 197, 197),
               shadowColor: activity.activityTemplate!.primaryColor != null
                   ? Color(int.parse(
                           activity.activityTemplate!.primaryColor!.substring(2),
                           radix: 16))
                       .withOpacity(1)
-                  : Color.fromARGB(249, 51, 14, 197),
+                  : const Color.fromARGB(249, 51, 14, 197),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30),
                 side: BorderSide(
@@ -1071,7 +1074,7 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                                   .substring(1),
                               radix: 16))
                           .withOpacity(0.8)
-                      : Color.fromARGB(0, 14, 197, 197),
+                      : const Color.fromARGB(0, 14, 197, 197),
                   width: 3,
                 ),
               ),
@@ -1085,8 +1088,8 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                 child: Container(
                   height: Get.height * 0.35,
                   color: activity.activityTemplate!.primaryColor != null
-                      ? Color.fromARGB(0, 14, 197, 197)
-                      : Color.fromARGB(0, 14, 197, 197),
+                      ? const Color.fromARGB(0, 14, 197, 197)
+                      : const Color.fromARGB(0, 14, 197, 197),
                   child: Container(
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
@@ -1099,13 +1102,13 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                                           .substring(1),
                                       radix: 16))
                                   .withOpacity(0.8)
-                              : Color.fromARGB(0, 15, 15, 15),
+                              : const Color.fromARGB(0, 15, 15, 15),
                           activity.secondaryColor != null
                               ? Color(int.parse(
                                       activity.secondaryColor!.substring(1),
                                       radix: 16))
                                   .withOpacity(0.8)
-                              : Color.fromARGB(0, 15, 15, 15),
+                              : const Color.fromARGB(0, 15, 15, 15),
                         ],
                       ),
                     ),
@@ -1120,7 +1123,7 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                SizedBox(
+                                const SizedBox(
                                   width: 10,
                                 ),
                                 Text(
@@ -1137,12 +1140,13 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                                                     .substring(1),
                                                 radix: 16))
                                             .withOpacity(0.55)
-                                        : Color.fromARGB(255, 209, 204, 204),
+                                        : const Color.fromARGB(
+                                            255, 209, 204, 204),
                                   ),
                                 ),
                                 Row(
                                   children: [
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 40,
                                     ),
                                     Theme(
@@ -1157,9 +1161,9 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                                                           .substring(1),
                                                       radix: 16))
                                                   .withOpacity(0.7)
-                                              : Color.fromARGB(
+                                              : const Color.fromARGB(
                                                   255, 14, 197, 197),
-                                          textStyle: TextStyle(
+                                          textStyle: const TextStyle(
                                               color: Color.fromARGB(
                                                   255,
                                                   241,
@@ -1176,7 +1180,7 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                                         ),
                                         itemBuilder: (BuildContext context) =>
                                             <PopupMenuEntry<String>>[
-                                          PopupMenuItem<String>(
+                                          const PopupMenuItem<String>(
                                             value: 'Categories',
                                             child: ListTile(
                                               title: Text(
@@ -1200,7 +1204,7 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                                               ),
                                             ),
                                           ),
-                                          PopupMenuItem<String>(
+                                          const PopupMenuItem<String>(
                                             value: 'update',
                                             child: ListTile(
                                               title: Text(
@@ -1220,7 +1224,7 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                                               ),
                                             ),
                                           ),
-                                          PopupMenuItem<String>(
+                                          const PopupMenuItem<String>(
                                             value: 'Add new planning',
                                             child: ListTile(
                                               leading: Icon(
@@ -1237,7 +1241,7 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                                               ),
                                             ),
                                           ),
-                                          PopupMenuItem<String>(
+                                          const PopupMenuItem<String>(
                                             value: 'Add new Activity',
                                             child: ListTile(
                                                 title: Text(
@@ -1256,7 +1260,7 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                                                       255, 241, 231, 231),
                                                 )),
                                           ),
-                                          PopupMenuItem<String>(
+                                          const PopupMenuItem<String>(
                                             value: 'delete',
                                             child: ListTile(
                                               title: Text(
@@ -1276,7 +1280,7 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                                               ),
                                             ),
                                           ),
-                                          PopupMenuItem<String>(
+                                          const PopupMenuItem<String>(
                                             value: 'color',
                                             child: ListTile(
                                               title: Text(
@@ -1300,7 +1304,7 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                                               ),
                                             ),
                                           ),
-                                          PopupMenuItem<String>(
+                                          const PopupMenuItem<String>(
                                             value: 'primaryColor',
                                             child: ListTile(
                                               title: Text(
@@ -1330,28 +1334,28 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                                             bool confirmed = await showDialog(
                                               context: context,
                                               builder: (context) => AlertDialog(
-                                                title: Text("Confirmation"),
-                                                content: Text(
+                                                title:
+                                                    const Text("Confirmation"),
+                                                content: const Text(
                                                     "Are you sure you want to delete this activity?"),
                                                 actions: <Widget>[
                                                   TextButton(
                                                     onPressed: () =>
                                                         Navigator.of(context)
                                                             .pop(false),
-                                                    child: Text("Cancel"),
+                                                    child: const Text("Cancel"),
                                                   ),
                                                   TextButton(
                                                     onPressed: () =>
                                                         Navigator.of(context)
                                                             .pop(true),
-                                                    child: Text("Delete"),
+                                                    child: const Text("Delete"),
                                                   ),
                                                 ],
                                               ),
                                             );
 
-                                            if (confirmed != null &&
-                                                confirmed) {
+                                            if (confirmed) {
                                               token = (await storage.read(
                                                   key: "access_token"))!;
                                               String? baseUrl = await storage
@@ -1359,7 +1363,7 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                                               final response =
                                                   await http.delete(
                                                 Uri.parse(
-                                                    '${baseUrls}/api/activities/${activity.id}'),
+                                                    '$baseUrls/api/activities/${activity.id}'),
                                                 headers: {
                                                   'accept': 'application/json',
                                                   'Authorization':
@@ -1393,7 +1397,7 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                                                 print(response.statusCode);
                                                 setState(() {
                                                   // Update the state of the widget
-                                                  _isLoading = true;
+                                                  isLoading = true;
                                                 });
                                               } else {
                                                 // Error occurred while deleting activity
@@ -1428,22 +1432,22 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                                                     ElevatedButton(
                                                       style: ElevatedButton
                                                           .styleFrom(
-                                                        primary:
-                                                            pickerColor, // Set the button's background color
-                                                        onPrimary: Colors
-                                                            .white, // Set the text color
+                                                        foregroundColor:
+                                                            Colors.white,
+                                                        backgroundColor:
+                                                            pickerColor, // Set the text color
                                                         shape:
                                                             RoundedRectangleBorder(
                                                           borderRadius:
                                                               BorderRadius.circular(
                                                                   10), // Set button corner radius
                                                         ),
-                                                        padding: EdgeInsets
+                                                        padding: const EdgeInsets
                                                             .symmetric(
-                                                                horizontal: 20,
-                                                                vertical:
-                                                                    10), // Button padding
-                                                        textStyle: TextStyle(
+                                                            horizontal: 20,
+                                                            vertical:
+                                                                10), // Button padding
+                                                        textStyle: const TextStyle(
                                                             fontSize:
                                                                 18), // Text style of the button
                                                       ),
@@ -1455,7 +1459,7 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                                                               pickerColor,
                                                         );
                                                         setState(() => activity
-                                                                ?.primaryColor =
+                                                                .primaryColor =
                                                             '#${pickerColor.value.toRadixString(16).substring(2, 8)}');
                                                         Navigator.of(context)
                                                             .pop();
@@ -1519,22 +1523,22 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                                                     ElevatedButton(
                                                       style: ElevatedButton
                                                           .styleFrom(
-                                                        primary:
-                                                            pickerColor, // Set the button's background color
-                                                        onPrimary: Colors
-                                                            .white, // Set the text color
+                                                        foregroundColor:
+                                                            Colors.white,
+                                                        backgroundColor:
+                                                            pickerColor, // Set the text color
                                                         shape:
                                                             RoundedRectangleBorder(
                                                           borderRadius:
                                                               BorderRadius.circular(
                                                                   10), // Set button corner radius
                                                         ),
-                                                        padding: EdgeInsets
+                                                        padding: const EdgeInsets
                                                             .symmetric(
-                                                                horizontal: 20,
-                                                                vertical:
-                                                                    10), // Button padding
-                                                        textStyle: TextStyle(
+                                                            horizontal: 20,
+                                                            vertical:
+                                                                10), // Button padding
+                                                        textStyle: const TextStyle(
                                                             fontSize:
                                                                 18), // Text style of the button
                                                       ),
@@ -1546,7 +1550,7 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                                                               pickerColor,
                                                         );
                                                         setState(() => activity
-                                                                ?.secondaryColor =
+                                                                .secondaryColor =
                                                             '#${pickerColor.value.toRadixString(16).substring(2, 8)}');
                                                         Navigator.of(context)
                                                             .pop();
@@ -1623,14 +1627,14 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                                                           .substring(1),
                                                       radix: 16))
                                                   .withOpacity(0.55)
-                                              : Color.fromARGB(
+                                              : const Color.fromARGB(
                                                   255, 209, 204, 204),
                                         ),
                                       ),
                                     )
                                   ],
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 0.02,
                                 )
                               ],
@@ -1649,7 +1653,7 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                                                 .substring(1),
                                             radix: 16))
                                         .withOpacity(0.55)
-                                    : Color.fromARGB(255, 209, 204, 204),
+                                    : const Color.fromARGB(255, 209, 204, 204),
                               ),
                             ),
                           ],
@@ -1684,7 +1688,7 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                                                     .substring(1),
                                                 radix: 16))
                                             .withOpacity(0.5)
-                                        : Color.fromARGB(255, 0, 29, 158),
+                                        : const Color.fromARGB(255, 0, 29, 158),
                                     // width: 2,
                                   ),
                                 ),
@@ -1697,7 +1701,7 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                                                     .substring(1),
                                                 radix: 16))
                                             .withOpacity(0.05)
-                                        : Color.fromARGB(255, 13, 0, 155),
+                                        : const Color.fromARGB(255, 13, 0, 155),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -1731,7 +1735,7 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                                             image: activity.activityTemplate!
                                                         .picture ==
                                                     null
-                                                ? DecorationImage(
+                                                ? const DecorationImage(
                                                     image: NetworkImage(
                                                       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRWdJi2AjWfvDp7-D0IAvDYdKZqvLH9kwBUaPLoarHgw&s',
                                                     ),
@@ -1739,7 +1743,7 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                                                   )
                                                 : DecorationImage(
                                                     image: NetworkImage(
-                                                      '${baseUrls}/assets/uploads/Mobile/ActivityTemplate/${activity.activityTemplate!.picture}',
+                                                      '$baseUrls/assets/uploads/Mobile/ActivityTemplate/${activity.activityTemplate!.picture}',
                                                       headers: {
                                                         'Authorization':
                                                             'Bearer $token',
@@ -1787,18 +1791,18 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                                                               .substring(1),
                                                           radix: 16))
                                                       .withOpacity(0.55)
-                                                  : Color.fromARGB(
+                                                  : const Color.fromARGB(
                                                       255, 209, 204, 204),
                                             ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                    Column(
+                                    const Column(
                                       children: [],
                                     ),
-                                    SizedBox(width: 30),
-                                    SizedBox(width: 30),
+                                    const SizedBox(width: 30),
+                                    const SizedBox(width: 30),
                                   ],
                                 )),
                           ),
@@ -1815,7 +1819,7 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                               children: [
                                 Row(
                                   children: [
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 4,
                                     ),
                                     Row(
@@ -1828,7 +1832,7 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                                                           .substring(1),
                                                       radix: 16))
                                                   .withOpacity(0.55)
-                                              : Color.fromARGB(
+                                              : const Color.fromARGB(
                                                   255, 209, 204, 204),
                                         ),
                                         Text(
@@ -1842,7 +1846,7 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                                                             .substring(1),
                                                         radix: 16))
                                                     .withOpacity(0.55)
-                                                : Color.fromARGB(
+                                                : const Color.fromARGB(
                                                     255, 209, 204, 204),
                                             fontSize: 14,
                                             // fontWeight: FontWeight.bold
@@ -1850,7 +1854,7 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                                         ),
                                       ],
                                     ),
-                                    Container(
+                                    const SizedBox(
                                       height: 50,
                                       width:
                                           10, // Set the desired height for the vertical Divider
@@ -1868,7 +1872,7 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                                                           .substring(1),
                                                       radix: 16))
                                                   .withOpacity(0.55)
-                                              : Color.fromARGB(
+                                              : const Color.fromARGB(
                                                   255, 209, 204, 204),
                                         ),
                                         Text(
@@ -1881,7 +1885,7 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                                                             .substring(1),
                                                         radix: 16))
                                                     .withOpacity(0.55)
-                                                : Color.fromARGB(
+                                                : const Color.fromARGB(
                                                     255, 209, 204, 204),
                                             fontSize: 14,
                                             // fontWeight: FontWeight.bold
@@ -1889,7 +1893,7 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                                         ),
                                       ],
                                     ),
-                                    Container(
+                                    const SizedBox(
                                       height: 40,
                                       width:
                                           10, // Set the desired height for the vertical Divider
@@ -1926,7 +1930,7 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                                                             .substring(1),
                                                         radix: 16))
                                                     .withOpacity(0.55)
-                                                : Color.fromARGB(
+                                                : const Color.fromARGB(
                                                     255, 209, 204, 204),
                                           ),
                                           Text(
@@ -1940,7 +1944,7 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                                                               .substring(1),
                                                           radix: 16))
                                                       .withOpacity(0.55)
-                                                  : Color.fromARGB(
+                                                  : const Color.fromARGB(
                                                       255, 209, 204, 204),
                                               fontSize: 14,
                                               // fontWeight: FontWeight.bold
@@ -1954,9 +1958,9 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                                 InkWell(
                                   child: Column(
                                     children: [
-                                      Row(
+                                      const Row(
                                         children: [
-                                          Container(
+                                          SizedBox(
                                             height: 30,
                                             width:
                                                 12, // Set the desired height for the vertical Divider
@@ -2039,7 +2043,7 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                                       ),
                                       Row(
                                         children: [
-                                          SizedBox(width: 30),
+                                          const SizedBox(width: 30),
                                           Text(
                                             'Contry : ',
                                             style: TextStyle(
@@ -2053,7 +2057,7 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                                                               .substring(1),
                                                           radix: 16))
                                                       .withOpacity(0.55)
-                                                  : Color.fromARGB(
+                                                  : const Color.fromARGB(
                                                       255, 209, 204, 204),
                                             ),
                                           ),
@@ -2146,7 +2150,7 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                             Row(
                               children: [
                                 const SizedBox(width: 16),
-                                SizedBox(width: 20),
+                                const SizedBox(width: 20),
                                 Icon(
                                   Icons.account_box,
                                   color: activity.secondaryColor != null
@@ -2155,7 +2159,8 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                                                   .substring(1),
                                               radix: 16))
                                           .withOpacity(0.55)
-                                      : Color.fromARGB(255, 209, 204, 204),
+                                      : const Color.fromARGB(
+                                          255, 209, 204, 204),
                                 ),
                                 IconButton(
                                   icon: Icon(
@@ -2166,14 +2171,14 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                                                     .substring(1),
                                                 radix: 16))
                                             .withOpacity(0.55)
-                                        : Color.fromARGB(255, 209, 204, 204),
+                                        : const Color.fromARGB(
+                                            255, 209, 204, 204),
                                   ),
                                   onPressed: () async {
                                     final activityTemplate =
                                         await _loadDataActivityTemp(
                                             activity.id!);
-                                    if (activityTemplate != null &&
-                                        activityTemplate.coordinates != null) {
+                                    if (activityTemplate.coordinates != null) {
                                       final coordinates =
                                           activityTemplate.coordinates!;
                                       final binaryCoordinates =
@@ -2183,7 +2188,7 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                                       final latitude = parsedCoordinates[0];
                                       final longitude = parsedCoordinates[1];
                                       final placeQuery = '$latitude $longitude';
-                                      final c = Colors.blue;
+                                      const c = Colors.blue;
                                       // getLocationZone(latitude, longitude);
                                       openMapApp(
                                         latitude,
@@ -2214,7 +2219,7 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                                                         .substring(1),
                                                     radix: 16))
                                                 .withOpacity(0.55)
-                                            : Color.fromARGB(
+                                            : const Color.fromARGB(
                                                 255, 209, 204, 204),
                                       ),
                                       onPressed: () {
@@ -2238,7 +2243,7 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
                                                         .substring(1),
                                                     radix: 16))
                                                 .withOpacity(0.55)
-                                            : Color.fromARGB(
+                                            : const Color.fromARGB(
                                                 255, 209, 204, 204),
                                       ),
                                     ),
@@ -2971,25 +2976,25 @@ class _MyScaffoldState extends State<MyScaffold> with TickerProviderStateMixin {
     final List<Widget> tabViews = [];
 
     for (var date = startDate;
-        date.isBefore(endDate.add(Duration(days: 1)));
+        date.isBefore(endDate.add(const Duration(days: 1)));
 // .add(Duration(days: 1)));
-        date = date.add(Duration(days: 1))) {
+        date = date.add(const Duration(days: 1))) {
       tabs.add(Tab(text: DateFormat('EEE, MMM d').format(date)));
-      tabViews.add(_buildTabView(date.add(Duration(days: 1))));
+      tabViews.add(_buildTabView(date.add(const Duration(days: 1))));
     }
 
     return TabBar(
       tabs: tabs,
       isScrollable: true,
-      indicatorColor: Color.fromARGB(255, 51, 33, 243),
-      labelColor: Color.fromARGB(255, 255, 255, 255),
-      unselectedLabelColor: Color.fromARGB(255, 8, 0, 0),
-      labelStyle: TextStyle(fontWeight: FontWeight.bold),
-      unselectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+      indicatorColor: const Color.fromARGB(255, 51, 33, 243),
+      labelColor: const Color.fromARGB(255, 255, 255, 255),
+      unselectedLabelColor: const Color.fromARGB(255, 8, 0, 0),
+      labelStyle: const TextStyle(fontWeight: FontWeight.bold),
+      unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
       indicatorSize: TabBarIndicatorSize.label,
       indicatorWeight: 2.0,
-      indicatorPadding: EdgeInsets.symmetric(horizontal: 16),
-      labelPadding: EdgeInsets.symmetric(horizontal: 16),
+      indicatorPadding: const EdgeInsets.symmetric(horizontal: 16),
+      labelPadding: const EdgeInsets.symmetric(horizontal: 16),
       onTap: (index) {},
     );
   }
@@ -3000,7 +3005,7 @@ List<DateTime> getRangeOfDates(DateTime startDate, DateTime endDate) {
 
   for (var date = startDate;
       date.isBefore(endDate);
-      date = date.add(Duration(days: 1))) {
+      date = date.add(const Duration(days: 1))) {
     dates.add(date);
   }
 
@@ -3011,11 +3016,11 @@ List<DateTime> getRangeOfDates(DateTime startDate, DateTime endDate) {
 }
 
 void _showMenu(BuildContext context) {
-  final Color primary = Color.fromARGB(222, 255, 255, 255);
-  final Color active = Color.fromARGB(237, 243, 239, 239);
-  final Color active1 = Color.fromARGB(255, 255, 254, 254);
+  const Color primary = Color.fromARGB(222, 255, 255, 255);
+  const Color active = Color.fromARGB(237, 243, 239, 239);
+  const Color active1 = Color.fromARGB(255, 255, 254, 254);
   final RenderBox overlay =
-      Overlay.of(context)!.context.findRenderObject() as RenderBox;
+      Overlay.of(context).context.findRenderObject() as RenderBox;
   final RenderBox? button = context.findRenderObject() as RenderBox?;
   final Offset position = button!.localToGlobal(Offset.zero, ancestor: overlay);
   double screenHeight = MediaQuery.of(context).size.height;
@@ -3023,25 +3028,25 @@ void _showMenu(BuildContext context) {
   showModalBottomSheet(
     context: context,
     enableDrag: true,
-    backgroundColor: Color.fromARGB(0, 223, 31, 31),
+    backgroundColor: const Color.fromARGB(0, 223, 31, 31),
     isScrollControlled: true,
     builder: (BuildContext context) {
-      AnimationController _animationController = AnimationController(
+      AnimationController animationController = AnimationController(
         vsync: Navigator.of(context),
-        duration: Duration(milliseconds: 500),
+        duration: const Duration(milliseconds: 500),
       );
       final Size size = MediaQuery.of(context).size;
-      _animationController.forward();
+      animationController.forward();
 
       return AnimatedBuilder(
-        animation: _animationController,
+        animation: animationController,
         builder: (BuildContext context, Widget? child) {
           return Container(
             child: Transform(
               transform: Matrix4.translationValues(
-                  -size.width * (1 - _animationController.value), 0, 0),
+                  -size.width * (1 - animationController.value), 0, 0),
               child: Container(
-                color: Color.fromARGB(0, 21, 37, 214),
+                color: const Color.fromARGB(0, 21, 37, 214),
                 height: MediaQuery.of(context).size.height - 80,
                 child: ClipPath(
                   clipper: OvalRightBorderClipper(),
@@ -3053,7 +3058,7 @@ void _showMenu(BuildContext context) {
 //                         color: primary,
 //                         boxShadow: [BoxShadow(color: Color.fromARGB(193, 0, 0, 0))],
 //                       ),
-                          BoxDecoration(
+                          const BoxDecoration(
                         gradient: LinearGradient(
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
@@ -3069,11 +3074,11 @@ void _showMenu(BuildContext context) {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              SizedBox(height: 28.0),
+                              const SizedBox(height: 28.0),
                               Container(
                                 height: 90,
                                 alignment: Alignment.center,
-                                decoration: BoxDecoration(
+                                decoration: const BoxDecoration(
                                     shape: BoxShape.circle,
                                     gradient: LinearGradient(colors: [
                                       Colors.orange,
@@ -3084,13 +3089,14 @@ void _showMenu(BuildContext context) {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => MainProfile()),
+                                          builder: (context) =>
+                                              const MainProfile()),
                                     );
                                   },
                                   child: Container(
-                                    padding: EdgeInsets.all(
+                                    padding: const EdgeInsets.all(
                                         4.0), // Adjust the padding values as needed
-                                    decoration: BoxDecoration(
+                                    decoration: const BoxDecoration(
                                       shape: BoxShape.circle,
                                       color: Color.fromARGB(225, 255, 255, 255),
                                     ),
@@ -3105,23 +3111,24 @@ void _showMenu(BuildContext context) {
                                         : CircleAvatar(
                                             radius: 50,
                                             backgroundImage: Image.network(
-                                              '${baseUrls}/assets/uploads/Mobile/picture/${selectedUser?.picture}',
+                                              '$baseUrls/assets/uploads/Mobile/picture/${selectedUser?.picture}',
                                               fit: BoxFit.cover,
                                             ).image,
                                           ),
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 10.0),
+                              const SizedBox(height: 10.0),
 
                               ListTile(
-                                leading: Icon(Icons.person_pin, color: active1),
+                                leading: const Icon(Icons.person_pin,
+                                    color: active1),
                                 subtitle: Text('${selectedUser?.lastName}',
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         color: active1,
                                         fontWeight: FontWeight.w500,
                                         fontSize: 16)),
-                                title: Text('Welcome :',
+                                title: const Text('Welcome :',
                                     style: TextStyle(
                                         color: active1,
                                         fontWeight: FontWeight.w700,
@@ -3135,18 +3142,18 @@ void _showMenu(BuildContext context) {
                                   // );
                                 },
                               ),
-                              SizedBox(height: 16.0),
+                              const SizedBox(height: 16.0),
                               ListTile(
-                                leading: Icon(Icons.home, color: active),
-                                title: Text('Home',
+                                leading: const Icon(Icons.home, color: active),
+                                title: const Text('Home',
                                     style: TextStyle(color: active)),
                                 onTap: () {},
                               ),
                               _buildDivider(),
                               ListTile(
-                                leading:
-                                    Icon(Icons.qr_code_scanner, color: active),
-                                title: Text('QRScanner',
+                                leading: const Icon(Icons.qr_code_scanner,
+                                    color: active),
+                                title: const Text('QRScanner',
                                     style: TextStyle(color: active)),
                                 onTap: () {
                                   // Get.to(QrScanner());
@@ -3154,9 +3161,9 @@ void _showMenu(BuildContext context) {
                               ),
                               _buildDivider(),
                               ListTile(
-                                leading:
-                                    Icon(Icons.list_alt_sharp, color: active),
-                                title: Text('My ACtivity Template',
+                                leading: const Icon(Icons.list_alt_sharp,
+                                    color: active),
+                                title: const Text('My ACtivity Template',
                                     style: TextStyle(color: active)),
                                 onTap: () {
                                   // Get.to(AddActivityTempScreen());
@@ -3164,8 +3171,9 @@ void _showMenu(BuildContext context) {
                               ),
                               _buildDivider(),
                               ListTile(
-                                leading: Icon(Icons.groups, color: active),
-                                title: Text('Add Activity Template ',
+                                leading:
+                                    const Icon(Icons.groups, color: active),
+                                title: const Text('Add Activity Template ',
                                     style: TextStyle(color: active)),
                                 onTap: () {
                                   // Get.to(AddActivityTScreen());
@@ -3173,9 +3181,9 @@ void _showMenu(BuildContext context) {
                               ),
                               _buildDivider(),
                               ListTile(
-                                leading:
-                                    Icon(Icons.notification_add, color: active),
-                                title: Text('Push Notification',
+                                leading: const Icon(Icons.notification_add,
+                                    color: active),
+                                title: const Text('Push Notification',
                                     style: TextStyle(color: active)),
                                 onTap: () {
                                   // Navigator.push(
@@ -3189,8 +3197,8 @@ void _showMenu(BuildContext context) {
                               _buildDivider(),
 
                               ListTile(
-                                trailing: Icon(Icons.more, color: active),
-                                title: Text('Accommodation && Transfers ',
+                                trailing: const Icon(Icons.more, color: active),
+                                title: const Text('Accommodation && Transfers ',
                                     style: TextStyle(color: active)),
                                 onTap: () {
                                   // Navigator.push(
@@ -3211,7 +3219,7 @@ void _showMenu(BuildContext context) {
                               /// ---------------------------
 
                               _buildDivider(),
-                              SizedBox(height: 40.0),
+                              const SizedBox(height: 40.0),
                               Card(
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(8),
@@ -3219,7 +3227,7 @@ void _showMenu(BuildContext context) {
                                   elevation: 0,
                                   clipBehavior: Clip.antiAliasWithSaveLayer,
                                   child: Container(
-                                    decoration: BoxDecoration(
+                                    decoration: const BoxDecoration(
                                       gradient: LinearGradient(
                                         begin: Alignment.topLeft,
                                         end: Alignment.bottomRight,
@@ -3232,11 +3240,11 @@ void _showMenu(BuildContext context) {
                                     child: Column(
                                       children: <Widget>[
                                         ListTile(
-                                            leading: Icon(Icons.person,
+                                            leading: const Icon(Icons.person,
                                                 size: 30,
                                                 color: Color.fromARGB(
                                                     255, 2, 44, 160)),
-                                            title: Text(
+                                            title: const Text(
                                               'Logout',
                                               style: TextStyle(
                                                 fontFamily: 'Bahij Janna',
@@ -3247,7 +3255,7 @@ void _showMenu(BuildContext context) {
                                               ),
                                               textAlign: TextAlign.left,
                                             ),
-                                            trailing: Icon(
+                                            trailing: const Icon(
                                                 Icons.logout_outlined,
                                                 size: 20,
                                                 color: Colors.red),
@@ -3283,8 +3291,8 @@ void _showMenu(BuildContext context) {
 }
 
 Divider _buildDivider() {
-  final Color divider = Colors.deepOrange;
-  return Divider(
+  const Color divider = Colors.deepOrange;
+  return const Divider(
     color: divider,
   );
 }
@@ -3292,7 +3300,7 @@ Divider _buildDivider() {
 Future<String> readRoleFromToken(String data) async {
   String? token = await storage.read(key: "access_token");
   Map<String, dynamic> decodedToken = Jwt.parseJwt(token!);
-  data = decodedToken['$data'];
+  data = decodedToken[data];
 
   return data;
 }

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -8,6 +7,7 @@ import 'package:zenify_trip/Secreens/Notification/PushNotificationScreen.dart';
 import 'package:zenify_trip/Secreens/Profile/editprofile.dart';
 import 'package:zenify_trip/guide_Screens/calendar/filtre__ByGroups.dart';
 import 'package:zenify_trip/guide_Screens/calendar/transfert_data.dart';
+import 'package:zenify_trip/guide_Screens/tasks/tasks_list.dart';
 import 'package:zenify_trip/guide_Screens/travellers_list_screen.dart';
 import 'package:zenify_trip/constent.dart';
 import 'package:zenify_trip/login.dart';
@@ -31,6 +31,7 @@ class PlanningScreen extends StatefulWidget {
   PlanningScreen(this.Plannigid, this.guid, {Key? key}) : super(key: key);
 
   get handleEventSave => null;
+  @override
   _PlanningScreenState createState() => _PlanningScreenState();
 }
 
@@ -287,11 +288,19 @@ class _PlanningScreenState extends State<PlanningScreen> {
                       },
                     ),
                     ListTile(
+                      leading: const Icon(Icons.task_sharp),
+                      title: const Text('Tasks'),
+                      onTap: () {
+                        // Handle drawer item click
+                        Get.to(TaskListPage()); // Close the drawer
+                      },
+                    ),
+                    ListTile(
                       leading: const Icon(Icons.person),
                       title: const Text('Profil'),
                       onTap: () {
                         // Handle drawer item click
-                        Get.to(MainProfile()); // Close the drawer
+                        Get.to(const MainProfile()); // Close the drawer
                       },
                     ),
                     ListTile(
@@ -299,7 +308,8 @@ class _PlanningScreenState extends State<PlanningScreen> {
                       title: const Text('Send Notification'),
                       onTap: () {
                         // Handle drawer item click
-                        Get.to(PushNotificationScreen()); // Close the drawer
+                        Get.to(
+                            const PushNotificationScreen()); // Close the drawer
                       },
                     ),
                     ListTile(

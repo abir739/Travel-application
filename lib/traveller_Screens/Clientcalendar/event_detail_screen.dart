@@ -7,7 +7,7 @@ import '../../modele/transportmodel/transportModel.dart';
 class EventDetailScreen extends StatelessWidget {
   final Transport event;
 
-  EventDetailScreen({required this.event});
+  const EventDetailScreen({super.key, required this.event});
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +83,7 @@ class EventDetailScreen extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Row(
               children: [
                 Icon(Icons.location_on, color: Colors.grey[600]),
@@ -102,11 +102,11 @@ class EventDetailScreen extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Row(
               children: [
                 Icon(Icons.access_time, color: Colors.grey[600]),
-                SizedBox(width: 8),
+                const SizedBox(width: 8),
                 Text(
                   'Duration:',
                   style: TextStyle(
@@ -114,14 +114,14 @@ class EventDetailScreen extends StatelessWidget {
                     color: Colors.grey[600],
                   ),
                 ),
-                SizedBox(width: 4),
+                const SizedBox(width: 4),
                 Text(
                   '${event.durationHours ?? 0} hours',
-                  style: TextStyle(fontSize: 16),
+                  style: const TextStyle(fontSize: 16),
                 ),
               ],
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Text(
               'Note:',
               style: TextStyle(
@@ -131,13 +131,13 @@ class EventDetailScreen extends StatelessWidget {
             ),
             Text(
               event.note ?? 'N/A',
-              style: TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 16),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Row(
               children: [
                 Icon(Icons.check_circle, color: Colors.grey[600]),
-                SizedBox(width: 8),
+                const SizedBox(width: 8),
                 Text(
                   'Confirmed:',
                   style: TextStyle(
@@ -145,10 +145,10 @@ class EventDetailScreen extends StatelessWidget {
                     color: Colors.grey[600],
                   ),
                 ),
-                SizedBox(width: 4),
+                const SizedBox(width: 4),
                 Text(
                   event.confirmed == true ? 'Yes' : 'No',
-                  style: TextStyle(fontSize: 16),
+                  style: const TextStyle(fontSize: 16),
                 ),
               ],
             ),

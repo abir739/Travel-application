@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../modele/activitsmodel/pushnotificationmodel.dart';
 import '../../modele/httpNotificationId.dart';
@@ -120,7 +119,7 @@ class _ActivityDetailScreenState extends State<ActivityDetailScreen> {
                     const Divider(),
                     const SizedBox(height: 22.0),
                     Text(
-                      details?.type ?? 'No Data',
+                      details.type ?? 'No Data',
                       style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -129,7 +128,7 @@ class _ActivityDetailScreenState extends State<ActivityDetailScreen> {
                     ),
                     const SizedBox(height: 22.0),
                     Text(
-                      details?.message ?? 'No Data',
+                      details.message ?? 'No Data',
                       style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,

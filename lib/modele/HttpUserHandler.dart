@@ -3,13 +3,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 // import 'package:zenify_trip_mobile/modele/activity_model.dart';
 import '../constent.dart';
-import '../modele/planning_model.dart';
-import '../modele/planningmainModel.dart';
-import '../modele/plannings.dart';
 
 
 import 'activitsmodel/usersmodel.dart';
-import 'listPlannig.dart';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 

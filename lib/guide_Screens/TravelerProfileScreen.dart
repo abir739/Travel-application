@@ -5,13 +5,13 @@ import 'package:flutter_svg/svg.dart';
 class TravelerProfileScreen extends StatelessWidget {
   final Traveller traveler;
 
-  TravelerProfileScreen({required this.traveler});
+  const TravelerProfileScreen({super.key, required this.traveler});
 
   @override
   Widget build(BuildContext context) {
     double widthC = MediaQuery.of(context).size.width * 100;
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 186, 137, 219),
+      backgroundColor: const Color.fromARGB(255, 186, 137, 219),
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 207, 207, 219),
         title: Row(

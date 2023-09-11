@@ -20,6 +20,8 @@ import '../../modele/touristGroup.dart';
 
 
 class PushNotificationUpdateScreen extends StatefulWidget {
+  const PushNotificationUpdateScreen({super.key});
+
   @override
   _PushNotificationUpdateScreenState createState() => _PushNotificationUpdateScreenState();
 }
@@ -29,12 +31,12 @@ class _PushNotificationUpdateScreenState extends State<PushNotificationUpdateScr
   TouristGroup? selectedTouristGroup = TouristGroup();
   TouristGuide? selectedTouristGuide = TouristGuide();
   final count = HTTPHandlerCount();
-  TextEditingController _messageController = TextEditingController();
-  TextEditingController _titleController = TextEditingController();
-  TextEditingController _androidAccentColorController = TextEditingController();
-  TextEditingController _bigPictureController = TextEditingController();
-  TextEditingController _linkUrlController = TextEditingController();
-  TextEditingController _tagsController = TextEditingController();
+  final TextEditingController _messageController = TextEditingController();
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _androidAccentColorController = TextEditingController();
+  final TextEditingController _bigPictureController = TextEditingController();
+  final TextEditingController _linkUrlController = TextEditingController();
+  final TextEditingController _tagsController = TextEditingController();
   final httpHandler = HTTPHandlerhttpToristguid();
   List<TouristGuide>? touristGuides;
   List<TouristGroup>? group;
@@ -80,7 +82,7 @@ class _PushNotificationUpdateScreenState extends State<PushNotificationUpdateScr
     // }
     setState(() {
       touristGuides = data.cast<TouristGuide>();
-      selectedTouristGuide = data.first as TouristGuide;
+      selectedTouristGuide = data.first;
     });
     _loadDatagroup(); // Call _loadDatagroup after loading data
   }
@@ -106,7 +108,7 @@ class _PushNotificationUpdateScreenState extends State<PushNotificationUpdateScr
     // }
     setState(() {
       touristGroup = data.cast<TouristGroup>();
-      selectedTouristGroup = data.first as TouristGroup;
+      selectedTouristGroup = data.first;
       group = touristGroup;
       initializeMultiSelectItems();
     });
@@ -209,17 +211,17 @@ class _PushNotificationUpdateScreenState extends State<PushNotificationUpdateScr
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Send Push Notification'),
+        title: const Text('Send Push Notification'),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Card(
-              margin: EdgeInsets.all(14),
+              margin: const EdgeInsets.all(14),
               shape: RoundedRectangleBorder(
-                side: BorderSide(color: Color.fromARGB(235, 79, 2, 2)),
+                side: const BorderSide(color: Color.fromARGB(235, 79, 2, 2)),
                 borderRadius: BorderRadius.circular(15),
               ),
               child: MultiSelectDialogField<TouristGroup>(
@@ -227,17 +229,17 @@ class _PushNotificationUpdateScreenState extends State<PushNotificationUpdateScr
                 isDismissible: false,
                 initialValue: selectedGroup.toList(),
                 dialogHeight: Get.height * 0.2,
-                barrierColor: Color.fromARGB(146, 129, 129, 129),
-                title: Text('group List'),
+                barrierColor: const Color.fromARGB(146, 129, 129, 129),
+                title: const Text('group List'),
                 separateSelectedItems: true,
                 selectedColor: Colors.purple,
                 searchable: true,
-                selectedItemsTextStyle: TextStyle(
+                selectedItemsTextStyle: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
                   color: Color.fromARGB(255, 133, 3, 133),
                 ),
-                unselectedColor: Color.fromARGB(255, 8, 88, 180),
+                unselectedColor: const Color.fromARGB(255, 8, 88, 180),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please select at least one group';
@@ -536,27 +538,27 @@ class _PushNotificationUpdateScreenState extends State<PushNotificationUpdateScr
 
             TextField(
               controller: _titleController,
-              decoration: InputDecoration(labelText: 'Title'),
+              decoration: const InputDecoration(labelText: 'Title'),
             ),
             TextField(
               controller: _androidAccentColorController,
-              decoration: InputDecoration(labelText: 'Android Accent Color'),
+              decoration: const InputDecoration(labelText: 'Android Accent Color'),
             ),
             TextField(
               controller: _bigPictureController,
-              decoration: InputDecoration(labelText: 'Big Picture'),
+              decoration: const InputDecoration(labelText: 'Big Picture'),
             ),
             TextField(
               controller: _linkUrlController,
-              decoration: InputDecoration(labelText: 'Type/Link URL'),
+              decoration: const InputDecoration(labelText: 'Type/Link URL'),
             ),
 
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
                 sendNotification();
               },
-              child: Text('Send Notification'),
+              child: const Text('Send Notification'),
             ),
           ],
         ),

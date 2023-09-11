@@ -36,7 +36,7 @@ class HTTPHandlerAgancy {
 //  "https://api.zenify-trip.continuousnet.com/api/tourist-guides";
         // baseUrls + url;
       } else {
-        return "${baseUrl}/api/agencies"; // Use the baseUrls from constants.dart
+        return "$baseUrl/api/agencies"; // Use the baseUrls from constants.dart
       }
     }
 

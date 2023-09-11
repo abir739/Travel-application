@@ -1,8 +1,9 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:concentric_transition/concentric_transition.dart';
 import 'package:flutter/material.dart';
+import 'package:zenify_trip/guide_Screens/firstpage.dart';
 
-import 'guidPlannig.dart';
+
 
 final pages = [
   const PageData(
@@ -54,7 +55,7 @@ class ConcentricAnimationOnboarding extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) =>
-                      PlaningSecreen(), // Replace with your home page
+                      const PlaningSecreen(), // Replace with your home page
                 ),
               );
             });
@@ -110,8 +111,8 @@ class _Page extends StatelessWidget {
           animatedTexts: [
             TypewriterAnimatedText(
               page.title ?? "",
-              textStyle: TextStyle(fontSize: 30, letterSpacing: 30),
-              speed: Duration(milliseconds: 100),
+              textStyle: const TextStyle(fontSize: 30, letterSpacing: 30),
+              speed: const Duration(milliseconds: 100),
               curve: Curves.fastOutSlowIn,
               cursor: "...",
             ),

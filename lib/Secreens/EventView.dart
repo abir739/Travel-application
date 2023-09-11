@@ -2,16 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../modele/Event/Event.dart';
-import 'package:get/get.dart';
-import '../modele/accommodationsModel/accommodationModel.dart';
 import '../modele/activitsmodel/activitesmodel.dart';
-import '../modele/transportCompanies/transportModel.dart';
 import 'Activity/activitytempdetails.dart';
 
 class EventView extends StatefulWidget {
   final CalendarEvent event; // Replace with your event class
 
-  EventView({required this.event});
+  const EventView({super.key, required this.event});
 
   @override
   _EventViewState createState() => _EventViewState();
@@ -27,7 +24,7 @@ class _EventViewState extends State<EventView> {
   }
 
   Future<String?> getAccessToken() async {
-    final storage = FlutterSecureStorage();
+    const storage = FlutterSecureStorage();
     final token = await storage.read(key: 'access_token');
     print(token);
     tokens = token;
@@ -44,7 +41,7 @@ class _EventViewState extends State<EventView> {
         future: checkIfActivity(widget.event.type),
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
             

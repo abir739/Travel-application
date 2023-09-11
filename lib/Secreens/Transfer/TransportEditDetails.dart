@@ -2,12 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_summernote/flutter_summernote.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:zenify_trip/constent.dart';
-import 'package:zenify_trip/modele/activitsmodel/activitesmodel.dart';
 import 'package:zenify_trip/modele/transportmodel/transportModel.dart';
 import 'package:intl/intl.dart';
 
@@ -107,10 +105,10 @@ bool sendNotification = false;
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Edit Transport Details"),
+        title: const Text("Edit Transport Details"),
       ),
       body: isLoading
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : SingleChildScrollView(
@@ -120,7 +118,7 @@ bool sendNotification = false;
                   children: [
                     Text(
                       transport.note ?? "No name",
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
@@ -179,25 +177,25 @@ bool sendNotification = false;
                     ),
                     TextFormField(
                       controller: messageController,
-                      decoration: InputDecoration(labelText: "Message"),
+                      decoration: const InputDecoration(labelText: "Message"),
                     ),
                     TextFormField(
                       controller: titleController,
-                      decoration: InputDecoration(labelText: "Title"),
+                      decoration: const InputDecoration(labelText: "Title"),
                     ),
                     TextFormField(
                       controller: typeController,
-                      decoration: InputDecoration(labelText: "Type"),
+                      decoration: const InputDecoration(labelText: "Type"),
                     ),
                     Card(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.notification_add,
                             color: Colors.amber,
                           ),
-                          Text('Send notification',
+                          const Text('Send notification',
                               style: TextStyle(
                                   color: Colors.black12,
                                   fontWeight: FontWeight.w600)),
@@ -220,7 +218,7 @@ bool sendNotification = false;
                          
                         }
                       },
-                      child: Text("Update Transport Data"),
+                      child: const Text("Update Transport Data"),
                     ),
                   ],
                 ),

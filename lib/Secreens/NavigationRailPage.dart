@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:zenify_trip/guide_Screens/firstpage.dart';
 
 import 'Profile/MainProfile.dart';
 import 'PushNotificationScreen.dart';
-import 'guidPlannig.dart';
+
 import 'ConcentricAnimationOnboarding.dart';
 
 class NavigationRailPage extends StatefulWidget {
@@ -12,11 +13,11 @@ class NavigationRailPage extends StatefulWidget {
   State<NavigationRailPage> createState() => _NavigationRailPageState();
 }
 
-Widget _PushNotificationScreenState = PushNotificationScreen();
-Widget _planningScreenContent = PlaningSecreen();
-Widget _mainProfileScreenContent = MainProfile();
+Widget _PushNotificationScreenState = const PushNotificationScreen();
+Widget _planningScreenContent = const PlaningSecreen();
+Widget _mainProfileScreenContent = const MainProfile();
 Widget _concentricAnimationOnboardingScreenContent =
-    ConcentricAnimationOnboarding();
+    const ConcentricAnimationOnboarding();
 const _navBarItems = [
   BottomNavigationBarItem(
     icon: Icon(Icons.home_outlined),

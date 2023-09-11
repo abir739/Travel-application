@@ -13,7 +13,7 @@ class OneSignalHandler {
         // Extract data from the notification payload
         Map<String, dynamic>? additionalData =
             notification.notification.additionalData;
-        print("${additionalData} additionalData");
+        print("$additionalData additionalData");
 
         // Navigate to the desired screen based on payload data
         if (additionalData!.containsKey('screen')) {
@@ -64,7 +64,7 @@ class OneSignalHandler {
   }
 
   static Future<String?> _getToken() async {
-    FlutterSecureStorage storage = FlutterSecureStorage();
+    FlutterSecureStorage storage = const FlutterSecureStorage();
     return await storage.read(key: "access_token");
   }
 }

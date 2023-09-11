@@ -17,7 +17,7 @@ class EventView extends StatefulWidget {
   final TransportEvent event;
   final Function(TransportEvent updatedEvent) onSave;
 
-  EventView({required this.event, required this.onSave});
+  const EventView({super.key, required this.event, required this.onSave});
 
   @override
   _EventViewState createState() => _EventViewState();
@@ -114,7 +114,7 @@ class _EventViewState extends State<EventView> {
         "message": _messageController.text,
         "title": _titleController.text,
         "type": _typeController.text,
-        "Screen": _messageController.text,
+        "Screen": _typeController.text,
         "sendNotification": sendNotification
       };
       final newData = {
@@ -195,7 +195,7 @@ class _EventViewState extends State<EventView> {
                 ),
               ),
               const SizedBox(height: 26),
-              Text('Title: ${widget.event.transport.note}'),
+              Text('Description: ${widget.event.transport.from}'),
               const SizedBox(height: 14),
               Text('Date: ${widget.event.startTime.toString()}'),
               const SizedBox(height: 14),
@@ -257,6 +257,12 @@ class _EventViewState extends State<EventView> {
                       decoration:
                           const InputDecoration(labelText: 'Notification Type'),
                     ),
+                    const SizedBox(height: 14),
+                    TextFormField(
+                      controller: _typeController,
+                      decoration: const InputDecoration(
+                          labelText: 'Notification Screen'),
+                    ),
                   ],
                 ),
               ),
@@ -300,7 +306,7 @@ class _EventViewState extends State<EventView> {
                 ),
                 onPressed: _saveChanges,
                 child: const Center(
-                  child: const Text(
+                  child: Text(
                     'Save Changes',
                     style: TextStyle(
                       color: Colors.white,

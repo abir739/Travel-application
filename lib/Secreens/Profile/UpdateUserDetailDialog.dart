@@ -1,20 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:intl/intl.dart';
-import '../../NetworkHandler.dart';
 import '../../modele/HttpUserHandler.dart';
 import '../../modele/activitsmodel/usersmodel.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:timezone/timezone.dart' as tz;
-import 'package:timezone/data/latest.dart' as tz;
 class UpdateUserDetailDialogC extends StatefulWidget {
   final String field;
   final String initialValue;
 final Function(String, String) onUpdateDetail; 
-  const UpdateUserDetailDialogC({
+  const UpdateUserDetailDialogC({super.key, 
     required this.field,
     required this.initialValue,
     required this.onUpdateDetail,
@@ -29,7 +23,7 @@ class _UpdateUserDetailDialogCState extends State<UpdateUserDetailDialogC> {
   int selectedIndex = -1;
 bool circular = true;
   String token = '';
-FlutterSecureStorage storage = FlutterSecureStorage();
+FlutterSecureStorage storage = const FlutterSecureStorage();
   final ImagePicker _picker = ImagePicker();
   PickedFile? _imageFile;
   PickedFile? _imageFilec;
@@ -52,12 +46,12 @@ void updateUserDetail(String field, String updatedValue) async {
     final String? userId =
         await storage.read(key: "id"); // Replace with the actual user ID
     final String? baseUrl = await storage.read(key: "baseurl");
-    final String? apiUrl = '$baseUrl/api/users/$userId';
+    final String apiUrl = '$baseUrl/api/users/$userId';
     final String? token = await storage.read(key: "access_token");
 
     try {
       final response = await http.patch(
-        Uri.parse(apiUrl!),
+        Uri.parse(apiUrl),
         headers: {
           'Authorization': 'Bearer $token',
         },
@@ -108,7 +102,7 @@ void updateUserDetail(String field, String updatedValue) async {
   }
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(iconColor:Colors.blue,icon: Icon(Icons.update),backgroundColor: Color.fromARGB(199, 243, 242, 242),shape:RoundedRectangleBorder(
+    return AlertDialog(iconColor:Colors.blue,icon: const Icon(Icons.update),backgroundColor: const Color.fromARGB(199, 243, 242, 242),shape:RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(
                                   20), // Adjust the border radius
                             ),
@@ -118,7 +112,7 @@ void updateUserDetail(String field, String updatedValue) async {
               mainAxisSize: MainAxisSize.min,
               children: [
                 ListTile(
-                  title: const Text('Man'),trailing:Icon(Icons.man),
+                  title: const Text('Man'),trailing:const Icon(Icons.man),
                   leading: Radio<int>(
                     value: 0,
                     groupValue: selectedIndex,
@@ -138,7 +132,7 @@ void updateUserDetail(String field, String updatedValue) async {
                 ),
                 ListTile(
                   title: const Text('Woman'),
-                  trailing: Icon(Icons.woman),
+                  trailing: const Icon(Icons.woman),
                   leading: Radio<int>(
                     value: 1,
                     groupValue: selectedIndex,
@@ -158,7 +152,7 @@ void updateUserDetail(String field, String updatedValue) async {
                 ),
                 ListTile(
                   title: const Text('Other'),
-                  trailing: Icon(Icons.hotel_sharp),
+                  trailing: const Icon(Icons.hotel_sharp),
                   leading: Radio<int>(
                     value: 2,
                     groupValue: selectedIndex,
@@ -187,14 +181,14 @@ void updateUserDetail(String field, String updatedValue) async {
       actions: [
         ElevatedButton(
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(
+            backgroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(
                 208, 216, 13, 13)), // Set the desired background color
           ),
           onPressed: () {
             widget.onUpdateDetail(widget.field, updatedValue);
             Navigator.of(context).pop(); // Close the dialog
           },
-          child: Text('save'),
+          child: const Text('save'),
         ),
        
       ],

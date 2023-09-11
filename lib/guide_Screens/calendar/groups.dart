@@ -11,7 +11,7 @@ import 'package:zenify_trip/login.dart';
 class EventView extends StatefulWidget {
   final TransportEvent event;
   final Function(TransportEvent updatedEvent) onSave;
-  EventView({required this.event, required this.onSave});
+  const EventView({super.key, required this.event, required this.onSave});
 
   @override
   _EventViewState createState() => _EventViewState();
@@ -41,7 +41,7 @@ class _EventViewState extends State<EventView> {
   Widget _buildTouristGroupsList() {
     if (widget.event.transport.touristGroups == null) {
       // Display a message when no tourist groups are available
-      return Text('No tourist groups associated with this event.');
+      return const Text('No tourist groups associated with this event.');
     }
 
     return Column(
@@ -49,7 +49,7 @@ class _EventViewState extends State<EventView> {
       children: widget.event.transport.touristGroups!.map((group) {
         return Text(
           '- ${group.name}', // Modify this based on your TouristGroup model
-          style: TextStyle(fontSize: 16),
+          style: const TextStyle(fontSize: 16),
         );
       }).toList(),
     );
@@ -172,7 +172,7 @@ class _EventViewState extends State<EventView> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             // Display the list of tourist groups here
             ListView.builder(
               shrinkWrap: true,
@@ -193,7 +193,7 @@ class _EventViewState extends State<EventView> {
               ),
               onPressed: _saveChanges,
               child: const Center(
-                child: const Text(
+                child: Text(
                   'Save Changes',
                   style: TextStyle(
                     color: Colors.white,

@@ -5,36 +5,36 @@ import '../modele/accommodationsModel/accommodationModel.dart';
 
 class AccoumondationDetail extends StatelessWidget {
   Accommodations? accoumondation;
-  AccoumondationDetail({this.accoumondation});
+  AccoumondationDetail({super.key, this.accoumondation});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('accoumondation Details'),
+        title: const Text('accoumondation Details'),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Adult Number: ${accoumondation!.adultCount} ',
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Text(
               'roomNumber : ${accoumondation!.roomNumber}',
-              style: TextStyle(fontSize: 18),
+              style: const TextStyle(fontSize: 18),
             ),
             Text(
               'childCount: ${accoumondation!.childCount}',
-              style: TextStyle(fontSize: 18),
+              style: const TextStyle(fontSize: 18),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             // Text(
             //   'Bus Color: ${accoumondation!.bus!.color}',
             //   style: TextStyle(fontSize: 18),

@@ -56,6 +56,7 @@ class CustomCalendarDataSource extends CalendarDataSource {
   // String getRecurrenceId(int index) {
   //   return appointments![index].recurrenceId!;
   // }
+  @override
   Color getColor(int index) {
     CalendarEvent event = appointments![index] as CalendarEvent;
     return event.color ?? super.getColor(index);
@@ -72,7 +73,7 @@ class CustomCalendarDataSource extends CalendarDataSource {
     CalendarEvent event = details.appointments.first;
     return TextStyle(
       color: eventColors![event] ??
-          Color.fromARGB(255, 210, 9, 9), // Default to blue if color not found
+          const Color.fromARGB(255, 210, 9, 9), // Default to blue if color not found
     );
   }
 }

@@ -10,7 +10,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../constent.dart';
 import 'TouristGuide.dart';
-import 'activitsmodel/activityTempModel.dart';
 
 class HTTPHandlerToristGuidbyId {
 

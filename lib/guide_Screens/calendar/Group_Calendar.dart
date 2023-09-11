@@ -1,8 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:zenify_trip/Secreens/CustomCalendarDataSource.dart';
+import 'package:zenify_trip/guide_Screens/calendar/eventdetail_test.dart';
 import 'package:zenify_trip/guide_Screens/calendar/transfert_data.dart';
 import 'package:zenify_trip/modele/Event/Event.dart';
 import 'dart:convert';
@@ -11,7 +11,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:zenify_trip/modele/transportmodel/transportModel.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:zenify_trip/traveller_Screens/Clientcalendar/event_detail_screen.dart';
+// import 'package:zenify_trip/traveller_Screens/Clientcalendar/event_detail_screen.dart';
 import '../../constent.dart';
 import '../../modele/planningmainModel.dart';
 
@@ -192,18 +192,23 @@ class _GroupCalendarScreenState extends State<GroupCalendarScreen> {
       DateTime? endTime = tappedEvent.endTime;
       String note = "Some note"; // Extract the note from the CalendarEvent
 
-      // Create a Transport instance using the extracted details
-      Transport transportEvent = Transport(
+      // Create a TransportEvent instance using the extracted details
+      Transport transport = Transport(
         date: startTime,
         durationHours: endTime?.difference(startTime!).inHours,
         note: note,
         // Set other properties accordingly
       );
 
-      // Navigate to the event details screen and pass the Transport event
+      TransportEvent transportEvent = TransportEvent(transport);
+
+      // Navigate to the event details screen and pass the TransportEvent event
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => EventDetailScreen(event: transportEvent),
+          builder: (context) => EventView(
+            event: transportEvent,
+            onSave: handleEventSave, // Pass the method
+          ),
         ),
       );
     }

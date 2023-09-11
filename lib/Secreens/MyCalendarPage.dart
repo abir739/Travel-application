@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:zenify_trip/modele/TouristGuide.dart';
-import 'package:zenify_trip/modele/touristGroup.dart';
 import 'package:zenify_trip/modele/transportmodel/transportModel.dart';
 
 import '../login.dart';
-import '../modele/activitsmodel/activitesmodel.dart';
-import '../modele/activitsmodel/httpActivites.dart';
 import '../modele/activitsmodel/httpTransfer.dart';
 import '../modele/planningmainModel.dart';
 import 'package:get/get.dart';
@@ -38,7 +34,7 @@ class _MyCalendarPageState extends State<MyCalendarPage> {
   void initState() {
     super.initState();
     startDate = widget.planning?.startDate ?? DateTime.now();
-    endDate = widget.planning?.endDate ?? DateTime.now().add(Duration(days: 7));
+    endDate = widget.planning?.endDate ?? DateTime.now().add(const Duration(days: 7));
   }
 
   Future<List<Transport>> _loadData() async {
@@ -89,7 +85,7 @@ class _MyCalendarPageState extends State<MyCalendarPage> {
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No data available.'));
+            return const Center(child: Text('No data available.'));
           } else {
             return SfCalendar(
               allowDragAndDrop: true,

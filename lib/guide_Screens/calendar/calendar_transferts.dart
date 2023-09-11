@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -31,6 +30,7 @@ class PlanningScreen extends StatefulWidget {
   PlanningScreen(this.Plannigid, this.guid, {Key? key}) : super(key: key);
 
   get handleEventSave => null;
+  @override
   _PlanningScreenState createState() => _PlanningScreenState();
 }
 
@@ -397,11 +397,11 @@ class _PlanningScreenState extends State<PlanningScreen> {
                 break;
               case 2:
                 // Navigate to profile page
-                Get.to(MainProfile());
+                Get.to(const MainProfile());
                 break;
               case 3:
                 // Navigate to notifications page
-                Get.to(PushNotificationScreen());
+                Get.to(const PushNotificationScreen());
                 break;
               case 4:
                 // Navigate to more options page

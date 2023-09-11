@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -19,7 +18,6 @@ import 'package:zenify_trip/modele/transportmodel/transportModel.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'eventdetail_test.dart';
-import 'package:animations/animations.dart';
 
 class PlanningScreen extends StatefulWidget {
   String? Plannigid;
@@ -29,6 +27,7 @@ class PlanningScreen extends StatefulWidget {
   PlanningScreen(this.Plannigid, this.guid, {Key? key}) : super(key: key);
 
   get handleEventSave => null;
+  @override
   _PlanningScreenState createState() => _PlanningScreenState();
 }
 
@@ -77,7 +76,7 @@ class _PlanningScreenState extends State<PlanningScreen> {
   Map<DateTime, List<CalendarEvent>> eventsByDate = {};
   final List<String> viewOptions = ['Day', 'Week', 'Month', 'All DAta'];
   String selectedView = 'Month'; // Default selected view is Month
-  Color cardcolor = Color.fromARGB(255, 21, 19, 1);
+  Color cardcolor = const Color.fromARGB(255, 21, 19, 1);
   bool loading = false;
 
   get selectedPlanning => PlanningMainModel();
@@ -305,7 +304,7 @@ class _PlanningScreenState extends State<PlanningScreen> {
                       title: const Text('Profil'),
                       onTap: () {
                         // Handle drawer item click
-                        Get.to(MainProfile()); // Close the drawer
+                        Get.to(const MainProfile()); // Close the drawer
                       },
                     ),
                     ListTile(
@@ -313,7 +312,7 @@ class _PlanningScreenState extends State<PlanningScreen> {
                       title: const Text('Send Notification'),
                       onTap: () {
                         // Handle drawer item click
-                        Get.to(PushNotificationScreen()); // Close the drawer
+                        Get.to(const PushNotificationScreen()); // Close the drawer
                       },
                     ),
                     ListTile(
@@ -332,7 +331,7 @@ class _PlanningScreenState extends State<PlanningScreen> {
           ),
         ),
         body: AnimatedContainer(
-  duration: Duration(milliseconds: 300),
+  duration: const Duration(milliseconds: 300),
   transform: Matrix4.translationValues(_isDrawerOpen ? 200 : 0, 0, 0),
   child: RefreshIndicator(
     onRefresh: fetchData,

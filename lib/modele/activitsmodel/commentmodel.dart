@@ -1,12 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import '../TouristGuide.dart';
 
 import '../agance.dart';
-import '../creatorUser.dart';
-import '../touristGroup.dart';
-import '../updaterUser.dart';
-import 'activitesmodel.dart';
 import 'activitesmodel.dart';
 import 'usersmodel.dart';
 part 'commentmodel.g.dart';

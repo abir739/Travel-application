@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -7,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 
 class NetworkHandler {
-  FlutterSecureStorage storage = FlutterSecureStorage();
+  FlutterSecureStorage storage = const FlutterSecureStorage();
 
   static const baseurl = "http://192.168.1.23:3000";
 // "https://api.zenify-trip.continuousnet.com";
@@ -43,7 +42,7 @@ class NetworkHandler {
     
     String? token = await storage.read(key: "access_token");
     var response = await http.post(
-      Uri.parse(url as String),
+      Uri.parse(url),
       headers: {
         "Content-type": "application/json",
         "Authorization": "Bearer $token",
@@ -61,7 +60,7 @@ class NetworkHandler {
     url = formater(url);
     
     var response = await http.patch(
-      Uri.parse(url as String),
+      Uri.parse(url),
       headers: {
         "Content-type": "application/json",
         "Authorization": "Bearer $token"
@@ -77,7 +76,7 @@ class NetworkHandler {
     // url = formater(url);
     // log.d(body);
     var response = await http.post(
-      Uri.parse(url as String),
+      Uri.parse(url),
       headers: {
         "Content-type": "application/json",
         // "Authorization": "Bearer $token"

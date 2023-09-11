@@ -4,7 +4,6 @@ import 'package:analog_clock/analog_clock.dart';
 
 
 import '../modele/transportmodel/transportModel.dart';
-import '../modele/traveller/TravellerModel.dart';
 
 class EventViewTraveller extends StatefulWidget {
   final Appointment appointment;
@@ -36,13 +35,13 @@ if (widget.appointment.recurrenceId is Transport) {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Event Details'),
+        title: const Text('Event Details'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [  
- Container(
+ SizedBox(
               height: 200, // Set an appropriate height
               width: 200, // Set an appropriate width
               child: AnalogClock(
@@ -59,12 +58,12 @@ if (widget.appointment.recurrenceId is Transport) {
                 showSecondHand: true,
                 showNumbers: true,
                 textScaleFactor: 2.0,
-                datetime: widget.appointment?.startTime ?? DateTime.now(),
+                datetime: widget.appointment.startTime ?? DateTime.now(),
               ),
           ),
-            Text('Event ID: ${widget.appointment?.id ?? 'N/A'}'),
-            Text('Start Time: ${widget.appointment?.startTime ?? 'N/A'}'),
-            Text('End Time: ${widget.appointment?.endTime ?? 'N/A'}'),
+            Text('Event ID: ${widget.appointment.id ?? 'N/A'}'),
+            Text('Start Time: ${widget.appointment.startTime ?? 'N/A'}'),
+            Text('End Time: ${widget.appointment.endTime ?? 'N/A'}'),
             // Text(
             //     'End recurrenceId: ${widget.appointment?.recurrenceId ?? 'N/A'}'),
             Text('Transport from: ${transport?.from ?? 'N/A'}'),

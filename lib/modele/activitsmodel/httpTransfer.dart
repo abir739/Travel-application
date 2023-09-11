@@ -1,13 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:zenify_trip/modele/activitsmodel/activitesmodel.dart';
-import 'package:zenify_trip/modele/planning_model.dart';
-import 'package:zenify_trip/modele/planningmainModel.dart';
-import 'package:zenify_trip/modele/plannings.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:zenify_trip/modele/transportmodel/transportModel.dart';
 

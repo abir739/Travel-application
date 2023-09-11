@@ -1,18 +1,13 @@
 import 'dart:io';
-
-
-
 import 'package:flutter/material.dart';
-
 import 'package:image_picker/image_picker.dart';
-import '../guidPlannig.dart';
+import 'package:zenify_trip/guide_Screens/firstpage.dart';
 import './MainProfile.dart';
 import '../../NetworkHandler.dart';
-
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 class CreatProfile extends StatefulWidget {
-  CreatProfile({Key? key}) : super(key: key);
+  const CreatProfile({Key? key}) : super(key: key);
 
   @override
   _CreatProfileState createState() => _CreatProfileState();
@@ -24,13 +19,13 @@ class _CreatProfileState extends State<CreatProfile> {
     PickedFile? _imageFile;
   // final _globalkey = GlobalKey<FormState>();
 GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  TextEditingController _name = TextEditingController();
-  TextEditingController _adddres = TextEditingController();
-  TextEditingController _dob = TextEditingController();
-  TextEditingController _title = TextEditingController();
+  final TextEditingController _name = TextEditingController();
+  final TextEditingController _adddres = TextEditingController();
+  final TextEditingController _dob = TextEditingController();
+  final TextEditingController _title = TextEditingController();
   TextEditingController zipCode = TextEditingController();
   final ImagePicker _picker = ImagePicker();
-FlutterSecureStorage storage = FlutterSecureStorage();
+FlutterSecureStorage storage = const FlutterSecureStorage();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,15 +35,15 @@ FlutterSecureStorage storage = FlutterSecureStorage();
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
           children: <Widget>[
             imageProfile(),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             nameTextField(),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             adddres(),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             // dobField(),
@@ -56,11 +51,11 @@ FlutterSecureStorage storage = FlutterSecureStorage();
             //   height: 20,
             // ),
             titleTextField(),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             aboutTextField(),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             InkWell(
@@ -81,12 +76,12 @@ FlutterSecureStorage storage = FlutterSecureStorage();
                   final String? userId = await storage.read(
                       key: "id"); // Replace with the actual user ID
                   final String? baseUrl = await storage.read(key: "baseurl");
-                  final String? apiUrl = '$baseUrl/api/users/$userId';
+                  final String apiUrl = '$baseUrl/api/users/$userId';
                   final String? token = await storage.read(key: "access_token");
                   // var response =
                   //     await networkHandler.post("/profile/add", data);
                   final response = await http.patch(
-                    Uri.parse(apiUrl!),
+                    Uri.parse(apiUrl),
                     headers: {
                       'Authorization': 'Bearer $token',
                     },
@@ -99,7 +94,7 @@ FlutterSecureStorage storage = FlutterSecureStorage();
                     }); 
     Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => MainProfile()),
+                                MaterialPageRoute(builder: (context) => const MainProfile()),
                               );
                     // print('$_imageFile.path image path');
                     if (_imageFile != null) {
@@ -111,7 +106,7 @@ FlutterSecureStorage storage = FlutterSecureStorage();
                           circular = false;
                         });
                         Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(builder: (context) => PlaningSecreen()),
+                            MaterialPageRoute(builder: (context) => const PlaningSecreen()),
                             (route) => false);
                       }
                     } else {
@@ -120,7 +115,7 @@ FlutterSecureStorage storage = FlutterSecureStorage();
                         circular = false;
                       });
                       Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(builder: (context) => PlaningSecreen()),
+                          MaterialPageRoute(builder: (context) => const PlaningSecreen()),
                           (route) => false);
                     }
                   }
@@ -131,13 +126,13 @@ FlutterSecureStorage storage = FlutterSecureStorage();
                   width: 200,
                   height: 50,
                   decoration: BoxDecoration(
-                     color: Color.fromARGB(255, 6, 70, 189),
+                     color: const Color.fromARGB(255, 6, 70, 189),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Center(
                     child: circular
-                        ? CircularProgressIndicator()
-                        : Text(
+                        ? const CircularProgressIndicator()
+                        : const Text(
                             "Submit",
                             style: TextStyle(
                               color: Colors.white,
@@ -164,7 +159,7 @@ FlutterSecureStorage storage = FlutterSecureStorage();
           backgroundImage:
               
             FileImage(File(_imageFile!.path)),
-        ):CircleAvatar(
+        ):const CircleAvatar(
           radius: 80.0,
           backgroundImage:
               
@@ -179,7 +174,7 @@ FlutterSecureStorage storage = FlutterSecureStorage();
                 builder: ((builder) => bottomSheet()),
               );
             },
-            child: Icon(
+            child: const Icon(
               Icons.camera_alt,
                color: Color.fromARGB(255, 6, 70, 189),
               size: 28.0,
@@ -194,35 +189,35 @@ FlutterSecureStorage storage = FlutterSecureStorage();
     return Container(
       height: 100.0,
       width: MediaQuery.of(context).size.width,
-      margin: EdgeInsets.symmetric(
+      margin: const EdgeInsets.symmetric(
         horizontal: 20,
         vertical: 20,
       ),
       child: Column(
         children: <Widget>[
-          Text(
+          const Text(
             "Choose Profile photo",
             style: TextStyle(
               fontSize: 20.0,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
             TextButton.icon(
-              icon: Icon(Icons.camera),
+              icon: const Icon(Icons.camera),
               onPressed: () {
                 takePhoto(ImageSource.camera);
               },
-              label: Text("Camera"),
+              label: const Text("Camera"),
             ),
             TextButton.icon(
-              icon: Icon(Icons.image),
+              icon: const Icon(Icons.image),
               onPressed: () {
                 takePhoto(ImageSource.gallery);
               },
-              label: Text("Gallery"),
+              label: const Text("Gallery"),
             ),
           ])
         ],
@@ -247,7 +242,7 @@ FlutterSecureStorage storage = FlutterSecureStorage();
 
         return null;
       },
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         border: OutlineInputBorder(
             borderSide: BorderSide(
           color: Color.fromARGB(255, 6, 70, 189),
@@ -276,7 +271,7 @@ FlutterSecureStorage storage = FlutterSecureStorage();
 
         return null;
       },
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         border: OutlineInputBorder(
             borderSide: BorderSide(
            color: Color.fromARGB(255, 6, 70, 189),
@@ -305,7 +300,7 @@ FlutterSecureStorage storage = FlutterSecureStorage();
 
         return null;
       },
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         border: OutlineInputBorder(
             borderSide: BorderSide(
            color: Color.fromARGB(255, 6, 70, 189),
@@ -334,7 +329,7 @@ FlutterSecureStorage storage = FlutterSecureStorage();
 
         return null;
       },
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         border: OutlineInputBorder(
             borderSide: BorderSide(
            color: Color.fromARGB(255, 6, 70, 189),
@@ -364,7 +359,7 @@ FlutterSecureStorage storage = FlutterSecureStorage();
         return null;
       },
       maxLines: 4,
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         border: OutlineInputBorder(
             borderSide: BorderSide(
            color: Color.fromARGB(255, 6, 70, 189),

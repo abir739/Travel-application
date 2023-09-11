@@ -7,7 +7,7 @@ import '../../modele/transportmodel/transportModel.dart'; // For formatting Date
 class EventDetailScreen extends StatelessWidget {
   final Transport event;
 
-  const EventDetailScreen({required this.event});
+  const EventDetailScreen({super.key, required this.event});
 
   @override
   Widget build(BuildContext context) {

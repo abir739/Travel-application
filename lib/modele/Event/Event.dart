@@ -1,9 +1,5 @@
-import 'dart:ui';
 
-import 'package:cr_calendar/cr_calendar.dart';
 
-import 'dart:ui';
-import 'package:cr_calendar/cr_calendar.dart';
 import 'package:flutter/material.dart'; // Make
 
 class CalendarEvent {

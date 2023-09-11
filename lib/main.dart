@@ -11,7 +11,6 @@ import 'package:zenify_trip/register.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:zenify_trip/traveller_Screens/Clientcalendar/TravellerFirstScreen.dart';
-
 import 'constent.dart';
 import 'onesignal_handler.dart';
 
@@ -21,26 +20,28 @@ void main() {
   runApp(
     ChangeNotifierProvider(
       create: (context) => TouristGroupProvider(),
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     OneSignalHandler.initialize(context);
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
+      home: const SplashScreen(),
       routes: {
         'register': (context) => const MyRegister(),
         'login': (context) => const RoleSelectionPage(),
         'planning': (context) => const PlaningSecreen(), // Add this route
-        'Traveller': (context) => TravellerFirstScreen(
-              userList: const [],
+        'Traveller': (context) => const TravellerFirstScreen(
+              userList: [],
             ), // Add this route
-        'SplashScreen': (context) => SplashScreen(), // Add this route
+        'SplashScreen': (context) => const SplashScreen(), // Add this route
         // 'GuideHome': (context) =>
         //     const PlaningSecreen(), // Add this routeActivityDetailScreen
         'notification': (context) {
@@ -73,6 +74,8 @@ class MyApp extends StatelessWidget {
 }
 
 class SplashScreen extends StatelessWidget {
+  const SplashScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<String>(
@@ -151,7 +154,7 @@ class SplashScreen extends StatelessWidget {
   }
 
   Future<String?> _refreshToken(String? token) async {
-    final refreshTokenUrl = Uri.parse('${baseUrls}/api/auth/refresh-token');
+    final refreshTokenUrl = Uri.parse('$baseUrls/api/auth/refresh-token');
     print("$token token");
     try {
       // Create the request headers and payload

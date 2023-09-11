@@ -1,6 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:zenify_trip/modele/activitsmodel/activitesmodel.dart';
-import 'package:zenify_trip/modele/planningmainModel.dart';
 
 import '../TouristGuide.dart';
 

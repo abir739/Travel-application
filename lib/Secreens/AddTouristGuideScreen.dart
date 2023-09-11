@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:zenify_trip/guide_Screens/firstpage.dart';
 import 'package:zenify_trip/modele/activitsmodel/activityTempModel.dart';
 import 'package:zenify_trip/modele/agance.dart';
 
@@ -21,7 +22,7 @@ import 'package:path/path.dart' as path;
 import 'package:async/async.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
-import 'guidPlannig.dart';
+
 
 
 
@@ -295,7 +296,7 @@ class _AddTouristGuideScreenState extends State<AddTouristGuideScreen> {
       String? baseUrl = await storage.read(key: "baseurl");
 
       final response = await http.post(
-        Uri.parse('${baseUrls}/api/tourist-guides/'),
+        Uri.parse('$baseUrls/api/tourist-guides/'),
         headers: {
           'accept': 'application/json',
           'Authorization': 'Bearer $token',

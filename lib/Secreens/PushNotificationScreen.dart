@@ -5,19 +5,19 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:zenify_trip/modele/touristGroup.dart';
 // ignore: depend_on_referenced_packages
-import 'package:flutter_svg/svg.dart';
 
 import '../constent.dart';
 import '../modele/TouristGuide.dart';
 import '../modele/activitsmodel/httpActivites.dart';
 import '../modele/activitsmodel/httpToristGroup.dart';
 import '../modele/activitsmodel/httpToristguid.dart';
-import 'AddToristGroupScreen.dart';
 import 'AddTouristGuideScreen.dart';
 import 'package:get/get.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 class PushNotificationScreen extends StatefulWidget {
+  const PushNotificationScreen({super.key});
+
   @override
   // ignore: library_private_types_in_public_api
   _PushNotificationScreenState createState() => _PushNotificationScreenState();
@@ -76,13 +76,13 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
     if (data == null) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => AddTouristGuideScreen()),
+        MaterialPageRoute(builder: (context) => const AddTouristGuideScreen()),
       );
       return; // Stop further execution of the function
     }
     setState(() {
       touristGuides = data.cast<TouristGuide>();
-      selectedTouristGuide = data.first as TouristGuide;
+      selectedTouristGuide = data.first;
     });
     _loadDatagroup(); // Call _loadDatagroup after loading data
   }
@@ -108,7 +108,7 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
     }
     setState(() {
       touristGroup = data.cast<TouristGroup>();
-      selectedTouristGroup = data.first as TouristGroup;
+      selectedTouristGroup = data.first;
       group = touristGroup;
       initializeMultiSelectItems();
     });
@@ -130,7 +130,7 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
     String? backendUrl1 = await storage.read(key: "access_token");
     backendUrl = (await storage.read(key: "access_token"))!;
 
-    if (backendUrl == null || backendUrl.isEmpty) {
+    if (backendUrl.isEmpty) {
       print('Error: Backend URL is not set');
       return;
     }
@@ -145,7 +145,7 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
           "Accept-Language": "en-US,en;q=0.9",
           "Connection": "keep-alive",
         },
-        Uri.parse('${baseUrls}/api/push-notifications/notification'),
+        Uri.parse('$baseUrls/api/push-notifications/notification'),
         // headers: {
         //   'Content-Type': 'application/json',
         // },
@@ -176,7 +176,7 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 207, 207, 219),
-        title: Row(
+        title: const Row(
           children: [
             // SvgPicture.asset(
             //   'assets/images/Logo.svg',
@@ -189,7 +189,7 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
         ),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -534,7 +534,7 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white,
-                backgroundColor: Color.fromARGB(244, 78, 3, 73),
+                backgroundColor: const Color.fromARGB(244, 78, 3, 73),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),

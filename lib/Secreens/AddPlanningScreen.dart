@@ -9,7 +9,8 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intl/intl.dart';
-import 'package:zenify_trip/Secreens/guidPlannig.dart';
+import 'package:zenify_trip/guide_Screens/firstpage.dart';
+
 import 'package:zenify_trip/modele/activitsmodel/activityTempModel.dart';
 import 'package:zenify_trip/modele/agance.dart';
 
@@ -24,7 +25,6 @@ import '../modele/planningmainModel.dart';
 import 'dart:async';
 import 'package:path/path.dart' as path;
 import 'package:async/async.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 import '../modele/touristGroup.dart';
 
@@ -270,7 +270,7 @@ class _AddPlanningScreenState extends State<AddPlanningScreen> {
       String? baseUrl = await storage.read(key: "baseurl");
 
       final response = await http.post(
-        Uri.parse('${baseUrls}/api/plannings/'),
+        Uri.parse('$baseUrls/api/plannings/'),
         headers: {
           'accept': 'application/json',
           'Authorization': 'Bearer $token',
@@ -362,7 +362,7 @@ class _AddPlanningScreenState extends State<AddPlanningScreen> {
               const SizedBox(height: 20),
               DropdownButton<TouristGroup>(
                 borderRadius: const BorderRadius.all(Radius.circular(40)),
-                dropdownColor: Color.fromARGB(244, 142, 172, 189),
+                dropdownColor: const Color.fromARGB(244, 142, 172, 189),
                 iconEnabledColor: const Color.fromARGB(161, 0, 0, 0),
                 iconDisabledColor: const Color.fromARGB(255, 217, 5, 5),
                 value: selectedTouristGroup,

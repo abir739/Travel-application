@@ -10,8 +10,6 @@ import 'package:zenify_trip/modele/traveller/TravellerModel.dart';
 
 
 import '../constent.dart';
-import 'TouristGuide.dart';
-import 'activitsmodel/activityTempModel.dart';
 
 class HTTPHandlerTravellerbyId {
 

@@ -1,36 +1,18 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-import 'package:flutter_summernote/flutter_summernote.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
-import 'package:http/http.dart' as http;
 
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:get/get.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:intl/intl.dart';
-import 'package:location/location.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
 
-import 'package:stream_transform/stream_transform.dart';
 
 import 'dart:async';
-import 'package:path/path.dart' as path;
-import 'package:async/async.dart';
-import 'package:get/get.dart';
-import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
 
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:zenify_trip/modele/activitsmodel/activitesmodel.dart';
 
 import '../../../modele/activitsmodel/activityTempModel.dart';
-import '../../constent.dart';
-import '../../modele/Event/Event.dart';
 import '../../modele/activitsmodel/httpActivitesTempid.dart';
 
 class activitytempdetalSecreen extends StatefulWidget {
@@ -225,7 +207,7 @@ class _activitytempdetalSecreenState extends State<activitytempdetalSecreen> {
     });
 
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Screen refreshed')),
+      const SnackBar(content: Text('Screen refreshed')),
     );
   }
 
@@ -233,10 +215,10 @@ class _activitytempdetalSecreenState extends State<activitytempdetalSecreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Activity Detail"),
+        title: const Text("Activity Detail"),
       ),
       body: isLoading
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : SingleChildScrollView(
@@ -246,7 +228,7 @@ class _activitytempdetalSecreenState extends State<activitytempdetalSecreen> {
                   children: [
                     Text(
                       activites.name ?? "No name",
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),

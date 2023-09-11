@@ -8,7 +8,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intl/intl.dart';
-import 'package:zenify_trip/Secreens/guidPlannig.dart';
+import 'package:zenify_trip/guide_Screens/firstpage.dart';
+
 import 'package:zenify_trip/modele/activitsmodel/activityTempModel.dart';
 import 'package:zenify_trip/modele/agance.dart';
 
@@ -22,7 +23,6 @@ import '../modele/planningmainModel.dart';
 import 'dart:async';
 import 'package:path/path.dart' as path;
 import 'package:async/async.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 class AddTouristGroupScreen extends StatefulWidget {
   const AddTouristGroupScreen({super.key});
@@ -276,7 +276,7 @@ class _AddTouristGroupScreenState extends State<AddTouristGroupScreen> {
       String? baseUrl = await storage.read(key: "baseurl");
 
       final response = await http.post(
-        Uri.parse('${baseUrls}/api/tourist-groups/'),
+        Uri.parse('$baseUrls/api/tourist-groups/'),
         headers: {
           'accept': 'application/json',
           'Authorization': 'Bearer $token',
@@ -347,7 +347,7 @@ class _AddTouristGroupScreenState extends State<AddTouristGroupScreen> {
             children: [
               DropdownButton<TouristGuide>(
                 borderRadius: const BorderRadius.all(Radius.circular(40)),
-                dropdownColor: Color.fromARGB(244, 142, 172, 189),
+                dropdownColor: const Color.fromARGB(244, 142, 172, 189),
                 iconEnabledColor: const Color.fromARGB(161, 0, 0, 0),
                 iconDisabledColor: const Color.fromARGB(255, 158, 158, 158),
                 value: selectedTouristGuide,
@@ -486,7 +486,7 @@ class _AddTouristGroupScreenState extends State<AddTouristGroupScreen> {
               const SizedBox(height: 30.0),
 
               TextFormField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Depart Date',
                   labelStyle: TextStyle(fontSize: 20), // Set the font size here
                 ),

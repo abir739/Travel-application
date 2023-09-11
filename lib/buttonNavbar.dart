@@ -2,14 +2,17 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:zenify_trip/Secreens/AccommodationSecreen.dart';
+import 'package:zenify_trip/guide_Screens/firstpage.dart';
 import 'Secreens/ConcentricAnimationOnboarding.dart';
 import 'Secreens/Notification/PushNotificationScreen.dart';
 import 'Secreens/Profile/editprofile.dart';
-import 'Secreens/guidPlannig.dart';
+
 import 'modele/TouristGuide.dart';
 import 'modele/planningmainModel.dart'; // Import the necessary package
 
 class AppBottomNavigationBar extends StatelessWidget {
+  const AppBottomNavigationBar({super.key});
+
   get selectedPlanning => PlanningMainModel();
 
   TouristGuide? get selectedTouristGuide => TouristGuide();
@@ -39,11 +42,11 @@ class AppBottomNavigationBar extends StatelessWidget {
                 selectedTouristGuide)); // Navigate to the calendar page
             break;
           case 2:
-            Get.to(MainProfile()); // Navigate to the profile page
+            Get.to(const MainProfile()); // Navigate to the profile page
             break;
           case 3:
             Get.to(
-                PushNotificationScreen()); // Navigate to the notifications page
+                const PushNotificationScreen()); // Navigate to the notifications page
             break;
           case 4:
             Get.to(

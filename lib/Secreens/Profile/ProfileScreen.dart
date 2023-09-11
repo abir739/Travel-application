@@ -7,7 +7,7 @@ import 'CreatProfile.dart';
 import 'MainProfile.dart';
 
 class ProfileScreen extends StatefulWidget {
-  ProfileScreen({Key? key}) : super(key: key);
+  const ProfileScreen({Key? key}) : super(key: key);
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
@@ -15,7 +15,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   NetworkHandler networkHandler = NetworkHandler();
-  Widget page = CircularProgressIndicator();
+  Widget page = const CircularProgressIndicator();
 
   @override
   void initState() {
@@ -33,7 +33,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     var response = await networkHandler.get("/profile/checkProfile");
     if (response["status"] == true) {
       setState(() {
-        page = MainProfile();
+        page = const MainProfile();
         // Navigator.of(context).pop();
       });
     } else {
@@ -46,13 +46,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffEEEEFF),
+      backgroundColor: const Color(0xffEEEEFF),
       body: Center(child: page),
     );
   }
 
   Widget showProfile() {
-    return Center(child: Text("Profile Data is Avalable"));
+    return const Center(child: Text("Profile Data is Avalable"));
   }
 
   Widget button() {
@@ -62,7 +62,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Text(
+          const Text(
             "Tap to button to add profile data",
             textAlign: TextAlign.center,
             style: TextStyle(
@@ -70,13 +70,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
               fontSize: 18,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 30,
           ),
           InkWell(
             onTap: () => {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => CreatProfile()))
+                  MaterialPageRoute(builder: (context) => const CreatProfile()))
             },
             child: Container(
               height: 60,
@@ -85,7 +85,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 color: Colors.blueGrey,
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: Center(
+              child: const Center(
                 child: Text(
                   "Add Proile",
                   style: TextStyle(
