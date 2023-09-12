@@ -1,13 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_svg/flutter_svg.dart'; // Use the updated import
-
+import 'package:timezone/timezone.dart' as tz;
 import '../../modele/transportmodel/transportModel.dart';
 
 class EventDetailScreen extends StatelessWidget {
   final Transport event;
 
   const EventDetailScreen({super.key, required this.event});
+  // String formatDateTimeInTimeZone(DateTime? dateTime) {
+  //   if (dateTime == null) {
+  //     return 'N/A';
+  //   }
+
+  //   // Replace 'America/New_York' with your desired time zone
+  //   final timeZone = tz.getLocation('Tunisia/Tunis');
+  //   final formattedDateTime = DateFormat.yMd().add_jm().format(
+  //         tz.TZDateTime.from(dateTime, timeZone),
+  //       );
+
+  //   return formattedDateTime;
+  // }
 
   @override
   Widget build(BuildContext context) {

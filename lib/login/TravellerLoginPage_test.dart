@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:zenify_trip/traveller_Screens/Clientcalendar/tourist_calendar.dart';
 import '../constent.dart';
 import '../modele/traveller/TravellerModel.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 class TravellerLoginPage extends StatefulWidget {
   const TravellerLoginPage({super.key});
@@ -155,6 +156,31 @@ class _TravellerLoginPageState extends State<TravellerLoginPage> {
                         ),
                         onTap: () {
                           _navigateToCalendarPage(travellers[index]);
+                          try {
+                            OneSignal.shared.setAppId(
+                                'ce7f9114-b051-4672-a9c5-0eec08d625e8');
+                            OneSignal.shared.setSubscriptionObserver(
+                                (OSSubscriptionStateChanges changes) {
+                              print(
+                                  "SUBSCRIPTION STATE CHANGED: ${changes.jsonRepresentation()}");
+                            });
+                            OneSignal.shared
+                                .promptUserForPushNotificationPermission();
+                            OneSignal.shared.sendTags({
+                              'Groupids': '${travellers[index].touristGroupId}'
+                            }).then((success) {
+                              print("Tags created successfully");
+                              Navigator.of(context).pop();
+                              _navigateToCalendarPage(travellers[index]);
+                              setState(() {
+                                // Set loading state to true
+                              });
+                            }).catchError((error) {
+                              print("Error creating tags: $error");
+                            });
+                          } catch (e) {
+                            print('Error initializing OneSignal: $e');
+                          }
                         },
                       ),
                     );

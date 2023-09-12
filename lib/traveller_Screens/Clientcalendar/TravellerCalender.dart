@@ -3,6 +3,7 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:zenify_trip/Secreens/EventTransporClient.dart';
 import 'package:zenify_trip/modele/transportmodel/transportModel.dart';
 import 'package:get/get.dart';
+import 'package:zenify_trip/modele/traveller/TravellerModel.dart';
 import '../../modele/Event/Event.dart';
 import '../../modele/activitsmodel/httpTransfer.dart';
 
@@ -15,7 +16,7 @@ class AppointmentDataSource extends CalendarDataSource {
 class TravellerCalendarPage extends StatefulWidget {
   final String? group;
 
-  const TravellerCalendarPage({Key? key, this.group}) : super(key: key);
+  const TravellerCalendarPage({Key? key, this.group, required Traveller tarveller}) : super(key: key);
 
   @override
   _TravellerCalendarPageState createState() => _TravellerCalendarPageState();

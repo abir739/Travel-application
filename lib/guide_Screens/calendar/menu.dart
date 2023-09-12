@@ -92,7 +92,7 @@ class _PlanningScreenState extends State<PlanningScreen> {
   Future<void> fetchData() async {
     try {
       transferList = await fetchTransfers(
-          "/api/transfers/touristGuidId/${widget.guid?.id}");
+          "/api/transfers-mobile/touristGuidId/${widget.guid?.id}");
       setState(() {
         List<CalendarEvent> events = transferList.cast<CalendarEvent>();
       });
@@ -105,7 +105,7 @@ class _PlanningScreenState extends State<PlanningScreen> {
   Future<Map<String, List<dynamic>>> fetchDataAndOrganizeEvents() async {
     try {
       List<Transport> transfersList = await fetchTransfers(
-        "/api/transfers/touristGuidId/${widget.guid!.id}",
+        "/api/transfers-mobile/touristGuidId/${widget.guid!.id}",
       );
 
       List<CalendarEvent> events =

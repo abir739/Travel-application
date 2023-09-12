@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
-
+import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'modele/traveller/TravellerModel.dart';
 class MyRegister extends StatefulWidget {
   const MyRegister({Key? key}) : super(key: key);
 
@@ -10,6 +11,12 @@ class MyRegister extends StatefulWidget {
 }
 
 class _MyRegisterState extends State<MyRegister> {
+  final TextEditingController codeController = TextEditingController();
+  List<Traveller> travellers = [];
+  String errorMessage = '';
+
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

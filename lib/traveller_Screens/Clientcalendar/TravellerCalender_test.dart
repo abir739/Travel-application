@@ -16,6 +16,7 @@ import 'package:flutter_svg/svg.dart';
 import '../../constent.dart';
 import '../../modele/planningmainModel.dart';
 import 'event_detail_screen.dart';
+import 'TravellerFirstScreen.dart';
 
 class TravellerCalendarPage extends StatefulWidget {
   final String? group;
@@ -31,7 +32,7 @@ class _TravellerCalendarPageState extends State<TravellerCalendarPage> {
   final CalendarController _controller = CalendarController();
 
   String? date;
-
+  bool isCalendarVisible = true;
   List<Transport> transferList = [];
   int selectedIndex = 0;
   double activityProgress = 0.0;
@@ -58,6 +59,11 @@ class _TravellerCalendarPageState extends State<TravellerCalendarPage> {
     super.initState();
     fetchData();
     fetchDataAndOrganizeEvents();
+  }
+  
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    fetchData();
   }
 
   List<CalendarEvent> convertToCalendarEvents(

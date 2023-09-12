@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:zenify_trip/login.dart';
 import 'package:zenify_trip/traveller_Screens/Clientcalendar/TravellerCalender_test.dart';
 import '../../HTTPHandlerObject.dart';
 import '../../modele/httpTravellerbyid.dart';
@@ -30,14 +31,16 @@ class _TravellerFirstScreenState extends State<TravellerFirstScreen> {
     super.initState();
     _loadDataTraveller(widget.userList); // Pass the user list
   }
+ Future<void> logout() async {
+    // Delete sensitive data from secure storage
+    await storage.deleteAll();
+     Get.offNamed('login');
+  }
 
-  Future<void> sendtags(String? Groupids) async {
-    await OneSignal.shared.sendTags({'$Groupids': '$Groupids'}).then((success) {
-      print("Tags created successfully $Groupids");
-    }).catchError((error) {
-      print("Error creating tags: $error");
-    });
+Future<void> sendtags(String? Groupids) async {
+
     setState(() {
+   
       OneSignal.shared.sendTags({'Groupids': '$Groupids'}).then((success) {
         print("Tags created successfully $Groupids");
       }).catchError((error) {
@@ -48,8 +51,10 @@ class _TravellerFirstScreenState extends State<TravellerFirstScreen> {
           .setSubscriptionObserver((OSSubscriptionStateChanges changes) {
         print("SUBSCRIPTION STATE CHANGED: ${changes.jsonRepresentation()}");
       });
+   
     });
   }
+
 
   Future<Traveller> _loadDataTraveller(List<dynamic> userList) async {
     final userId = await storage.read(key: "id");
@@ -57,7 +62,7 @@ class _TravellerFirstScreenState extends State<TravellerFirstScreen> {
     final travellerdetail = await handler.fetchData(
         "/api/travellers/UserId/$userId", Traveller.fromJson);
 
-    setState(() {
+      setState(() {
       traveller = travellerdetail;
       print(travellerdetail.id);
       isLoading = false;
@@ -67,6 +72,7 @@ class _TravellerFirstScreenState extends State<TravellerFirstScreen> {
     });
     return travellerdetail;
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -115,10 +121,14 @@ class _TravellerFirstScreenState extends State<TravellerFirstScreen> {
                                   20), // Adjust the border radius
                             ),
                           ),
-                          onPressed: () async {
-                            await storage.delete(key: "access_token");
-                            // Get.to(LoginView());
+                           onPressed: () async {
+                            // await storage.delete(key: "access_token");
+                            // await storage.delete(key: "id");
+                            // await storage.delete(key: "role");
+                            await storage.deleteAll();
+                            Get.off(const MyLogin());
                           },
+
                           child: const Text('Logout'),
                         ),
                       ],
@@ -204,11 +214,12 @@ class _TravellerFirstScreenState extends State<TravellerFirstScreen> {
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
-                  onPressed: () {
-                    // Add any navigation logic here
-                    Get.to(TravellerCalendarPage(
-                      group: traveller.touristGroupId,
-                    ));
+                    onPressed: () {
+                  // Add any navigation logic here
+                  Get.off(TravellerCalendarPage(
+                    group: traveller.touristGroupId,
+                  ));
+
                   },
                   child: const Center(
                     child: Text(
@@ -221,6 +232,26 @@ class _TravellerFirstScreenState extends State<TravellerFirstScreen> {
                     ),
                   ),
                 ),
+                ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white, backgroundColor: Colors.red, // Change the text color
+                  textStyle: const TextStyle(fontSize: 16), // Change the text style
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16), // Adjust the padding
+                  minimumSize: const Size(
+                      120, 40), // Set a minimum width and height for the button
+                  shape: RoundedRectangleBorder(
+                    borderRadius:
+                        BorderRadius.circular(20), // Adjust the border radius
+                  ),
+                ),
+                onPressed: () async {
+                  // await storage.delete(key: "access_token");
+                  // await storage.delete(key: "Role");
+                  logout();
+                },
+                child: const Text('Logout'),
+),
               ],
             ),
           ),

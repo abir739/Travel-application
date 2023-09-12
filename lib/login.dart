@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
-import 'package:zenify_trip/guide_Screens/firstpage.dart';
+// import 'package:zenify_trip/guide_Screens/firstpage.dart';
 import 'package:zenify_trip/traveller_Screens/Clientcalendar/TravellerFirstScreen.dart';
 import 'NetworkHandler.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
-
+import 'Secreens/guidPlannig.dart';
 import 'constent.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -62,32 +62,69 @@ class _MyLoginState extends State<MyLogin> {
   Future<void> initPlatformState() async {
     OneSignal.shared.setAppId(
       oneSignalAppId,
+      // iOSSettings: {
+      //   OSiOSSettings.autoPrompt: true,
+      //   OSiOSSettings.inAppLaunchUrl: true
+      // },
     );
 
-    OneSignal.shared
-        .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
-      OSNotification notification1 = result.notification;
+    // OneSignal.shared
+    //     .(OSNotificationDisplayType.notification);
 
-      OSNotification notification = result.notification;
-      OSNotificationAction? action = result.action;
+    //This method only work when app is in foreground.
+    // OneSignal.shared.setNotificationOpenedHandler(
+    //   (OSNotificationOpenedResult notification) {
+    //     print("${notification.notification.body} actions");
+    //     // Extract data from the notification payload
+    //     Map<String, dynamic>? additionalData =
+    //         notification.notification.additionalData;
+    //     print("${additionalData} additionalData");
 
-      // Access notification properties
-      String notificationId = notification.notificationId;
-      String? title = notification.title;
-      String? body = notification.body;
-      Map<String, dynamic>? additionalData = notification.additionalData;
+    //     // Parse the JSON string
+    //     // Map<String, dynamic> bodyData = json.decode(body!);
 
-      // Access action properties
-      OSNotificationActionType? actionType = action?.type;
-      String? actionId = action?.actionId;
-      // Map<String, dynamic>? actionData = action?.additionalData;
-      print('title $title bodys $body actionType $actionType');
-    });
-    OneSignal.shared.setNotificationOpenedHandler(
-      (OSNotificationOpenedResult result) async {
-        var data = result.notification.additionalData;
-      },
-    );
+    //     // Navigate to the desired screen based on payload data
+    //     if (additionalData!.containsKey('screen')) {
+    //       String screenName = additionalData['screen'];
+    //       print("$screenName      print(screenName);");
+    //       // Navigator.of(notification.context).pushNamed(screenName);
+    //       Get.toNamed(screenName);
+    //     }
+    //   },
+    // );
+    // OneSignal.shared
+    //     .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
+    //   OSNotification notification1 = result.notification;
+
+    //   OSNotification notification = result.notification;
+    //   OSNotificationAction? action = result.action;
+
+    //   // Access notification properties
+    //   String notificationId = notification.notificationId;
+    //   String? title = notification.title;
+    //   String? body = notification.body;
+    //   Map<String, dynamic>? additionalData = notification.additionalData;
+
+    //   // Access action properties
+    //   OSNotificationActionType? actionType = action?.type;
+    //   String? actionId = action?.actionId;
+    //   // Map<String, dynamic>? actionData = action?.additionalData;
+    //   print('title $title bodys $body actionType $actionType');
+    //   // Perform your desired actions based on the notification and action data
+    //   // Navigator.push(context, MaterialPageRoute(builder: (_) => Planingtest()));
+    // });
+    // OneSignal.shared.setNotificationOpenedHandler(
+    //   (OSNotificationOpenedResult result) async {
+    //     var data = result.notification.additionalData;
+    //     // globals.appNavigator.currentState.push(
+    //     // MaterialPageRoute(
+    //     //   builder: (context) => SecondPage(
+    //     //     postId: data['post_id'].toString(),
+    //     //   ),
+    //     // ),
+    //     // );
+    //   },
+    // );
   }
 
   void _requestPermission() async {

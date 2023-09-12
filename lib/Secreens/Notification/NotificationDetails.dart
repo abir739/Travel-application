@@ -47,6 +47,7 @@ class _ActivityDetailScreenState extends State<ActivityDetailScreen> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

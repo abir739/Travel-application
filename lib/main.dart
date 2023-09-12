@@ -1,17 +1,24 @@
-
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:zenify_trip/Secreens/Notification/NotificationDetails.dart';
-import 'package:zenify_trip/Secreens/TouristGroupProvider.dart';
-import 'package:zenify_trip/guide_Screens/firstpage.dart';
 import 'package:zenify_trip/login/RoleSelectionPage.dart';
 import 'package:zenify_trip/register.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:timezone/data/latest.dart' as tzdata;
 import 'package:zenify_trip/traveller_Screens/Clientcalendar/TravellerFirstScreen.dart';
+
+import 'ResetPasswordWithPhoneNumberScreen.dart';
+
+import 'Secreens/TouristGroupProvider.dart';
+
+import 'Secreens/guidPlannig.dart';
 import 'constent.dart';
+
 import 'onesignal_handler.dart';
 
 void main() {
@@ -20,30 +27,59 @@ void main() {
   runApp(
     ChangeNotifierProvider(
       create: (context) => TouristGroupProvider(),
-      child: const MyApp(),
+      child: MyApp(),
     ),
   );
+  // DependencyInjection.init();
+  // tzdata.initializeTimeZones();
+
+  // OneSignal.shared.setNotificationOpenedHandler(
+  //   (OSNotificationOpenedResult notification) {
+  //     print("${notification.notification.body} actions");
+  //     // Extract data from the notification payload
+  //     Map<String, dynamic>? additionalData =
+  //         notification.notification.additionalData;
+  //     print("${additionalData} additionalData");
+
+  //     // Parse the JSON string
+  //     // Map<String, dynamic> bodyData = json.decode(body!);
+
+  //     // Navigate to the desired screen based on payload data
+  //     if (additionalData!.containsKey('screen')) {
+
+  //       String screenName = additionalData['screen'];
+  //       print("$screenName      print(screenName);" );
+  //       // Navigator.of(notification.context).pushNamed(screenName);
+  //       Get.toNamed(screenName);
+  //     }
+  //   },
+  // );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     OneSignalHandler.initialize(context);
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const SplashScreen(),
+      home: SplashScreen(),
+      // getPages: [
+      //   GetPage(
+      //     // initialRoute: 'SplashScreen',
+      //     name: '/notification',
+      //     page: () => ActivityDetailScreen(),
+      //   ),
+      // ],
       routes: {
         'register': (context) => const MyRegister(),
         'login': (context) => const RoleSelectionPage(),
         'planning': (context) => const PlaningSecreen(), // Add this route
         'Traveller': (context) => const TravellerFirstScreen(
               userList: [],
-            ), // Add this route
-        'SplashScreen': (context) => const SplashScreen(), // Add this route
-        // 'GuideHome': (context) =>
-        //     const PlaningSecreen(), // Add this routeActivityDetailScreen
+            ),
+// Add this route
+        'SplashScreen': (context) => SplashScreen(), // Add this route
+
         'notification': (context) {
           final args =
               Get.arguments; // Get the arguments passed when navigating
@@ -63,30 +99,28 @@ class MyApp extends StatelessWidget {
   }
 
   Future<String?> _getToken() async {
-    FlutterSecureStorage storage = const FlutterSecureStorage();
+    FlutterSecureStorage storage = FlutterSecureStorage();
     return await storage.read(key: "access_token");
   }
 
   Future<String?> _getRole() async {
-    FlutterSecureStorage storage = const FlutterSecureStorage();
+    FlutterSecureStorage storage = FlutterSecureStorage();
     return await storage.read(key: "Role");
   }
 }
 
 class SplashScreen extends StatelessWidget {
-  const SplashScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<String>(
       future: _getInitialRoute(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Scaffold(
+          return Scaffold(
             body: Center(
               child: CircularProgressIndicator(
                 backgroundColor: Color.fromARGB(255, 219, 10, 10),
-                valueColor: AlwaysStoppedAnimation<Color>(
+                valueColor: new AlwaysStoppedAnimation<Color>(
                     Color.fromARGB(255, 24, 10, 221)),
               ),
             ),
@@ -95,14 +129,14 @@ class SplashScreen extends StatelessWidget {
           return Text('Error: ${snapshot.error}');
         } else {
           String initialRoute = snapshot.data!;
-          WidgetsBinding.instance.addPostFrameCallback((_) {
+          WidgetsBinding.instance!.addPostFrameCallback((_) {
             Navigator.of(context).pushReplacementNamed(initialRoute);
           });
-          return const Scaffold(
+          return Scaffold(
             body: Center(
               child: CircularProgressIndicator(
                 backgroundColor: Color.fromARGB(255, 219, 10, 10),
-                valueColor: AlwaysStoppedAnimation<Color>(
+                valueColor: new AlwaysStoppedAnimation<Color>(
                     Color.fromARGB(255, 24, 10, 221)),
               ),
             ),
@@ -114,12 +148,12 @@ class SplashScreen extends StatelessWidget {
 
   Future<String> _getInitialRoute() async {
     Future<String?> _getToken() async {
-      FlutterSecureStorage storage = const FlutterSecureStorage();
+      FlutterSecureStorage storage = FlutterSecureStorage();
       return await storage.read(key: "access_token");
     }
 
     Future<String?> _getRole() async {
-      FlutterSecureStorage storage = const FlutterSecureStorage();
+      FlutterSecureStorage storage = FlutterSecureStorage();
       return await storage.read(key: "Role");
     }
 
@@ -138,7 +172,7 @@ class SplashScreen extends StatelessWidget {
 
   Future<bool> _validateToken() async {
     // Replace this with your token validation logic
-    FlutterSecureStorage storage = const FlutterSecureStorage();
+    FlutterSecureStorage storage = FlutterSecureStorage();
     String? token = await storage.read(key: "access_token");
 
     // Call your API to refresh the token
@@ -154,7 +188,7 @@ class SplashScreen extends StatelessWidget {
   }
 
   Future<String?> _refreshToken(String? token) async {
-    final refreshTokenUrl = Uri.parse('$baseUrls/api/auth/refresh-token');
+    final refreshTokenUrl = Uri.parse('${baseUrls}/api/auth/refresh-token');
     print("$token token");
     try {
       // Create the request headers and payload

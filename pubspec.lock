@@ -305,6 +305,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
+  diacritic:
+    dependency: transitive
+    description:
+      name: diacritic
+      sha256: a84e03ec2779375fb86430dbe9d8fba62c68376f2499097a5f6e75556babe706
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.4"
   diff_match_patch:
     dependency: transitive
     description:
@@ -494,6 +502,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.3"
+  flutter_country_picker_nm:
+    dependency: "direct main"
+    description:
+      name: flutter_country_picker_nm
+      sha256: f607b62fc9ff92bc61ef189e2670d55ce5d6d3bc8a7e77501b6a83542e4712e7
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.3"
   flutter_inappwebview:
     dependency: transitive
     description:
