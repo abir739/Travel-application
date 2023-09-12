@@ -312,7 +312,7 @@ class _PlanningScreenState extends State<PlanningScreen> {
                       title: const Text('Send Notification'),
                       onTap: () {
                         // Handle drawer item click
-                        Get.to(const PushNotificationScreen()); // Close the drawer
+                        Get.to(PushNotificationScreen(widget.guid));// Close the drawer
                       },
                     ),
                     ListTile(

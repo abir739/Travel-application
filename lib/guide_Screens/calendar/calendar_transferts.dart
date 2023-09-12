@@ -401,7 +401,7 @@ class _PlanningScreenState extends State<PlanningScreen> {
                 break;
               case 3:
                 // Navigate to notifications page
-                Get.to(const PushNotificationScreen());
+                Get.to(PushNotificationScreen(widget.guid));
                 break;
               case 4:
                 // Navigate to more options page

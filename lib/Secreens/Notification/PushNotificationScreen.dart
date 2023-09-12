@@ -14,7 +14,8 @@ import '../../modele/touristGroup.dart';
 import 'package:flutter_svg/svg.dart';
 
 class PushNotificationScreen extends StatefulWidget {
-  const PushNotificationScreen({super.key});
+  TouristGuide? guid;
+  PushNotificationScreen(this.guid, {super.key});
 
   @override
   _PushNotificationScreenState createState() => _PushNotificationScreenState();
@@ -81,8 +82,8 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
       group = []; // initialize the list to an empty list
       multiSelectItems = []; // initialize the list to an empty list
     });
-    final data = await httpHandlertorist.fetchData(
-        "/api/tourist-groups/touristGuideId/${selectedTouristGuide!.id}");
+    final data = await httpHandlertorist
+        .fetchData("/api/tourist-groups/touristGuideId/${widget.guid!.id}");
 
     setState(() {
       touristGroup = data.cast<TouristGroup>();
@@ -101,7 +102,7 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
         String tagId = item.value.id!;
         // selectedTagsMap.putIfAbsent('GroupName_Tag', () => []).add(tagId);
 
-        selectedTagsMap[tagId] = tagId;
+        selectedTagsMap["Groupids"] = tagId;
       }
     }
     return selectedTagsMap;
@@ -115,7 +116,7 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
         Uri.parse('$baseUrls/api/push-notifications/notification'),
         headers: {
           "Authorization":
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMwZjkxMTkyLTUzYWItNGUzZC1iM2EwLTM1NDNkNDk5YWVmZCIsInN1YiI6IjMwZjkxMTkyLTUzYWItNGUzZC1iM2EwLTM1NDNkNDk5YWVmZCIsInVzZXJuYW1lIjoiYWJpcjExMSIsImVtYWlsIjoiYWJpcjExMUBnbWFpbC5jb20iLCJyb2xlIjoiQWRtaW5pc3RyYXRvciIsImZpcnN0TmFtZSI6IkFiaXIiLCJsYXN0TmFtZSI6ImNoZXJpZmZmIiwiZXhwaXJlcyI6MTY5Mzk5NDM4MSwiY3JlYXRlZCI6MTY5MzkwNzk4MSwiaWF0IjoxNjkzOTA3OTgxLCJleHAiOjE2OTM5OTQzODF9.-tcYbV3mFF6W_4Ad89C0_Y8CHwP3CYJnCEdzztrDqrI",
+              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImUxMWU0N2FhLTE5YzgtNDM5Mi1hMGEyLTkwN2NmYTg0MzM4OCIsInN1YiI6ImUxMWU0N2FhLTE5YzgtNDM5Mi1hMGEyLTkwN2NmYTg0MzM4OCIsInVzZXJuYW1lIjoic2E3Ym9vY2gzIiwiZW1haWwiOiJzYTdib29jaDNAZ21haWwuY29tIiwicm9sZSI6IkFkbWluaXN0cmF0b3IiLCJmaXJzdE5hbWUiOiJTYWhiaSIsImxhc3ROYW1lIjoiS2hhbGZhbGxhaCIsImV4cGlyZXMiOjE2OTQ2MTAyNTksImNyZWF0ZWQiOjE2OTQ1MjM4NTksImlhdCI6MTY5NDUyMzg1OSwiZXhwIjoxNjk0NjEwMjU5fQ.x_DdGrIykF7AQIUoSLkNlSXUuQWB_8Ev_1cVg2OEP1A",
           "Content-Type": "application/json"
         },
         body: json.encode({
@@ -244,7 +245,8 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
                             DropdownButton<TouristGuide>(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(20)),
-                              dropdownColor: const Color.fromARGB(255, 229, 224, 224),
+                              dropdownColor:
+                                  const Color.fromARGB(255, 229, 224, 224),
                               iconEnabledColor:
                                   const Color.fromARGB(160, 245, 241, 241),
                               iconDisabledColor:

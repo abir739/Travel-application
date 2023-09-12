@@ -7,11 +7,7 @@ import 'package:get/get.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:zenify_trip/traveller_Screens/Clientcalendar/TravellerFirstScreen.dart';
 import 'NetworkHandler.dart';
-import 'ResetPasswordWithPhoneNumberScreen.dart';
-import 'Secreens/Navigation/GoogleBottomBar.dart';
-import 'Secreens/NavigationRailPage.dart';
 import 'Secreens/PlannigSecreen.dart';
-
 import 'Secreens/guidPlannig.dart';
 import 'constent.dart';
 import 'package:permission_handler/permission_handler.dart';
