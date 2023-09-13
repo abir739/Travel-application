@@ -436,7 +436,7 @@ class _GroupCalendarScreenState extends State<GroupCalendarScreen> {
           height: calendarAppointmentDetails.bounds.height / 2,
           color: appointment.color,
           child: Text(
-            '${appointment.subject}${DateFormat(' (hh:mm a').format(appointment.startTime)}-${DateFormat('hh:mm a)').format(appointment.endTime)}',
+            '${appointment.subject}${formatDateTimeInTimeZone(appointment.startTime)}-${formatDateTimeInTimeZone(appointment.endTime)}',
             textAlign: TextAlign.center,
             style: const TextStyle(fontSize: 10),
           ),

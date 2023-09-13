@@ -458,7 +458,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                             ),
                             onPressed: () {
                               Get.to(
-                                  PlanningScreen(selectedPlanning!.id, guid));
+                                  PlanningScreen( guid));
                               sendtags(guid!.id);
                             },
                             child: SizedBox(

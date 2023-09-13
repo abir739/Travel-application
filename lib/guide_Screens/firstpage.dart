@@ -96,9 +96,9 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
 
   Future<void> initPlatformState() async {
     OneSignal.shared.setAppId(
-     oneSignalAppId,
+      oneSignalAppId,
     );
-   }
+  }
 
   Future<Traveller> _loadDataTraveller() async {
     final userId = await storage.read(key: "id");
@@ -345,8 +345,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                               ),
                             ),
                             onPressed: () {
-                              Get.to(
-                                  PlanningScreen(selectedPlanning!.id, guid));
+                              Get.to(PlanningScreen(guid));
                             },
                             child: SizedBox(
                               width: Get.width * 0.8,
@@ -440,8 +439,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                                   ),
                                 ),
                                 onPressed: () {
-                                  Get.to(PlanningScreen(
-                                      selectedPlanning!.id, guid));
+                                  Get.to(PlanningScreen(guid));
                                 },
                                 child: SizedBox(
                                   width: Get.width * 0.8,

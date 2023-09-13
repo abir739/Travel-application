@@ -1,15 +1,20 @@
+import 'dart:ui';
 
+import 'package:cr_calendar/cr_calendar.dart';
 
+import 'dart:ui';
+import 'package:cr_calendar/cr_calendar.dart';
 import 'package:flutter/material.dart'; // Make
 
 class CalendarEvent {
-  late final String? title;
+  final String? title;
   final String? id;
-  late final String? description;
-  late final String? note;
+  final String? description;
+  final String? location;
+  final String? note;
 
-  late final DateTime? startTime;
-  late final DateTime? endTime;
+  final DateTime? startTime;
+  final DateTime? endTime;
   final Color? color;
   final Object? type;
   final Object? recurrenceId;
@@ -18,6 +23,7 @@ class CalendarEvent {
   CalendarEvent(
       {this.title,
       this.description,
+      this.location,
       this.startTime,
       this.endTime,
       this.color,

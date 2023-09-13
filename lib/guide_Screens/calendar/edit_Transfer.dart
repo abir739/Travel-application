@@ -9,16 +9,15 @@ import 'package:http/http.dart' as http;
 
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:zenify_trip/constent.dart';
-import 'package:zenify_trip/guide_Screens/calendar/menu.dart';
-import 'package:zenify_trip/guide_Screens/calendar/transfert_data.dart';
+
 import 'package:zenify_trip/login.dart';
-import 'package:zenify_trip/modele/TouristGuide.dart';
-import 'package:zenify_trip/modele/touristGroup.dart'; // Updated import
-import 'package:get/get.dart';
+import 'package:zenify_trip/modele/touristGroup.dart';
+import 'package:zenify_trip/modele/transportmodel/transportModel.dart';
+
 
 class EventView extends StatefulWidget {
-  final TransportEvent event;
-  final Function(TransportEvent updatedEvent) onSave;
+  final Transport event;
+  final Function(Transport updatedEvent) onSave;
 
   const EventView({super.key, required this.event, required this.onSave});
 
@@ -28,7 +27,7 @@ class EventView extends StatefulWidget {
 
 class _EventViewState extends State<EventView> {
   List<TouristGroup> _touristGroups = [];
-  TouristGuide? guid;
+
   late TextEditingController _noteController;
   late TextEditingController _durationController;
   late TextEditingController _messageController; // Updated controller name
@@ -42,9 +41,9 @@ class _EventViewState extends State<EventView> {
     super.initState();
     fetchTouristGroups();
 
-    _noteController = TextEditingController(text: widget.event.transport.note);
+    _noteController = TextEditingController(text: widget.event.note);
     _durationController = TextEditingController(
-        text: widget.event.transport.durationHours.toString());
+        text: widget.event.durationHours.toString());
 
     _messageController = TextEditingController(); // Initialize controllers
     _titleController = TextEditingController(); // Initialize controllers
@@ -69,7 +68,7 @@ class _EventViewState extends State<EventView> {
     }
 
     String url =
-        formatter("/api/tourist-groups/transfrid/${widget.event.transport.id}");
+        formatter("/api/tourist-groups/transfrid/${widget.event.id}");
 
     final response = await http.get(
       Uri.parse(url),
@@ -92,13 +91,14 @@ class _EventViewState extends State<EventView> {
 
   // Define a function to update the event details
   void updateEventDetails(String newNote, int newDuration) {
-    widget.event.transport.note = newNote;
-    widget.event.transport.durationHours = newDuration;
+    widget.event.note = newNote;
+    widget.event.durationHours = newDuration;
   }
 
   void _saveChanges() async {
-    widget.event.transport.note = _noteController.text;
-    widget.event.transport.durationHours = int.parse(_durationController.text);
+    // Update the event details with the changes from the text fields
+    widget.event.note = _noteController.text;
+    widget.event.durationHours = int.parse(_durationController.text);
 
     widget.onSave(widget.event);
     String formatter(String url) {
@@ -106,6 +106,7 @@ class _EventViewState extends State<EventView> {
     }
 
     try {
+      // Create a JSON payload with the updated event details
       final Map<String, dynamic> updatePayload = {
         'note': _noteController.text,
         'durationHours': int.parse(_durationController.text),
@@ -122,10 +123,11 @@ class _EventViewState extends State<EventView> {
         "Notification": additionalData,
       };
 
+      // Merge the additional data with the existing data
       updatePayload.addAll(newData);
 
       String? token = await storage.read(key: "access_token");
-      String url = formatter("/api/transfers/${widget.event.transport.id}");
+      String url = formatter("/api/transfers/${widget.event.id}");
 
       // Perform the PATCH request to update the event
       final response = await http.patch(
@@ -138,13 +140,21 @@ class _EventViewState extends State<EventView> {
       );
 
       if (response.statusCode == 200 || response.statusCode == 204) {
+        // Successfully updated
+        // You might want to refetch the data after saving
+        // await fetchDataAndOrganizeEvents();
+        Navigator.pop(context);
         print(updatePayload);
         print(response.body);
-        Navigator.pop(context, true); // Pass 'true' to indicate refresh
       } else {
+        // Handle API error
         print("API Error: ${response.statusCode}");
+        // You can show an error message to the user here
       }
+
+      Navigator.pop(context); // Close the EventView screen after saving changes
     } catch (e) {
+      // Handle errors
       print("Error: $e");
     }
   }
@@ -187,9 +197,9 @@ class _EventViewState extends State<EventView> {
                 ),
               ),
               const SizedBox(height: 26),
-              Text('Description: ${widget.event.transport.from}'),
+              Text('Description: ${widget.event.from}'),
               const SizedBox(height: 14),
-              Text('Date: ${widget.event.startTime.toString()}'),
+              Text('Date: ${widget.event.toString()}'),
               const SizedBox(height: 14),
               TextFormField(
                 controller: _noteController,
