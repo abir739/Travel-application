@@ -1,6 +1,5 @@
 import 'dart:ui';
-import 'package:flutter/material.dart'; // Make sure to import the material package
-
+import 'package:flutter/material.dart';
 import 'package:zenify_trip/modele/Event/Event.dart';
 import 'package:zenify_trip/modele/transportmodel/transportModel.dart';
 
@@ -10,7 +9,7 @@ class TransportEvent extends CalendarEvent {
   TransportEvent(this.transport)
       : super(
           title:
-              "🚌 From ${transport.from} to ${transport.to}", // Fixed the title string
+              "🚌 From ${transport.from ?? 'N/A'} to ${transport.to ?? 'N/A'}", // Fixed the title string
           id: transport.id,
           description: "Transfer Guid",
           startTime: transport.date,

@@ -6,15 +6,13 @@ import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
 import 'package:multi_select_flutter/util/multi_select_list_type.dart';
 import 'package:http/http.dart' as http;
-
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:zenify_trip/constent.dart';
-import 'package:zenify_trip/guide_Screens/calendar/menu.dart';
 import 'package:zenify_trip/guide_Screens/calendar/transfert_data.dart';
 import 'package:zenify_trip/login.dart';
 import 'package:zenify_trip/modele/TouristGuide.dart';
 import 'package:zenify_trip/modele/touristGroup.dart'; // Updated import
-import 'package:get/get.dart';
+
 
 class EventView extends StatefulWidget {
   final TransportEvent event;
@@ -144,6 +142,7 @@ class _EventViewState extends State<EventView> {
       } else {
         print("API Error: ${response.statusCode}");
       }
+      Navigator.pop(context, true);
     } catch (e) {
       print("Error: $e");
     }
@@ -296,7 +295,9 @@ class _EventViewState extends State<EventView> {
                     borderRadius: BorderRadius.circular(30),
                   ),
                 ),
-                onPressed: _saveChanges,
+                onPressed: () async {
+                  _saveChanges();
+                },
                 child: const Center(
                   child: Text(
                     'Save Changes',

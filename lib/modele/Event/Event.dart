@@ -11,6 +11,8 @@ class CalendarEvent {
   final String? id;
   final String? description;
   final String? location;
+  final String? from;
+  final String? to;
   final String? note;
 
   final DateTime? startTime;
@@ -24,6 +26,8 @@ class CalendarEvent {
       {this.title,
       this.description,
       this.location,
+      this.from,
+      this.to,
       this.startTime,
       this.endTime,
       this.color,

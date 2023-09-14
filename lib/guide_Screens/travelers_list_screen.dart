@@ -97,10 +97,10 @@ class _TravelersListScreenState extends State<TravelersListScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               const SizedBox(width: 5.0),
-              const SizedBox(width: 32.5),
+              const SizedBox(width: 4.0),
               Container(
                 height: 40.0,
-                width: 100,
+                width: 300,
                 decoration: BoxDecoration(
                   color: const Color(0xFFEB5F52),
                   borderRadius: BorderRadius.circular(30),
@@ -118,7 +118,7 @@ class _TravelersListScreenState extends State<TravelersListScreen> {
                   },
                   child: const Center(
                     child: Text(
-                      'Add User     ',
+                      '     Add User     ',
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w700,
@@ -209,9 +209,10 @@ class _TravelersListScreenState extends State<TravelersListScreen> {
                                 fontSize: 18), // Increase the font size
                           ),
                           subtitle: Text(
-                            'ID: ${traveler.id}',
+                            'ID: ${traveler.id}\n Code: ${traveler.code}',
                             style: const TextStyle(
-                                fontSize: 14), // Increase the font size
+                              fontSize: 14, // Increase the font size
+                            ),
                           ),
                         ),
                       ),

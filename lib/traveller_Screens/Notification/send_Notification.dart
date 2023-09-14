@@ -14,8 +14,8 @@ import '../../modele/touristGroup.dart';
 import 'package:flutter_svg/svg.dart';
 
 class PushNotificationScreen extends StatefulWidget {
-  TouristGuide? guid;
-  PushNotificationScreen(this.guid, {super.key});
+  TouristGroup? group;
+  PushNotificationScreen(this.group, {super.key});
 
   @override
   _PushNotificationScreenState createState() => _PushNotificationScreenState();
@@ -83,7 +83,7 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
       multiSelectItems = []; // initialize the list to an empty list
     });
     final data = await httpHandlertorist
-        .fetchData("/api/tourist-groups/touristGuideId/${widget.guid!.id}");
+        .fetchData("/api/tourist-groups/touristGuideId/${widget.group!.id}");
 
     setState(() {
       touristGroup = data.cast<TouristGroup>();

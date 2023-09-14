@@ -16,7 +16,6 @@ import 'package:flutter_svg/svg.dart';
 import '../../constent.dart';
 import '../../modele/planningmainModel.dart';
 import 'event_detail_screen.dart';
-import 'TravellerFirstScreen.dart';
 
 class TravellerCalendarPage extends StatefulWidget {
   final String? group;
@@ -60,7 +59,7 @@ class _TravellerCalendarPageState extends State<TravellerCalendarPage> {
     fetchData();
     fetchDataAndOrganizeEvents();
   }
-  
+
   void didChangeDependencies() {
     super.didChangeDependencies();
     fetchData();
@@ -190,32 +189,50 @@ class _TravellerCalendarPageState extends State<TravellerCalendarPage> {
       ),
     ),
   };
-  void calendarTapped(BuildContext context, CalendarTapDetails details) {
-    if (details.targetElement == CalendarElement.appointment) {
-      final CalendarEvent tappedEvent = details.appointments?[0];
+  // void calendarTapped(BuildContext context, CalendarTapDetails details) {
+  //   if (details.targetElement == CalendarElement.appointment) {
+  //     final CalendarEvent tappedEvent = details.appointments?[0];
 
-      // Extract the necessary details from the CalendarEvent
-      DateTime? startTime = tappedEvent.startTime;
-      DateTime? endTime = tappedEvent.endTime;
-      String note = "Some note"; // Extract the note from the CalendarEvent
+  //     // Extract the necessary details from the CalendarEvent
+  //     DateTime? startTime = tappedEvent.startTime;
+  //     DateTime? endTime = tappedEvent.endTime;
+  //     String note = "Some note";
+  //     String? from = tappedEvent.from;
+  //     String? to = tappedEvent.to;
+  //     String? title =
+  //         tappedEvent.title; // Extract the note from the CalendarEvent
 
-      // Create a Transport instance using the extracted details
-      Transport transportEvent = Transport(
-        date: startTime,
-        durationHours: endTime?.difference(startTime!).inHours,
-        note: note,
-        // Set other properties accordingly
-      );
+  //     // Create a Transport instance using the extracted details
+  //     Transport transportEvent = Transport(
+  //       date: startTime,
+  //       durationHours: endTime?.difference(startTime!).inHours,
+  //       note: note,
+  //       from: from,
+  //       to: to,
+  //       touristGuideId: title,
+  //       // Set other properties accordingly
+  //     );
 
-      // Navigate to the event details screen and pass the Transport event
+  //     // Navigate to the event details screen and pass the Transport event
+  //     Navigator.of(context).push(
+  //       MaterialPageRoute(
+  //         builder: (context) => EventDetailScreen(event: transportEvent),
+  //       ),
+  //     );
+  //   }
+  // }
+ void calendarTapped(
+      BuildContext context, CalendarTapDetails calendarTapDetails) {
+    if (calendarTapDetails.targetElement == CalendarElement.appointment) {
+      TransportEvent event =
+          calendarTapDetails.appointments![0] as TransportEvent;
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => EventDetailScreen(event: transportEvent),
+          builder: (context) =>  EventDetailScreen(event: event),
         ),
       );
     }
   }
-
   Divider _buildDivider() {
     const Color divider = Color.fromARGB(255, 51, 14, 218);
     return const Divider(
@@ -298,7 +315,7 @@ class _TravellerCalendarPageState extends State<TravellerCalendarPage> {
                       title: const Text('Profil'),
                       onTap: () {
                         // Handle drawer item click
-                        Get.to(const MainProfile()); // Close the drawer
+                        Get.off(() => const MainProfile()); // Close the drawer
                       },
                     ),
                     ListTile(
@@ -326,9 +343,7 @@ class _TravellerCalendarPageState extends State<TravellerCalendarPage> {
                             fontSize: 16),
                       ),
                       onTap: () {
-                        // Handle drawer item click
-                        // Get.to(
-                        //     const ConcentricAnimationOnboarding()); // Close the drawer
+                    
                       },
                     ),
                     const SizedBox(height: 250.0),
@@ -372,7 +387,8 @@ class _TravellerCalendarPageState extends State<TravellerCalendarPage> {
                                     await storage.delete(key: "access_token");
                                     // await FacebookAuth.instance.logOut();
                                     // _accessToken = null;
-                                    Get.to(const MyLogin());
+                                    // Get.to(const MyLogin());
+                                    Get.to(() => const MyLogin());
                                   }),
                               SizedBox(
                                 height: MediaQuery.of(context).padding.bottom,

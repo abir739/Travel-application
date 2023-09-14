@@ -4,7 +4,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:zenify_trip/login.dart';
-import 'package:zenify_trip/traveller_Screens/Clientcalendar/TravellerCalender_test.dart';
+import 'package:zenify_trip/traveller_Screens/Transfers_Voyageur.dart';
+// import 'package:zenify_trip/traveller_Screens/Clientcalendar/TravellerCalender_test.dart';
 import '../../HTTPHandlerObject.dart';
 import '../../modele/httpTravellerbyid.dart';
 import '../../modele/traveller/TravellerModel.dart';
@@ -31,16 +32,15 @@ class _TravellerFirstScreenState extends State<TravellerFirstScreen> {
     super.initState();
     _loadDataTraveller(widget.userList); // Pass the user list
   }
- Future<void> logout() async {
+
+  Future<void> logout() async {
     // Delete sensitive data from secure storage
     await storage.deleteAll();
-     Get.offNamed('login');
+    Get.offNamed('login');
   }
 
-Future<void> sendtags(String? Groupids) async {
-
+  Future<void> sendtags(String? Groupids) async {
     setState(() {
-   
       OneSignal.shared.sendTags({'Groupids': '$Groupids'}).then((success) {
         print("Tags created successfully $Groupids");
       }).catchError((error) {
@@ -51,10 +51,8 @@ Future<void> sendtags(String? Groupids) async {
           .setSubscriptionObserver((OSSubscriptionStateChanges changes) {
         print("SUBSCRIPTION STATE CHANGED: ${changes.jsonRepresentation()}");
       });
-   
     });
   }
-
 
   Future<Traveller> _loadDataTraveller(List<dynamic> userList) async {
     final userId = await storage.read(key: "id");
@@ -62,7 +60,7 @@ Future<void> sendtags(String? Groupids) async {
     final travellerdetail = await handler.fetchData(
         "/api/travellers/UserId/$userId", Traveller.fromJson);
 
-      setState(() {
+    setState(() {
       traveller = travellerdetail;
       print(travellerdetail.id);
       isLoading = false;
@@ -72,7 +70,6 @@ Future<void> sendtags(String? Groupids) async {
     });
     return travellerdetail;
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -98,9 +95,6 @@ Future<void> sendtags(String? Groupids) async {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        // SizedBox(
-                        //   height: Get.width * 0.7,
-                        // ),
                         const Text('session Tim out.... ',
                             style: TextStyle(
                                 fontWeight: FontWeight.w900,
@@ -108,8 +102,9 @@ Future<void> sendtags(String? Groupids) async {
                                 color: Color.fromARGB(255, 90, 3, 203))),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            foregroundColor: Colors.white, backgroundColor: Colors
-                                .red, // Change the text color
+                            foregroundColor: Colors.white,
+                            backgroundColor:
+                                Colors.red, // Change the text color
                             textStyle: const TextStyle(
                                 fontSize: 16), // Change the text style
                             padding: const EdgeInsets.symmetric(
@@ -121,14 +116,14 @@ Future<void> sendtags(String? Groupids) async {
                                   20), // Adjust the border radius
                             ),
                           ),
-                           onPressed: () async {
+                          onPressed: () async {
                             // await storage.delete(key: "access_token");
                             // await storage.delete(key: "id");
                             // await storage.delete(key: "role");
                             await storage.deleteAll();
-                            Get.off(const MyLogin());
-                          },
 
+                            Get.to(() => const MyLogin());
+                          },
                           child: const Text('Logout'),
                         ),
                       ],
@@ -180,10 +175,25 @@ Future<void> sendtags(String? Groupids) async {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
-                  'Welcome to the Traveller First Screen!',
-                  style: TextStyle(fontSize: 20),
+                ShaderMask(
+                  shaderCallback: (Rect bounds) {
+                    return const LinearGradient(
+                      colors: [
+                        Color(0xFF3A3557),
+                        Color(0xFFCBA36E),
+                        Color(0xFFEB5F52),
+                      ],
+                    ).createShader(bounds);
+                  },
+                  child: const Text(
+                    'Welcome to the Traveller First Screen!',
+                    style: TextStyle(
+                        fontSize: 21,
+                        color: Colors
+                            .white), // You can adjust the font size and color here
+                  ),
                 ),
+
                 const SizedBox(height: 20),
                 // Display traveller data if available
                 Column(
@@ -193,19 +203,34 @@ Future<void> sendtags(String? Groupids) async {
                         style: const TextStyle(
                           fontSize: 16,
                           color: Colors.black, // Set the text color to black
+                          height:
+                              2.0, // Adjust this value to control line spacing
                         ),
                         children: [
                           const TextSpan(
-                            text: 'Traveller ID: ',
+                            text: 'Traveller Group ID: ',
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
-                          TextSpan(text: '\n${traveller.id}'),
+                          TextSpan(
+                            text:
+                                '\n${traveller.touristGroupId}\n', // Added '\n' here
+                          ),
+                          const TextSpan(
+                            text: 'Traveller Code: ',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          TextSpan(
+                            text: '${traveller.code}\n', // Added '\n' here
+                          ),
                         ],
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(
+                        height:
+                            20), // This provides space between RichText and the next element
                   ],
                 ),
+
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
@@ -214,12 +239,11 @@ Future<void> sendtags(String? Groupids) async {
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
-                    onPressed: () {
-                  // Add any navigation logic here
-                  Get.off(TravellerCalendarPage(
-                    group: traveller.touristGroupId,
-                  ));
-
+                  onPressed: () {
+                    Get.to(() => TravellerCalendarPage(
+                          group: traveller.touristGroupId,
+                        ));
+                    Navigator.pushNamed(context, 'TravellerCalendarPage');
                   },
                   child: const Center(
                     child: Text(
@@ -232,26 +256,29 @@ Future<void> sendtags(String? Groupids) async {
                     ),
                   ),
                 ),
+                const SizedBox(height: 20),
                 ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white, backgroundColor: Colors.red, // Change the text color
-                  textStyle: const TextStyle(fontSize: 16), // Change the text style
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 16), // Adjust the padding
-                  minimumSize: const Size(
-                      120, 40), // Set a minimum width and height for the button
-                  shape: RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.circular(20), // Adjust the border radius
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: const Color(0xFFEB5F52),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                  onPressed: () async {
+                    logout();
+                  },
+                  child: const Center(
+                    child: Text(
+                      'Logout ',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16,
+                      ),
+                    ),
                   ),
                 ),
-                onPressed: () async {
-                  // await storage.delete(key: "access_token");
-                  // await storage.delete(key: "Role");
-                  logout();
-                },
-                child: const Text('Logout'),
-),
               ],
             ),
           ),

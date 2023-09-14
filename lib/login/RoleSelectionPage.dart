@@ -54,7 +54,7 @@ class RoleSelectionPage extends StatelessWidget {
                     ),
                     onPressed: () {
                       // Get.to(() => AdminLoginPage());
-                      Get.to(() => const MyLogin());
+                      Get.off(() => const MyLogin());
                     },
                     child: const Text(
                       "Login with email & pwd",
@@ -75,7 +75,7 @@ class RoleSelectionPage extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                      Get.to(() => const TravellerLoginPage());
+                      Get.off(() => const TravellerLoginPage());
                     },
                     child: const Text(
                       "       Login with code       ",

@@ -161,11 +161,23 @@ class _MainProfileState extends State<MainProfile> {
               height: 36.0,
             ),
             const SizedBox(width: 30),
-            const Text(
-              'Your Profil',
-              style: TextStyle(
-                color: Color.fromARGB(255, 68, 5, 150),
-                fontSize: 24,
+            ShaderMask(
+              shaderCallback: (Rect bounds) {
+                return const LinearGradient(
+                  colors: [
+                    Color(0xFF3A3557),
+                    Color(0xFFCBA36E),
+                    Color(0xFFEB5F52),
+                  ],
+                ).createShader(bounds);
+              },
+              child: const Text(
+                'Your Profil',
+                style: TextStyle(
+                  fontSize: 24,
+                  color: Colors
+                      .white, // You can adjust the font size and color here
+                ),
               ),
             ),
           ],
@@ -209,17 +221,21 @@ class _MainProfileState extends State<MainProfile> {
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
-                    // onPressed: () {
-                    //   updateUserDetailDialog(
-                    //       'Password:', selectedUser?.password ?? '');
-                    // },
-
                     onPressed: () {
                       showPasswordUpdateDialog(context); // Pass the context
                     },
-
-                    child: const Text('Change Password'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor:
+                          Color(0xFFEB5F52), // Set the background color
+                    ),
+                    child: const Text(
+                      'Change Password',
+                      style: TextStyle(
+                        color: Colors.white, // Set the text color
+                      ),
+                    ),
                   ),
+
                   const SizedBox(height: 20),
                   InkWell(
                     onDoubleTap: () {
@@ -348,7 +364,8 @@ class _MainProfileState extends State<MainProfile> {
                     },
                     child: Row(
                       children: [
-                        const SizedBox(width: 10), // Adding space before the icon
+                        const SizedBox(
+                            width: 10), // Adding space before the icon
                         const Icon(
                           Icons.location_on_outlined,
                           color: Color.fromARGB(210, 13, 2, 165),

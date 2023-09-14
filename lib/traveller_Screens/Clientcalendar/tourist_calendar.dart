@@ -186,27 +186,14 @@ class _CalendarPageState extends State<CalendarPage> {
       ),
     ),
   };
-  void calendarTapped(BuildContext context, CalendarTapDetails details) {
-    if (details.targetElement == CalendarElement.appointment) {
-      final CalendarEvent tappedEvent = details.appointments?[0];
-
-      // Extract the necessary details from the CalendarEvent
-      DateTime? startTime = tappedEvent.startTime;
-      DateTime? endTime = tappedEvent.endTime;
-      String note = "Some note"; // Extract the note from the CalendarEvent
-
-      // Create a Transport instance using the extracted details
-      Transport transportEvent = Transport(
-        date: startTime,
-        durationHours: endTime?.difference(startTime!).inHours,
-        note: note,
-        // Set other properties accordingly
-      );
-
-      // Navigate to the event details screen and pass the Transport event
+  void calendarTapped(
+      BuildContext context, CalendarTapDetails calendarTapDetails) {
+    if (calendarTapDetails.targetElement == CalendarElement.appointment) {
+      TransportEvent event =
+          calendarTapDetails.appointments![0] as TransportEvent;
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => EventDetailScreen(event: transportEvent),
+          builder: (context) => EventDetailScreen(event: event),
         ),
       );
     }

@@ -67,64 +67,6 @@ class _MyLoginState extends State<MyLogin> {
       //   OSiOSSettings.inAppLaunchUrl: true
       // },
     );
-
-    // OneSignal.shared
-    //     .(OSNotificationDisplayType.notification);
-
-    //This method only work when app is in foreground.
-    // OneSignal.shared.setNotificationOpenedHandler(
-    //   (OSNotificationOpenedResult notification) {
-    //     print("${notification.notification.body} actions");
-    //     // Extract data from the notification payload
-    //     Map<String, dynamic>? additionalData =
-    //         notification.notification.additionalData;
-    //     print("${additionalData} additionalData");
-
-    //     // Parse the JSON string
-    //     // Map<String, dynamic> bodyData = json.decode(body!);
-
-    //     // Navigate to the desired screen based on payload data
-    //     if (additionalData!.containsKey('screen')) {
-    //       String screenName = additionalData['screen'];
-    //       print("$screenName      print(screenName);");
-    //       // Navigator.of(notification.context).pushNamed(screenName);
-    //       Get.toNamed(screenName);
-    //     }
-    //   },
-    // );
-    // OneSignal.shared
-    //     .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
-    //   OSNotification notification1 = result.notification;
-
-    //   OSNotification notification = result.notification;
-    //   OSNotificationAction? action = result.action;
-
-    //   // Access notification properties
-    //   String notificationId = notification.notificationId;
-    //   String? title = notification.title;
-    //   String? body = notification.body;
-    //   Map<String, dynamic>? additionalData = notification.additionalData;
-
-    //   // Access action properties
-    //   OSNotificationActionType? actionType = action?.type;
-    //   String? actionId = action?.actionId;
-    //   // Map<String, dynamic>? actionData = action?.additionalData;
-    //   print('title $title bodys $body actionType $actionType');
-    //   // Perform your desired actions based on the notification and action data
-    //   // Navigator.push(context, MaterialPageRoute(builder: (_) => Planingtest()));
-    // });
-    // OneSignal.shared.setNotificationOpenedHandler(
-    //   (OSNotificationOpenedResult result) async {
-    //     var data = result.notification.additionalData;
-    //     // globals.appNavigator.currentState.push(
-    //     // MaterialPageRoute(
-    //     //   builder: (context) => SecondPage(
-    //     //     postId: data['post_id'].toString(),
-    //     //   ),
-    //     // ),
-    //     // );
-    //   },
-    // );
   }
 
   void _requestPermission() async {
@@ -243,9 +185,6 @@ class _MyLoginState extends State<MyLogin> {
       print(response.body);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        // Sending email was successful.
-        // Show a dialog with code, email, and password input fields.
-        // ignore: use_build_context_synchronously
         showDialog(
           context: context,
           builder: (BuildContext context) {
