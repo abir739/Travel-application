@@ -2,14 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_svg/svg.dart';
+import 'package:zenify_trip/traveller_Screens/Clientcalendar/transfers_ByCode.dart';
 // import '../Secreens/Clientcalendar/client_calendar.dart';
-import 'package:zenify_trip/traveller_Screens/Clientcalendar/tourist_calendar.dart';
+// import 'package:zenify_trip/traveller_Screens/Clientcalendar/tourist_calendar.dart';
 import '../constent.dart';
 import '../modele/traveller/TravellerModel.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 class TravellerLoginPage extends StatefulWidget {
-  const TravellerLoginPage({super.key});
+  final Key? key;
+
+  const TravellerLoginPage({this.key}) : super(key: key);
 
   @override
   _TravellerLoginPageState createState() => _TravellerLoginPageState();
@@ -129,7 +132,7 @@ class _TravellerLoginPageState extends State<TravellerLoginPage> {
             const SizedBox(height: 20),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 68, 5, 150),
+                primary: const Color.fromARGB(255, 68, 5, 150),
               ),
               onPressed: _handleSearchButton, // Use the new method
               child: const Text('Search'),

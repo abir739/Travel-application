@@ -2,19 +2,22 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-
-
+import 'package:zenify_trip/modele/accommodationsModel/accommodationModel.dart';
+import 'package:zenify_trip/modele/activitsmodel/activitesmodel.dart';
+import 'package:zenify_trip/modele/planning_model.dart';
+import 'package:zenify_trip/modele/planningmainModel.dart';
+import 'package:zenify_trip/modele/plannings.dart';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:zenify_trip/modele/traveller/TravellerModel.dart';
+
+import '../../constent.dart';
+import 'activityTempModel.dart';
 
 
-import '../constent.dart';
-
-class HTTPHandlerTravellerbyId {
+class HTTPHandlerAccomodationId{
 
   final storage = const FlutterSecureStorage();
-  Future<Traveller> fetchData(String url) async {
+  Future<Accommodations> fetchData(String url) async {
     String? baseUrl = await storage.read(key: "baseurl");
     String? token = await storage.read( key: 'access_token');
    
@@ -30,17 +33,23 @@ class HTTPHandlerTravellerbyId {
     }
 
     url = formater(url);
-    final respond =  await http.get(Uri.parse(url), headers:  {
-      "Authorization":
-          "Bearer $token"    });
+   final respond = await http.get(Uri.parse(url), headers: {
+  "Authorization": "Bearer $token",
+});
+
     print(respond.statusCode);
     if (respond.statusCode == 200) {
-   
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      // var data = jsonDecode(respond.body);
+      // print(data);
+      // final touristGuideName = data["results"]["agency"];
+      // print(touristGuideName);
   
 
    
       final data = json.decode(respond.body);
-    return Traveller.fromJson(data);
+    return Accommodations.fromJson(data);
   
 
     } else {

@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zenify_trip/NetworkHandler.dart';
-import 'package:zenify_trip/guide_Screens/calendar/menu.dart';
+import 'package:zenify_trip/Secreens/AccommodationSecreen.dart';
+// import 'package:zenify_trip/guide_Screens/calendar/menu.dart';
 import 'package:zenify_trip/modele/touristGroup.dart';
 import '../modele/HttpPlaning.dart';
 import '../modele/TouristGuide.dart';
@@ -457,8 +458,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                               ),
                             ),
                             onPressed: () {
-                              Get.to(
-                                  PlanningScreen( guid));
+                              Get.to(PlanningScreen(guid));
                               sendtags(guid!.id);
                             },
                             child: SizedBox(

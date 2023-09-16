@@ -12,10 +12,10 @@ class HTTPHandlerp {
   Future<List<Plannigs>> fetchData(String url) async {
     List<Activity> planingList = [];
     url = formater(url);
-    final respond = await http.get(headers: {
+    final respond = await http.get(Uri.parse(url), headers: {
       "Authorization":
           "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjFlY2I1ZjJiLTZiNWMtNDk4OS1hNzQ3LWIyOWUzODgyMTZlOSIsInN1YiI6IjFlY2I1ZjJiLTZiNWMtNDk4OS1hNzQ3LWIyOWUzODgyMTZlOSIsInVzZXJuYW1lIjoic2E3Ym9vY2giLCJlbWFpbCI6InNhN2Jvb2NoQGdtYWlsLmNvbSIsInJvbGUiOiJBZG1pbmlzdHJhdG9yIiwiZmlyc3ROYW1lIjoiU2FoYmkiLCJsYXN0TmFtZSI6IktoYWxmYWxsYWgiLCJleHBpcmVzIjoxNjgwOTg5OTQzLCJjcmVhdGVkIjoxNjgwOTAzNTQzLCJpYXQiOjE2ODA5MDM1NDMsImV4cCI6MTY4MDk4OTk0M30.claPkZxtbkFHvj4zMkbCgD79vpWdn1UZ7VK2yTZA1bU"
-    }, Uri.parse(url));
+    });
     print(respond.statusCode);
     if (respond.statusCode == 200) {
       // If the server did return a 200 OK response,

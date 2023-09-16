@@ -187,8 +187,11 @@ class _PlanningScreenState extends State<PlanningScreen> {
     }
 
     url = formatter(url);
-    final response = await http
-        .get(headers: {"Authorization": "Bearer $token"}, Uri.parse(url));
+final response = await http.get(
+  Uri.parse(url), // Positional argument (URL)
+  headers: {"Authorization": "Bearer $token"}, // Named argument (headers)
+);
+
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       var data = jsonDecode(response.body);
@@ -200,20 +203,21 @@ class _PlanningScreenState extends State<PlanningScreen> {
     }
   }
 
-  final Map<int, Widget> segmentWidgets = {
-    1: const Expanded(
-      child: Column(
-        children: [
-          SizedBox(height: 14.0),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0),
-            child: Text('Transfers'),
-          ),
-          SizedBox(height: 14.0),
-        ],
-      ),
+final Map<int, Widget> segmentWidgets = {
+  1: Expanded(
+    child: Column(
+      children: [
+        SizedBox(height: 14.0),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          child: Text('Transfers'),
+        ),
+        SizedBox(height: 14.0),
+      ],
     ),
-  };
+  ),
+};
+
   void calendarTapped(
       BuildContext context, CalendarTapDetails calendarTapDetails) {
     if (calendarTapDetails.targetElement == CalendarElement.appointment) {
@@ -265,30 +269,33 @@ class _PlanningScreenState extends State<PlanningScreen> {
                 child: ListView(
                   padding: EdgeInsets.zero,
                   children: <Widget>[
-                    const DrawerHeader(
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                      ),
-                      margin: EdgeInsets.only(bottom: 8.0),
-                      padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
-                      duration: Duration(milliseconds: 250),
-                      curve: Curves.fastOutSlowIn,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Customize the content of the drawer header
-                          Text(
-                            'Zenify Trip',
-                            style: TextStyle(fontSize: 24, color: Colors.white),
-                          ),
-                          SizedBox(height: 8),
-                          Text(
-                            'Additional Info',
-                            style: TextStyle(fontSize: 16, color: Colors.white),
-                          ),
-                        ],
-                      ),
-                    ),
+                   DrawerHeader(
+  decoration: BoxDecoration(
+    color: Colors.blue,
+  ),
+  margin: EdgeInsets.only(bottom: 8.0),
+  padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
+  duration: Duration(milliseconds: 250),
+  curve: Curves.fastOutSlowIn,
+  child: Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    mainAxisAlignment: MainAxisAlignment.start,
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      // Customize the content of the drawer header
+      Text(
+        'Zenify Trip',
+        style: TextStyle(fontSize: 24, color: Colors.white),
+      ),
+      SizedBox(height: 8),
+      Text(
+        'Additional Info',
+        style: TextStyle(fontSize: 16, color: Colors.white),
+      ),
+    ],
+  ),
+),
+
                     // Rest of the drawer items
                     ListTile(
                       leading: const Icon(Icons.calendar_today),

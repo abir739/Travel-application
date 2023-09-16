@@ -1,6 +1,12 @@
 import 'package:json_annotation/json_annotation.dart';
 import '../../modele/hotelModel/hotelModel.dart';
 
+import '../TouristGuide.dart';
+import '../activitsmodel/activityTempModel.dart';
+import '../agance.dart';
+import '../creatorUser.dart';
+import '../touristGroup.dart';
+import '../updaterUser.dart';
 
 part 'accommodationModel.g.dart';
 

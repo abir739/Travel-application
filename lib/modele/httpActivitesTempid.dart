@@ -26,8 +26,7 @@ class HTTPHandlerActivitestempId {
     }
 
     url = formater(url);
-    final respond = await http
-        .get(headers: {"Authorization": "Bearer $token"}, Uri.parse(url));
+    final respond =  await http.get(Uri.parse(url), headers: {"Authorization": "Bearer $token"});
     print(respond.statusCode);
     if (respond.statusCode == 200) {
       final data = json.decode(respond.body);

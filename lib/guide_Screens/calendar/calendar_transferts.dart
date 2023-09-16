@@ -5,10 +5,11 @@ import 'package:zenify_trip/Secreens/ConcentricAnimationOnboarding.dart';
 import 'package:zenify_trip/Secreens/CustomCalendarDataSource.dart';
 import 'package:zenify_trip/Secreens/Notification/PushNotificationScreen.dart';
 import 'package:zenify_trip/Secreens/Profile/editprofile.dart';
+import 'package:zenify_trip/Secreens/guidPlannig.dart';
 
 import 'package:zenify_trip/guide_Screens/calendar/transfert_data.dart';
 import 'package:zenify_trip/constent.dart';
-import 'package:zenify_trip/guide_Screens/firstpage.dart';
+
 import 'package:zenify_trip/modele/Event/Event.dart';
 import 'package:zenify_trip/modele/TouristGuide.dart';
 import 'dart:convert';

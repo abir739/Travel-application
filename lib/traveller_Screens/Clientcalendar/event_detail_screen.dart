@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:zenify_trip/guide_Screens/calendar/transfert_data.dart';
+import 'package:zenify_trip/modele/transportmodel/transportModel.dart';
 
 class EventDetailScreen extends StatelessWidget {
-  final TransportEvent event;
+  final Transport event;
+
   String calculateDuration(DateTime startTime, DateTime endTime) {
     final Duration difference = endTime.difference(startTime);
     final hours = difference.inHours;
@@ -13,10 +15,25 @@ class EventDetailScreen extends StatelessWidget {
     return '$hours hours $minutes minutes';
   }
 
+  // Calculate the end time by adding duration to the start time
+  DateTime calculateEndTime(DateTime startTime, int? durationHours) {
+    if (durationHours != null) {
+      return startTime.add(Duration(hours: durationHours));
+    } else {
+      // Handle the case where durationHours is null (you can provide a default value or handle it as needed)
+      // For example, you can return the startTime itself:
+      return startTime;
+    }
+  }
+
   const EventDetailScreen({Key? key, required this.event}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    // Calculate the end time
+    final DateTime endTime =
+        calculateEndTime(event.date ?? DateTime.now(), event.durationHours);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFFCFCFDB),
@@ -42,8 +59,7 @@ class EventDetailScreen extends StatelessWidget {
                 'Transport Details',
                 style: TextStyle(
                   fontSize: 24,
-                  color: Colors
-                      .white, // You can adjust the font size and color here
+                  color: Colors.white,
                 ),
               ),
             ),
@@ -82,16 +98,18 @@ class EventDetailScreen extends StatelessWidget {
                     Text(
                       DateFormat.yMd()
                           .add_jm()
-                          .format(event.startTime ?? DateTime.now()),
+                          .format(event.date ?? DateTime.now()),
                       style: const TextStyle(fontSize: 16),
                     ),
                   ],
                 ),
                 const SizedBox(height: 16),
+                // Display End Time
                 Row(
                   children: [
                     Icon(
-                      Icons.access_time_outlined,
+                      Icons
+                          .access_time_outlined, // You can change the icon as needed
                       color: Colors.grey[600],
                       size: 26,
                     ),
@@ -99,15 +117,14 @@ class EventDetailScreen extends StatelessWidget {
                     Text(
                       'End Time:',
                       style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey[600],
-                          fontSize: 18),
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey[600],
+                      ),
                     ),
-                    const SizedBox(width: 16),
+                    const SizedBox(width: 8),
                     Text(
-                      DateFormat.yMd()
-                          .add_jm()
-                          .format(event.endTime ?? DateTime.now()),
+                      DateFormat.yMd().add_jm().format(endTime),
                       style: const TextStyle(fontSize: 16),
                     ),
                   ],
@@ -153,9 +170,7 @@ class EventDetailScreen extends StatelessWidget {
                     ),
                     const SizedBox(width: 16),
                     Text(
-                      event.startTime != null && event.endTime != null
-                          ? calculateDuration(event.startTime!, event.endTime!)
-                          : 'N/A',
+                      event.durationHours.toString(),
                       style: const TextStyle(fontSize: 16),
                     ),
                   ],

@@ -8,7 +8,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intl/intl.dart';
-import 'package:zenify_trip/guide_Screens/firstpage.dart';
+import 'package:zenify_trip/Secreens/guidPlannig.dart';
+
 
 import 'package:zenify_trip/modele/activitsmodel/activityTempModel.dart';
 import 'package:zenify_trip/modele/agance.dart';

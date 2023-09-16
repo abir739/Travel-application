@@ -156,8 +156,11 @@ class _GroupCalendarScreenState extends State<GroupCalendarScreen> {
     }
 
     url = formatter(url);
-    final response = await http
-        .get(headers: {"Authorization": "Bearer $token"}, Uri.parse(url));
+   final response = await http.get(
+  Uri.parse(url), // Positional argument (URL)
+  headers: {"Authorization": "Bearer $token"}, // Named argument (headers)
+);
+
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       var data = jsonDecode(response.body);
@@ -169,20 +172,21 @@ class _GroupCalendarScreenState extends State<GroupCalendarScreen> {
     }
   }
 
-  final Map<int, Widget> segmentWidgets = {
-    1: const Expanded(
-      child: Column(
-        children: [
-          SizedBox(height: 14.0),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0),
-            child: Text('Transfers'),
-          ),
-          SizedBox(height: 14.0),
-        ],
-      ),
+ final Map<int, Widget> segmentWidgets = {
+  1: Expanded(
+    child: Column(
+      children: [
+        SizedBox(height: 14.0),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          child: Text('Transfers'),
+        ),
+        SizedBox(height: 14.0),
+      ],
     ),
-  };
+  ),
+};
+
   void calendarTapped(BuildContext context, CalendarTapDetails details) {
     if (details.targetElement == CalendarElement.appointment) {
       final CalendarEvent tappedEvent = details.appointments?[0];

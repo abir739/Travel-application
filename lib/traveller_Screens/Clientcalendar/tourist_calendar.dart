@@ -191,11 +191,11 @@ class _CalendarPageState extends State<CalendarPage> {
     if (calendarTapDetails.targetElement == CalendarElement.appointment) {
       TransportEvent event =
           calendarTapDetails.appointments![0] as TransportEvent;
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => EventDetailScreen(event: event),
-        ),
-      );
+      // Navigator.of(context).push(
+      //   MaterialPageRoute(
+      //     builder: (context) => EventDetailScreen(event: event),
+      //   ),
+      // );
     }
   }
 

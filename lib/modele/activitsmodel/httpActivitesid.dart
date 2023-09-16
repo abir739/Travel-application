@@ -21,9 +21,9 @@ class HTTPHandlerActivitesId {
     }
 
     url = formater(url);
-    final respond = await http.get(headers: {
+    final respond =  await http.get(Uri.parse(url), headers:  {
       "Authorization":
-          "Bearer $token"    }, Uri.parse(url));
+          "Bearer $token"    });
     print(respond.statusCode);
     if (respond.statusCode == 200) {
       // If the server did return a 200 OK response,

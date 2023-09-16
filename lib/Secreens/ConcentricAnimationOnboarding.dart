@@ -1,7 +1,8 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:concentric_transition/concentric_transition.dart';
 import 'package:flutter/material.dart';
-import 'package:zenify_trip/guide_Screens/firstpage.dart';
+import 'package:zenify_trip/Secreens/guidPlannig.dart';
+
 
 
 

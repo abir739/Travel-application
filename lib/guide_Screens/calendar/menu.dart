@@ -23,11 +23,10 @@ import 'package:flutter_svg/svg.dart';
 import 'eventdetail_test.dart';
 
 class PlanningScreen extends StatefulWidget {
- 
   TouristGuide? guid;
 
   @override
-  PlanningScreen( this.guid, {Key? key}) : super(key: key);
+  PlanningScreen(this.guid, {Key? key}) : super(key: key);
 
   get handleEventSave => null;
   @override
@@ -184,8 +183,10 @@ class _PlanningScreenState extends State<PlanningScreen> {
     }
 
     url = formatter(url);
-    final response = await http
-        .get(headers: {"Authorization": "Bearer $token"}, Uri.parse(url));
+    final response = await http.get(
+      Uri.parse(url),
+      headers: {"Authorization": "Bearer $token"},
+    );
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       var data = jsonDecode(response.body);
@@ -198,7 +199,7 @@ class _PlanningScreenState extends State<PlanningScreen> {
   }
 
   final Map<int, Widget> segmentWidgets = {
-    1: const Expanded(
+    1: Expanded(
       child: Column(
         children: [
           SizedBox(height: 14.0),
@@ -211,6 +212,7 @@ class _PlanningScreenState extends State<PlanningScreen> {
       ),
     ),
   };
+
   void calendarTapped(
       BuildContext context, CalendarTapDetails calendarTapDetails) {
     if (calendarTapDetails.targetElement == CalendarElement.appointment) {
@@ -272,34 +274,35 @@ class _PlanningScreenState extends State<PlanningScreen> {
                           child: ListView(
                         padding: EdgeInsets.zero,
                         children: <Widget>[
-                          const DrawerHeader(
+                          DrawerHeader(
                             decoration: BoxDecoration(
-                              color: Color.fromARGB(255, 184, 139, 243),
+                              color: Colors.blue,
                             ),
-                            margin: EdgeInsets.only(bottom: 15.0),
-                            padding: EdgeInsets.fromLTRB(86.0, 56.0, 16.0, 8.0),
+                            margin: EdgeInsets.only(bottom: 8.0),
+                            padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
                             duration: Duration(milliseconds: 250),
                             curve: Curves.fastOutSlowIn,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
                               children: [
+                                // Customize the content of the drawer header
                                 Text(
                                   'Zenify Trip',
                                   style: TextStyle(
                                       fontSize: 24, color: Colors.white),
                                 ),
-                                SizedBox(
-                                  height: 10,
-                                  width: 99,
-                                ),
+                                SizedBox(height: 8),
                                 Text(
                                   'Additional Info',
                                   style: TextStyle(
-                                      fontSize: 14, color: Colors.white),
+                                      fontSize: 16, color: Colors.white),
                                 ),
                               ],
                             ),
                           ),
+
                           ListTile(
                             leading: const Icon(Icons.calendar_today),
                             title: const Text('Calendar'),
@@ -309,7 +312,7 @@ class _PlanningScreenState extends State<PlanningScreen> {
                             },
                           ),
                           ListTile(
-                            leading: const Icon(Icons.task_sharp),
+                            leading: const Icon(Icons.list_alt),
                             title: const Text('Tasks'),
                             onTap: () {
                               // Handle drawer item click
@@ -325,7 +328,7 @@ class _PlanningScreenState extends State<PlanningScreen> {
                             },
                           ),
                           ListTile(
-                            leading: const Icon(Icons.notification_add),
+                            leading: const Icon(Icons.notifications_none),
                             title: const Text('Send Notification'),
                             onTap: () {
                               // Handle drawer item click
@@ -334,7 +337,7 @@ class _PlanningScreenState extends State<PlanningScreen> {
                             },
                           ),
                           ListTile(
-                            leading: const Icon(Icons.groups),
+                            leading: const Icon(Icons.group),
                             title: const Text('Tourist Groups'),
                             onTap: () {
                               // Toggle the dropdown's visibility
@@ -375,13 +378,14 @@ class _PlanningScreenState extends State<PlanningScreen> {
                                   onTap: () {
                                     Navigator.pop(context); // Close the drawer
                                     Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            TravellersListScreen(
-                                                guideId: widget.guid?.id),
-                                      ),
-                                    );
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              TravellersListScreen(
+                                            guideId:
+                                                widget.guid?.id ?? "default_id",
+                                          ),
+                                        ));
                                   },
                                 ),
                               ],
@@ -454,10 +458,8 @@ class _PlanningScreenState extends State<PlanningScreen> {
                                           ),
                                           textAlign: TextAlign.left,
                                         ),
-                                        trailing: const Icon(
-                                            Icons.logout_outlined,
-                                            size: 24,
-                                            color: Colors.red),
+                                        trailing: const Icon(Icons.logout,
+                                            size: 24, color: Colors.red),
                                         onTap: () async {
                                           await storage.delete(
                                               key: "access_token");

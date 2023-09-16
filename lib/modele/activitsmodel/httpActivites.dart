@@ -37,13 +37,13 @@ Timer? timer;
     }
 
     url = formater(url);
-    final respond = await http.get(headers: {
+    final respond =  await http.get(Uri.parse(url), headers:  {
       "Authorization":
           "Bearer $token" ,
       "Accept": "application/json, text/plain, */*",
       "Accept-Encoding": "gzip, deflate, br",
       "Accept-Language": "en-US,en;q=0.9",
-       }, Uri.parse(url));
+       });
     print(respond.statusCode);
     if (respond.statusCode == 200) {
     
@@ -93,8 +93,7 @@ class HTTPHandlerCount {
     // url = formater(baseUrl, url);
     // List<Agency> agancy = [];
     // url = formater(url);
-    final respond = await http
-        .get(headers: {"Authorization": "Bearer $token"}, Uri.parse(url));
+    final respond =  await http.get(Uri.parse(url), headers:  {"Authorization": "Bearer $token"});
     print(respond.statusCode);
 
     if (respond.statusCode == 200) {

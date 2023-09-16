@@ -1,7 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:zenify_trip/guide_Screens/firstpage.dart';
+import 'package:zenify_trip/Secreens/guidPlannig.dart';
+
 import './MainProfile.dart';
 import '../../NetworkHandler.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';

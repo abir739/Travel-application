@@ -7,11 +7,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:zenify_trip/constent.dart';
 import 'package:zenify_trip/login.dart';
 
-
 class EventView extends StatefulWidget {
   final TransportEvent event;
   final Function(TransportEvent updatedEvent) onSave;
-  const EventView({super.key, required this.event, required this.onSave});
+  const EventView({Key? key, required this.event, required this.onSave})
+      : super(key: key);
 
   @override
   _EventViewState createState() => _EventViewState();
@@ -185,8 +185,7 @@ class _EventViewState extends State<EventView> {
             const SizedBox(height: 24),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: const Color(0xFFEB5F52),
+                primary: const Color(0xFFEB5F52), // Background color
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),

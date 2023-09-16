@@ -3,33 +3,33 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:zenify_trip/Secreens/ConcentricAnimationOnboarding.dart';
-import 'package:zenify_trip/Secreens/Notification/PushNotificationScreen.dart';
 import 'package:zenify_trip/Secreens/Profile/editprofile.dart';
-import 'package:zenify_trip/Secreens/event_view.dart';
-import 'package:zenify_trip/guide_Screens/calendar/filtre__ByGroups.dart';
-import 'package:zenify_trip/guide_Screens/tasks/tasks_list.dart';
-import 'package:zenify_trip/guide_Screens/travellers_list_screen.dart';
+// import 'package:zenify_trip/Secreens/event_view.dart';
+import 'package:zenify_trip/constent.dart';
 import 'package:zenify_trip/login.dart';
 import 'package:zenify_trip/modele/Event/Event.dart';
-import 'package:zenify_trip/modele/TouristGuide.dart';
-import '../modele/accommodationsModel/accommodationModel.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
-import '../modele/transportmodel/transportModel.dart';
 import 'package:zenify_trip/Secreens/CustomCalendarDataSource.dart';
 import 'package:flutter_svg/svg.dart';
-import '../constent.dart';
+import 'package:zenify_trip/modele/accommodationsModel/accommodationModel.dart';
+import 'package:zenify_trip/modele/transportmodel/transportModel.dart';
+import 'package:zenify_trip/modele/traveller/TravellerModel.dart';
+import 'package:zenify_trip/traveller_Screens/Clientcalendar/event_detail_screen.dart';
 
-class PlanningScreen extends StatefulWidget {
-  TouristGuide? guid;
+class CalendarPage extends StatefulWidget {
+  final Traveller selectedTraveller;
+
+  const CalendarPage({required this.selectedTraveller, Key? key})
+      : super(key: key);
+
   @override
-  PlanningScreen(this.guid, {Key? key}) : super(key: key);
-  _PlanningScreenState createState() => _PlanningScreenState();
+  _CalendarPageState createState() => _CalendarPageState();
 }
 
-class _PlanningScreenState extends State<PlanningScreen> {
+class _CalendarPageState extends State<CalendarPage> {
   final storage = const FlutterSecureStorage();
   final CalendarController _controller = CalendarController();
   String? _headerText = '';
@@ -63,8 +63,8 @@ class _PlanningScreenState extends State<PlanningScreen> {
   }
 
   Future<void> _initializeData() async {
-    List<Transport> transfersList1 =
-        await fetchTransfers("/api/transfers/touristGuidId/${widget.guid!.id}");
+    List<Transport> transfersList1 = await fetchTransfers(
+        "/api/transfers-mobile/touristgroups/${widget.selectedTraveller.touristGroupId}");
     // _getCalendarDataSources(transfersList1);
     setState(() {
       print("data refreshed");
@@ -101,7 +101,7 @@ class _PlanningScreenState extends State<PlanningScreen> {
   Future<void> fetchData() async {
     try {
       transferList = await fetchTransfers(
-          "/api/transfers/touristGuidId/${widget.guid?.id}");
+          "/api/transfers-mobile/touristgroups/${widget.selectedTraveller.touristGroupId}");
       setState(() {
         List<CalendarEvent> events = convertToCalendarEvents(
 //             accommodationList, activityList
@@ -117,7 +117,7 @@ class _PlanningScreenState extends State<PlanningScreen> {
   Future<Map<String, List<dynamic>>> fetchDataAndOrganizeEvents() async {
     try {
       transfersList = await fetchTransfers(
-        "/api/transfers/touristGuidId/${widget.guid!.id}",
+        "/api/transfers-mobile/touristgroups/${widget.selectedTraveller.touristGroupId}",
       );
 
       List<CalendarEvent> CalendarEvents = convertToCalendarEvents(
@@ -280,10 +280,7 @@ class _PlanningScreenState extends State<PlanningScreen> {
 
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => EventView(
-            transport: transport,
-            onSave: handleEventSave, // Pass the method
-          ),
+          builder: (context) => EventDetailScreen(event: transport),
         ),
       );
     }
@@ -395,14 +392,6 @@ class _PlanningScreenState extends State<PlanningScreen> {
                               },
                             ),
                             ListTile(
-                              leading: const Icon(Icons.task_sharp),
-                              title: const Text('Tasks'),
-                              onTap: () {
-                                // Handle drawer item click
-                                Get.to(TaskListPage()); // Close the drawer
-                              },
-                            ),
-                            ListTile(
                               leading: const Icon(Icons.person),
                               title: const Text('Profil'),
                               onTap: () {
@@ -410,72 +399,6 @@ class _PlanningScreenState extends State<PlanningScreen> {
                                 Get.to(const MainProfile()); // Close the drawer
                               },
                             ),
-                            ListTile(
-                              leading: const Icon(Icons.notification_add),
-                              title: const Text('Send Notification'),
-                              onTap: () {
-                                // Handle drawer item click
-                                Get.to(PushNotificationScreen(
-                                    widget.guid)); // Close the drawer
-                              },
-                            ),
-                            ListTile(
-                              leading: const Icon(Icons.groups),
-                              title: const Text('Tourist Groups'),
-                              onTap: () {
-                                // Toggle the dropdown's visibility
-                                setState(() {
-                                  _isTouristGroupsDropdownOpen =
-                                      !_isTouristGroupsDropdownOpen;
-                                });
-                              },
-                              // Add a trailing icon to indicate that this item has a dropdown
-                              trailing: const Icon(Icons.expand_more),
-                            ),
-
-                            // Wrap the options in an ExpansionTile to create a dropdown
-                            if (_isTouristGroupsDropdownOpen) // Render only if the dropdown is open
-                              ExpansionTile(
-                                title: const Text(''),
-                                initiallyExpanded: true,
-                                children: [
-                                  ListTile(
-                                    leading:
-                                        const Icon(Icons.calendar_view_day),
-                                    title: const Text('Filtre Calendar'),
-                                    onTap: () {
-                                      // Handle option 1 click
-                                      // Close the dropdown
-                                      Navigator.pop(context);
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              GroupsListScreen(
-                                                  guideId: widget.guid?.id),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                  ListTile(
-                                    leading: const Icon(Icons.person_search),
-                                    title: const Text('Travellers List'),
-                                    onTap: () {
-                                      Navigator.pop(
-                                          context); // Close the drawer
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              TravellersListScreen(
-                                                  guideId: widget.guid?.id),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ],
-                              ),
-
                             ListTile(
                               leading: const Icon(Icons.more_horiz),
                               title: const Text('More'),
@@ -485,7 +408,6 @@ class _PlanningScreenState extends State<PlanningScreen> {
                                     const ConcentricAnimationOnboarding()); // Close the drawer
                               },
                             ),
-
                             _buildDivider(),
                             const SizedBox(height: 20.0),
                             ListTile(
@@ -507,7 +429,7 @@ class _PlanningScreenState extends State<PlanningScreen> {
                                 //     const ConcentricAnimationOnboarding()); // Close the drawer
                               },
                             ),
-                            const SizedBox(height: 160.0),
+                            const SizedBox(height: 250.0),
                             Card(
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
