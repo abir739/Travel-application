@@ -8,9 +8,9 @@ import 'package:zenify_trip/modele/tasks/taskModel.dart';
 import 'package:http/http.dart' as http;
 
 class TaskListPage extends StatefulWidget {
-  final TouristGuide? guid;
+  final String? guideId;
 
-  TaskListPage({this.guid});
+  TaskListPage({super.key, required this.guideId});
 
   @override
   _TaskListPageState createState() => _TaskListPageState();
@@ -18,22 +18,21 @@ class TaskListPage extends StatefulWidget {
 
 class _TaskListPageState extends State<TaskListPage> {
   List<Tasks> _tasksList = [];
-  TouristGuide? get selectedTouristGuide => TouristGuide();
 
   @override
   void initState() {
     super.initState();
-    fetchTasks();
+    fetchData();
   }
 
-  Future<void> fetchTasks() async {
+  Future<void> fetchData() async {
     String? token = await storage.read(key: "access_token");
     String formatter(String url) {
       return baseUrls + url;
     }
 
     String url =
-        formatter("/api/tasks?filters[touristGuideId]=${widget.guid?.id}");
+        formatter("/api/tasks?filters[touristGuideId]=${widget.guideId}");
 
     final response = await http.get(
       Uri.parse(url),
@@ -45,12 +44,11 @@ class _TaskListPageState extends State<TaskListPage> {
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = jsonDecode(response.body);
       final List<dynamic> results = data["results"];
-      setState(() {
-        _tasksList =
-            results.map((groupData) => Tasks.fromJson(groupData)).toList();
-      });
+      _tasksList =
+          results.map((groupData) => Tasks.fromJson(groupData)).toList();
+      setState(() {});
     } else {
-      print("Error fetching tasks list: ${response.statusCode}");
+      print("Error fetching tourist groups: ${response.statusCode}");
       // Handle error here
     }
   }

@@ -6,10 +6,12 @@ import 'package:zenify_trip/Secreens/ConcentricAnimationOnboarding.dart';
 import 'package:zenify_trip/Secreens/Notification/PushNotificationScreen.dart';
 import 'package:zenify_trip/Secreens/Profile/editprofile.dart';
 import 'package:zenify_trip/Secreens/event_view.dart';
+import 'package:zenify_trip/Secreens/login_test.dart';
 import 'package:zenify_trip/guide_Screens/calendar/filtre__ByGroups.dart';
-import 'package:zenify_trip/guide_Screens/tasks/tasks_list.dart';
+import 'package:zenify_trip/guide_Screens/tasks/Tasks_test.dart';
+// import 'package:zenify_trip/guide_Screens/tasks/tasks_list.dart';
 import 'package:zenify_trip/guide_Screens/travellers_list_screen.dart';
-import 'package:zenify_trip/login.dart';
+// import 'package:zenify_trip/login.dart';
 import 'package:zenify_trip/modele/Event/Event.dart';
 import 'package:zenify_trip/modele/TouristGuide.dart';
 import '../modele/accommodationsModel/accommodationModel.dart';
@@ -399,7 +401,9 @@ class _PlanningScreenState extends State<PlanningScreen> {
                               title: const Text('Tasks'),
                               onTap: () {
                                 // Handle drawer item click
-                                Get.to(TaskListPage()); // Close the drawer
+                                Get.to(TaskListPage(
+                                    guideId:
+                                        widget.guid?.id)); // Close the drawer
                               },
                             ),
                             ListTile(

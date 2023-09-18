@@ -316,7 +316,9 @@ class _PlanningScreenState extends State<PlanningScreen> {
                             title: const Text('Tasks'),
                             onTap: () {
                               // Handle drawer item click
-                              Get.to(TaskListPage()); // Close the drawer
+                              Get.to(TaskListPage(
+                                  guideId:
+                                      widget.guid?.id)); // Close the drawer
                             },
                           ),
                           ListTile(

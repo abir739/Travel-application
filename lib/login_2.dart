@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_country_picker_nm/flutter_country_picker_nm.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -12,7 +11,6 @@ import 'Secreens/guidPlannig.dart';
 import 'constent.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
-
 class MyLogin extends StatefulWidget {
   const MyLogin({Key? key}) : super(key: key);
 
@@ -62,7 +60,7 @@ class _MyLoginState extends State<MyLogin> {
   Future<void> sendPasswordResetEmailRequest(String email) async {
     final response = await http.post(
       Uri.parse(
-          'http://192.168.1.29:3000/api/auth/forgot-password'), // Replace with your API endpoint
+          '${baseUrls}/api/auth/forgot-password'), // Replace with your API endpoint
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
@@ -128,7 +126,7 @@ class _MyLoginState extends State<MyLogin> {
                 // Form is valid, proceed with sending the reset request via email
                 final resetResponse = await http.post(
                   Uri.parse(
-                      'http://192.168.1.29:3000/api/auth/reset-password/${resetTokenController.text}'),
+                      '${baseUrls}/api/auth/reset-password/${resetTokenController.text}'),
                   headers: <String, String>{
                     'Content-Type': 'application/json',
                   },
@@ -201,7 +199,7 @@ class _MyLoginState extends State<MyLogin> {
                 // Form is valid, proceed with sending the reset request
                 final resetResponse = await http.post(
                   Uri.parse(
-                      'http://192.168.1.29:3000/api/auth/reset-Code/${codeController.text}'), // Replace with your reset endpoint
+                      '${baseUrls}/api/auth/reset-Code/${codeController.text}'), // Replace with your reset endpoint
                   headers: <String, String>{
                     'Content-Type': 'application/json',
                   },
@@ -234,7 +232,7 @@ class _MyLoginState extends State<MyLogin> {
     print('$phoneNumber phoneNumber');
     final response = await http.post(
       Uri.parse(
-          'http://192.168.1.29:3000/api/auth/send-sms'), // Replace with your API endpoint
+          '${baseUrls}/api/auth/send-sms'), // Replace with your API endpoint
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
@@ -416,9 +414,7 @@ class _MyLoginState extends State<MyLogin> {
         if (Role == "Administrator") {
           Get.off(() => PlaningSecreen());
         } else {
-          Get.off(() => const TravellerFirstScreen(
-                userList: [],
-              ));
+          Get.off(() => TravellerFirstScreen(userList: [],));
         }
       } else {
         Map<String, dynamic> output =
@@ -554,16 +550,7 @@ class _MyLoginState extends State<MyLogin> {
                                 ),
                                 style: ButtonStyle(),
                               ),
-                              // TextButton(
-                              //     onPressed: () {},
-                              //     child: Text(
-                              //       'Forgot Password',
-                              //       style: TextStyle(
-                              //         decoration: TextDecoration.underline,
-                              //         color: Color(0xff4c505b),
-                              //         fontSize: 18,
-                              //       ),
-                              //     )),
+                              
                             ],
                           ),
                           TextButton(
@@ -663,15 +650,15 @@ class _MyLoginState extends State<MyLogin> {
                                       //   'Selected Country: ${_selected?.name ?? "None"}',
                                       //   style: TextStyle(fontSize: 18.0),
                                       // ),
-
-                                      TextButton(
+                                      
+TextButton(
                                         onPressed: () async {
-                                          Get.offNamed('resetPassword')!.then(
-                                              (value) =>
-                                                  Navigator.pop(context));
+                                          Get.offNamed(
+                                             'resetPassword')!.then((value) =>  Navigator.pop(
+                                                context));
                                           // Show the country picker dialog
                                           // setState(() {
-                                          // Close the screen
+                                            // Close the screen
                                           //   //  _showCountryPickerDialog(context);
                                           // });
                                         },

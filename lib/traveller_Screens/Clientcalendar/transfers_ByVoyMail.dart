@@ -15,14 +15,20 @@ import 'package:get/get.dart';
 import 'package:zenify_trip/Secreens/CustomCalendarDataSource.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:zenify_trip/modele/accommodationsModel/accommodationModel.dart';
+
 import 'package:zenify_trip/modele/transportmodel/transportModel.dart';
 import 'package:zenify_trip/modele/traveller/TravellerModel.dart';
+
 import 'package:zenify_trip/traveller_Screens/Clientcalendar/event_detail_screen.dart';
+import 'package:zenify_trip/traveller_Screens/Notification/notif_guide_test.dart';
+// import 'package:zenify_trip/traveller_Screens/Notification/notif_Guide.dart';
 
 class TravellerCalendarPage extends StatefulWidget {
-  final String? group;
+  String? group;
+  Traveller? traveller;
 
-  const TravellerCalendarPage({Key? key, this.group}) : super(key: key);
+  TravellerCalendarPage({Key? key, this.group, this.traveller})
+      : super(key: key);
 
   @override
   _TravellerCalendarPageState createState() => _TravellerCalendarPageState();
@@ -54,6 +60,7 @@ class _TravellerCalendarPageState extends State<TravellerCalendarPage> {
   bool loading = false;
   late Future<List<Transport>> _transportsFuture;
   CalendarDataSource<Object?>? calendarDataSource;
+
   // int completedCount = 0;
   @override
   void initState() {
@@ -396,6 +403,15 @@ class _TravellerCalendarPageState extends State<TravellerCalendarPage> {
                               onTap: () {
                                 // Handle drawer item click
                                 Get.to(const MainProfile()); // Close the drawer
+                              },
+                            ),
+                            ListTile(
+                              leading: const Icon(Icons.notification_add),
+                              title: const Text('Send Notification'),
+                              onTap: () {
+                                // Handle drawer item click
+                                // Get.to(
+                                //     PushNotificationScreen()); // Close the drawer
                               },
                             ),
                             ListTile(

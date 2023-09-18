@@ -14,8 +14,8 @@ import '../../modele/touristGroup.dart';
 import 'package:flutter_svg/svg.dart';
 
 class PushNotificationScreen extends StatefulWidget {
-  TouristGroup? group;
-  PushNotificationScreen(this.group, {super.key});
+  TouristGuide? guid;
+  PushNotificationScreen(this.guid, {super.key});
 
   @override
   _PushNotificationScreenState createState() => _PushNotificationScreenState();
@@ -25,6 +25,7 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
   List<TouristGroup>? touristGroup;
   TouristGroup? selectedTouristGroup = TouristGroup();
   TouristGuide? selectedTouristGuide = TouristGuide();
+  TouristGroup? SelectedTouristGroup = TouristGroup();
   final count = HTTPHandlerCount();
   final TextEditingController _messageController = TextEditingController();
   final TextEditingController _titleController = TextEditingController();
@@ -33,6 +34,7 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
   final httpHandler = HTTPHandlerhttpToristguid();
   List<TouristGuide>? touristGuides;
   List<TouristGroup>? group;
+   List<TouristGroup>? touristGroups;
   List<TouristGroup>? groupOptions = [];
   String token = "";
   String baseUrl = "";
@@ -83,7 +85,7 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
       multiSelectItems = []; // initialize the list to an empty list
     });
     final data = await httpHandlertorist
-        .fetchData("/api/tourist-groups/touristGuideId/${widget.group!.id}");
+        .fetchData("/api/tourist-groups/touristGuideId/${widget.guid!.id}");
 
     setState(() {
       touristGroup = data.cast<TouristGroup>();
@@ -156,7 +158,19 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
       print('Error sending notification: $e');
     }
   }
+  
+void _loadDataGroups() async {
+    setState(() {
+      touristGroups = []; // initialize the list to an empty list
+    });
+    final data = await httpHandler.fetchData("/api/tourist-groups");
 
+    setState(() {
+      touristGroups = data.cast<TouristGroup>();
+      SelectedTouristGroup = data.first as TouristGroup?;
+    });
+    _loadDatagroup(); // Call _loadDatagroup after loading data
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

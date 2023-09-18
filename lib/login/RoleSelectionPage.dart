@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../login.dart';
+import 'package:zenify_trip/Secreens/login_test.dart';
+// import '../login.dart';
 import 'TravellerLoginPage_test.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';

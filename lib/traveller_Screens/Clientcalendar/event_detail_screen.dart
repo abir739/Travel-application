@@ -147,7 +147,7 @@ class EventDetailScreen extends StatelessWidget {
                     ),
                     const SizedBox(width: 16),
                     Text(
-                      event.note ?? 'N/A',
+                      "From ${event.from ?? 'N/A'} to ${event.to ?? 'N/A'}",
                       style: const TextStyle(fontSize: 16),
                     ),
                   ],
