@@ -3,6 +3,7 @@ import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'modele/traveller/TravellerModel.dart';
+
 class MyRegister extends StatefulWidget {
   const MyRegister({Key? key}) : super(key: key);
 
@@ -14,8 +15,6 @@ class _MyRegisterState extends State<MyRegister> {
   final TextEditingController codeController = TextEditingController();
   List<Traveller> travellers = [];
   String errorMessage = '';
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +133,7 @@ class _MyRegisterState extends State<MyRegister> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             const Text(
-                              'Sign Up',
+                              ' Sign Up',
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 26,

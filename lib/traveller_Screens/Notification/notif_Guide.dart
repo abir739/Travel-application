@@ -34,7 +34,7 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
     }
 
     String url =
-        formatter("/api/tourist-groups/id/${widget.traveller!.touristGroupId}");
+        formatter("/api/tourist-groups/${widget.traveller!.touristGroupId}");
 
     final response = await http.get(
       Uri.parse(url),

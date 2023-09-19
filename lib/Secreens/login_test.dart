@@ -149,7 +149,7 @@ class _MyLoginState extends State<MyLogin> {
       context: context,
       dialogType: DialogType.INFO,
       animType: AnimType.BOTTOMSLIDE,
-      title: 'Reset Password via Email',
+      title: 'Reset Password',
       body: Form(
         key: formKey,
         child: Column(
@@ -157,7 +157,8 @@ class _MyLoginState extends State<MyLogin> {
           children: [
             TextFormField(
               controller: resetTokenController,
-              decoration: InputDecoration(labelText: 'Enter Reset Token'),
+              decoration:
+                  const InputDecoration(labelText: '  Enter Reset Token'),
               validator: (value) {
                 if (value!.isEmpty) {
                   return 'Please enter the reset token';
@@ -168,7 +169,7 @@ class _MyLoginState extends State<MyLogin> {
             TextFormField(
               controller: newPasswordController,
               obscureText: true,
-              decoration: InputDecoration(labelText: 'New Password'),
+              decoration: const InputDecoration(labelText: '  New Password'),
               validator: (value) {
                 if (value!.isEmpty) {
                   return 'Please enter the new password';
@@ -179,7 +180,7 @@ class _MyLoginState extends State<MyLogin> {
           ],
         ),
       ),
-      btnOkText: 'Reset Password via Email',
+      btnOkText: 'Reset Password',
       btnCancelText: 'Cancel',
       btnCancelOnPress: () {},
       btnOkOnPress: () async {
@@ -220,7 +221,7 @@ class _MyLoginState extends State<MyLogin> {
           }
         }
       },
-    )..show();
+    ).show();
   }
 
   @override
@@ -335,7 +336,7 @@ class _MyLoginState extends State<MyLogin> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               const Text(
-                                'Sign in',
+                                ' Sign In',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 27,
@@ -379,32 +380,47 @@ class _MyLoginState extends State<MyLogin> {
                               TextButton(
                                 onPressed: () {
                                   showDialog(
-                                      context: context,
-                                      builder: (context) => AlertDialog(
-                                            content: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                TextField(
-                                                  controller:
-                                                      emailControllerForget,
-                                                  decoration: InputDecoration(
-                                                    labelText:
-                                                        'Reset Password via mail',
-                                                  ),
-                                                ),
-                                                ElevatedButton(
-                                                  onPressed: () {
-                                                    // User chose to reset password via email
-                                                    sendPasswordResetEmailRequest(
-                                                        emailControllerForget
-                                                            .text);
-                                                    // Navigator.pop(context);
-                                                  },
-                                                  child: Text('Reset Password'),
-                                                ),
-                                              ],
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      content: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          TextField(
+                                            controller: emailControllerForget,
+                                            decoration: InputDecoration(
+                                              labelText:
+                                                  'Reset Password via mail',
                                             ),
-                                          ));
+                                          ),
+                                        ],
+                                      ),
+                                      actions: [
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            // User chose to reset password via email
+                                            sendPasswordResetEmailRequest(
+                                                emailControllerForget.text);
+                                            Navigator.of(context)
+                                                .pop(); // Close the dialog
+                                          },
+                                          child: const Text('Reset Password'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context)
+                                                .pop(); // Close the dialog
+                                          },
+                                          child: const Text(
+                                            "Cancel",
+                                            style: TextStyle(
+                                              fontSize: 16.0,
+                                              color: Colors.red,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
                                 },
                                 child: const Text(
                                   'Forgot Password',

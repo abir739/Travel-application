@@ -77,6 +77,7 @@ dependencies:
   google_fonts: ^4.0.4
   flutter_speed_dial: ^7.0.0
   dropdown_search: ^5.0.6
+  syncfusion_localizations: ^20.4.54
 dependency_overrides:
   platform: ^3.1.0
 

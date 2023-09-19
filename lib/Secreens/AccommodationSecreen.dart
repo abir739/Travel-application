@@ -8,7 +8,8 @@ import 'package:zenify_trip/Secreens/Profile/editprofile.dart';
 import 'package:zenify_trip/Secreens/event_view.dart';
 import 'package:zenify_trip/Secreens/login_test.dart';
 import 'package:zenify_trip/guide_Screens/calendar/filtre__ByGroups.dart';
-import 'package:zenify_trip/guide_Screens/tasks/Tasks_test.dart';
+import 'package:zenify_trip/guide_Screens/tasks/tasks_Calendar.dart';
+//import 'package:zenify_trip/guide_Screens/tasks/Tasks_test.dart';
 // import 'package:zenify_trip/guide_Screens/tasks/tasks_list.dart';
 import 'package:zenify_trip/guide_Screens/travellers_list_screen.dart';
 // import 'package:zenify_trip/login.dart';
@@ -389,8 +390,16 @@ class _PlanningScreenState extends State<PlanningScreen> {
                               ),
                             ),
                             ListTile(
+                              leading: const Icon(Icons.person),
+                              title: const Text('Profil'),
+                              onTap: () {
+                                // Handle drawer item click
+                                Get.to(const MainProfile()); // Close the drawer
+                              },
+                            ),
+                            ListTile(
                               leading: const Icon(Icons.calendar_today),
-                              title: const Text('Calendar'),
+                              title: const Text('Transfers'),
                               onTap: () {
                                 // Handle drawer item click
                                 Navigator.pop(context); // Close the drawer
@@ -406,14 +415,7 @@ class _PlanningScreenState extends State<PlanningScreen> {
                                         widget.guid?.id)); // Close the drawer
                               },
                             ),
-                            ListTile(
-                              leading: const Icon(Icons.person),
-                              title: const Text('Profil'),
-                              onTap: () {
-                                // Handle drawer item click
-                                Get.to(const MainProfile()); // Close the drawer
-                              },
-                            ),
+
                             ListTile(
                               leading: const Icon(Icons.notification_add),
                               title: const Text('Send Notification'),
