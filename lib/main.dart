@@ -15,6 +15,7 @@ import 'Secreens/TouristGroupProvider.dart';
 import 'Secreens/guidPlannig.dart';
 import 'constent.dart';
 import 'onesignal_handler.dart';
+import 'Secreens/Notification/notificationlist.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
       routes: {
         'register': (context) => const MyRegister(),
         'login': (context) => const RoleSelectionPage(),
+        'notificationScreen': (context) => NotificationScreen(groupsid: '',),
         'planning': (context) => const PlaningSecreen(), // Add this route
         'Traveller': (context) => const TravellerFirstScreen(
               userList: [],

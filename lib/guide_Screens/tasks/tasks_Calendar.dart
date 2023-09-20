@@ -8,6 +8,7 @@ import 'package:zenify_trip/login.dart';
 import 'package:zenify_trip/modele/tasks/taskModel.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class TaskListPage extends StatefulWidget {
   final String? guideId;
@@ -170,6 +171,127 @@ class _TaskListPageState extends State<TaskListPage> {
     );
   }
 
+  Future<void> _showAddTaskDialog(BuildContext context) async {
+    final TextEditingController descriptionController = TextEditingController();
+    DateTime? selectedDate;
+
+    final result = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return AlertDialog(
+              title: const Text("Add Task"),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  TextField(
+                    controller: descriptionController,
+                    decoration:
+                        const InputDecoration(labelText: 'Task Description'),
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () async {
+                      final DateTime? pickedDate = await showDatePicker(
+                        context: context,
+                        initialDate: selectedDate ?? DateTime.now(),
+                        firstDate: DateTime.now(),
+                        lastDate: DateTime(2101),
+                      );
+
+                      if (pickedDate != null && pickedDate != selectedDate) {
+                        setState(() {
+                          selectedDate = pickedDate;
+                        });
+                      }
+                    },
+                    child: const Text('Select Date'),
+                  ),
+                ],
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('Cancel'),
+                  onPressed: () {
+                    Navigator.of(context).pop(false); // Return false on cancel
+                  },
+                ),
+                TextButton(
+                  child: const Text('Add'),
+                  onPressed: () async {
+                    String newTaskDescription = descriptionController.text;
+                    String? newTaskTodoDate;
+
+                    if (selectedDate != null) {
+                      newTaskTodoDate = selectedDate?.toLocal().toString();
+                    }
+
+                    // Send a POST request to add the task
+                    String? token = await storage.read(key: "access_token");
+                    String url = "$baseUrls/api/tasks";
+                    final response = await http.post(
+                      Uri.parse(url),
+                      headers: {
+                        "Authorization": "Bearer $token",
+                        "Content-Type": "application/json",
+                      },
+                      body: jsonEncode({
+                        "touristGuideId": widget.guideId,
+                        "description": newTaskDescription,
+                        "todoDate": newTaskTodoDate,
+                        // Add other task properties as needed
+                      }),
+                    );
+
+                    if (response.statusCode == 201) {
+                      // Task added successfully, update the calendar
+                      fetchData();
+                      Navigator.of(context).pop(true); // Return true on success
+                    } else {
+                      // Handle error
+                      print("Error adding task: ${response.statusCode}");
+                    }
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+
+    if (result == true) {}
+  }
+
+  void _deleteTask(Appointment appointment) async {
+    // Find and remove the task from the data source
+    _dataSource.appointments!.removeWhere(
+        (existingAppointment) => existingAppointment == appointment);
+
+    // Update the UI
+    setState(() {});
+
+    // Send an HTTP DELETE request to delete the task on the server
+    String? token = await storage.read(key: "access_token");
+    String url =
+        "$baseUrls/api/tasks/${appointment.id}"; // Replace with your API endpoint
+
+    final response = await http.delete(
+      Uri.parse(url),
+      headers: {
+        "Authorization": "Bearer $token",
+      },
+    );
+
+    if (response.statusCode == 204) {
+      // Task deleted successfully from the server
+    } else {
+      // Handle error
+      print("Error deleting task: ${response.statusCode}");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -204,6 +326,15 @@ class _TaskListPageState extends State<TaskListPage> {
             ),
           ],
         ),
+        actions: [
+          // Add an icon button to the app bar for adding tasks
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () {
+              _showAddTaskDialog(context);
+            },
+          ),
+        ],
       ),
       body: RefreshIndicator(
         onRefresh: fetchData,
@@ -268,21 +399,92 @@ class _TaskListPageState extends State<TaskListPage> {
                 showDatePickerButton: true,
                 monthViewSettings: const MonthViewSettings(
                   showAgenda: true,
-                  agendaViewHeight: 200,
+                  agendaViewHeight: 300,
+                  numberOfWeeksInView: 4,
+                  agendaItemHeight: 75,
                 ),
-                headerDateFormat: 'MMM,yyy',
+                // headerDateFormat: 'MMM,yyy',
                 dataSource: _dataSource,
                 appointmentBuilder:
                     (BuildContext context, CalendarAppointmentDetails details) {
                   final appointment = details.appointments.first;
 
-                  // Customize how your tasks are displayed here
-                  return Container(
-                    color: appointment.isAllDay
-                        ? const Color.fromARGB(255, 166, 33, 243)
-                        : Colors.green,
-                    child: Center(
-                      child: Text(appointment.subject ?? ''),
+                  // Wrap the appointment in a Slidable widget
+                  return Slidable(
+                    startActionPane: ActionPane(
+                      motion: const DrawerMotion(),
+                      extentRatio: 0.25,
+                      children: [
+                        // Add your edit action here
+                        SlidableAction(
+                          label: 'Edit',
+                          backgroundColor: Colors.blue,
+                          icon: Icons.edit,
+                          onPressed: (context) {
+                            // Handle edit action
+                            // You can open an edit dialog or navigate to an edit screen here
+                          },
+                        ),
+                      ],
+                    ),
+                    endActionPane: ActionPane(
+                      motion: const DrawerMotion(),
+                      extentRatio: 0.70,
+                      children: [
+                        // Add your delete action here
+                        SlidableAction(
+                          label: 'Delete',
+                          backgroundColor: Colors.red,
+                          icon: Icons.delete,
+                          onPressed: (context) {
+                            // Show a confirmation dialog
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text("Confirm Deletion"),
+                                  content: const Text(
+                                      "Are you sure you want to delete this task?"),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      child: Text("Cancel"),
+                                      onPressed: () {
+                                        Navigator.of(context)
+                                            .pop(); // Close the dialog
+                                      },
+                                    ),
+                                    TextButton(
+                                      child: const Text("Delete"),
+                                      onPressed: () async {
+                                        _deleteTask(appointment);
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                        ),
+                        // Add your add action here
+                        SlidableAction(
+                          label: 'Add',
+                          backgroundColor: Colors.green,
+                          icon: Icons.add,
+                          onPressed: (context) {
+                            // Open the add task dialog
+                            _showAddTaskDialog(context);
+                          },
+                        ),
+                      ],
+                    ),
+                    child: Container(
+                      color: appointment.isAllDay
+                          ? const Color.fromARGB(255, 166, 33, 243)
+                          : const Color(0xFFCBA36E),
+                      child: Center(
+                        child: Text(appointment.subject ?? ''),
+                      ),
                     ),
                   );
                 },
@@ -294,8 +496,8 @@ class _TaskListPageState extends State<TaskListPage> {
                     setState(() {
                       selectedDate = details.date;
                     });
-                    _showAppointmentsDialog(
-                        context, details.appointments!.cast<Appointment>());
+                    // _showAppointmentsDialog(
+                    //     context, details.appointments!.cast<Appointment>());
                   }
                 },
               ),

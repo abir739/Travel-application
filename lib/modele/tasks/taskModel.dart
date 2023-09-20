@@ -7,7 +7,7 @@ class Tasks {
   String? id;
   String? agencyId;
   String? touristGuideId;
-  String? todoDate;
+  DateTime?todoDate;
   String? description;
   String? creatorUserId;
   String? createdAt;

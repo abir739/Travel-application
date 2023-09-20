@@ -17,8 +17,8 @@ class NetworkController extends GetxController {
           messageText: const Text('PLEASE CONNECT TO THE INTERNET',
               style: TextStyle(color: Colors.white, fontSize: 14)),
           isDismissible: false,
-          duration: const Duration(days: 1),
-          backgroundColor: Colors.red[400]!,
+          duration: const Duration(minutes: 2),
+          backgroundColor: Color.fromARGB(255, 241, 9, 5)!,
           icon: const Icon(
             Icons.wifi_off,
             color: Colors.white,
@@ -30,6 +30,7 @@ class NetworkController extends GetxController {
       if (Get.isSnackbarOpen) {
         Get.closeCurrentSnackbar();
       }
+ Get.closeCurrentSnackbar();
     }
   }
 

@@ -4,32 +4,36 @@ import '../../modele/HttpPushNotification.dart';
 import '../../modele/activitsmodel/httpActivites.dart';
 import '../../modele/activitsmodel/pushnotificationmodel.dart';
 
-
 class NotificationScreen extends StatelessWidget {
+  String? groupsid;
+  NotificationScreen({required this.groupsid});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Notifications'),
+        title: Text('Notifications ${groupsid}'),
       ),
-      body: NotificationList(), // Display the list of notifications
+          body: NotificationList(groupsid: groupsid),
     );
   }
 }
 
 class NotificationList extends StatefulWidget {
   @override
+String? groupsid;
+  NotificationList({required this.groupsid});
   _NotificationListState createState() => _NotificationListState();
 }
 
+
 class _NotificationListState extends State<NotificationList> {
   final httpHandler = HTTPHandlerPushNotification();
-final count = HTTPHandlerCount();
+  final count = HTTPHandlerCount();
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<PushNotification>>(
       future: httpHandler.fetchData(
-          '/api/push-notificationsMobile?filters[tags]=7ac6a6e6-13c2-418d-9504-b6c76c028fb6'), // Replace with your API endpoint
+          '/api/push-notificationsMobile?filters[tagsGroups]=${widget.groupsid}'), // Replace with your API endpoint
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
@@ -46,36 +50,8 @@ final count = HTTPHandlerCount();
               return ListTile(
                 title: Text(notification.title ?? "title"),
                 subtitle: Text(notification.message ?? "message"),
-trailing: 
-               FutureBuilder<int>(
-                                  future: count.fetchInlineCount(
-                                    "/api/push-notificationsMobile?filters[tags]=7ac6a6e6-13c2-418d-9504-b6c76c028fb6",
-                                  ),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
-                                      // Display a loading indicator while fetching the inline count
-                                      return CircularProgressIndicator(
-                                          strokeWidth: 1.0);
-                                    }
-                                    if (snapshot.hasError) {
-                                      // Handle the error if the inline count couldn't be fetched
-                                      return Text("Error");
-                                    }
-                                    final inlineCount = snapshot.data ?? 0;
-                                    return Text(
-                                      " $inlineCount",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w800,
-                                          fontSize: 20),
-                                    );
-                                  },
-                                ),
-                    //           ],
-                    //         ),
-                    // ),
+             
 
-                // Customize the UI for each notification as needed
               );
             },
           );
