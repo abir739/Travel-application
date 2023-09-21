@@ -187,12 +187,14 @@ class _EventViewState extends State<EventView> {
               ), // Update with your field
               const SizedBox(height: 14),
               Text(
-                  'Date: ${widget.transport.date?.toString() ?? ''}'), // Update with your field
+                'Date: ${widget.transport.date != null ? formatDateTimeInTimeZone(widget.transport.date!).toString() : 'N/A'}', // Update with your field
+              ),
               const SizedBox(height: 14),
               TextFormField(
                 controller: _noteController,
                 decoration: const InputDecoration(labelText: 'Title'),
               ),
+
               const SizedBox(height: 14),
               TextFormField(
                 controller: _durationController,

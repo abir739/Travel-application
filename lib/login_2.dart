@@ -18,8 +18,6 @@ class MyLogin extends StatefulWidget {
   _MyLoginState createState() => _MyLoginState();
 }
 
-//  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-// final _globalkey = GlobalKey<FormState>();
 TextEditingController emailControllerForget = TextEditingController();
 TextEditingController emailController = TextEditingController();
 TextEditingController phoneNumberController = TextEditingController();
@@ -137,13 +135,11 @@ class _MyLoginState extends State<MyLogin> {
                 );
 
                 if (resetResponse.statusCode == 201) {
-                  // Password reset was successful
-                  // Provide feedback to the user (e.g., show a success message)
+                
                   print('Password reset via email successful');
                   Navigator.pop(context); // Close the dialog
                 } else {
-                  // Password reset request via email failed
-                  // Handle the error and provide feedback to the user
+               
                   print('Failed to reset password via email');
                 }
               }
@@ -196,7 +192,7 @@ class _MyLoginState extends State<MyLogin> {
           ElevatedButton(
             onPressed: () async {
               if (formKey.currentState!.validate()) {
-                // Form is valid, proceed with sending the reset request
+              
                 final resetResponse = await http.post(
                   Uri.parse(
                       '${baseUrls}/api/auth/reset-Code/${codeController.text}'), // Replace with your reset endpoint
@@ -210,13 +206,11 @@ class _MyLoginState extends State<MyLogin> {
                 );
 
                 if (resetResponse.statusCode == 201) {
-                  // Reset password was successful
-                  // Provide feedback to the user (e.g., show a success message)
+                 
                   print('Password reset successful');
                   Navigator.pop(context); // Close the dialog
                 } else {
-                  // Reset password request failed
-                  // Handle the error and provide feedback to the user
+                
                   print('Failed to reset password');
                 }
               }

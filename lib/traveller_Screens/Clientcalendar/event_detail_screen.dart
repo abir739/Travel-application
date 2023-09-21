@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:zenify_trip/guide_Screens/calendar/transfert_data.dart';
+import 'package:zenify_trip/constent.dart';
+
 import 'package:zenify_trip/modele/transportmodel/transportModel.dart';
 
 class EventDetailScreen extends StatelessWidget {
@@ -95,11 +96,9 @@ class EventDetailScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 8),
+                   
                     Text(
-                      DateFormat.yMd()
-                          .add_jm()
-                          .format(event.date ?? DateTime.now()),
-                      style: const TextStyle(fontSize: 16),
+                      '${event.date != null ? formatDateTimeInTimeZone(event.date!).toString() : 'N/A'}', // Update with your field
                     ),
                   ],
                 ),

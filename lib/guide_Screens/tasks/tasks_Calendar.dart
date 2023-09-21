@@ -9,6 +9,7 @@ import 'package:zenify_trip/modele/tasks/taskModel.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class TaskListPage extends StatefulWidget {
   final String? guideId;
@@ -178,90 +179,122 @@ class _TaskListPageState extends State<TaskListPage> {
     final result = await showDialog(
       context: context,
       builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (BuildContext context, StateSetter setState) {
-            return AlertDialog(
-              title: const Text("Add Task"),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  TextField(
-                    controller: descriptionController,
-                    decoration:
-                        const InputDecoration(labelText: 'Task Description'),
-                  ),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: () async {
-                      final DateTime? pickedDate = await showDatePicker(
-                        context: context,
-                        initialDate: selectedDate ?? DateTime.now(),
-                        firstDate: DateTime.now(),
-                        lastDate: DateTime(2101),
-                      );
-
-                      if (pickedDate != null && pickedDate != selectedDate) {
-                        setState(() {
-                          selectedDate = pickedDate;
-                        });
-                      }
-                    },
-                    child: const Text('Select Date'),
-                  ),
-                ],
+        return AlertDialog(
+          title: Text(
+            "Add Task",
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              TextFormField(
+                controller: descriptionController,
+                decoration: InputDecoration(
+                  labelText: 'Task Description',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter a description';
+                  }
+                  return null;
+                },
               ),
-              actions: <Widget>[
-                TextButton(
-                  child: const Text('Cancel'),
-                  onPressed: () {
-                    Navigator.of(context).pop(false); // Return false on cancel
-                  },
+              SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () async {
+                  final DateTime? pickedDate = await showDatePicker(
+                    context: context,
+                    initialDate: selectedDate ?? DateTime.now(),
+                    firstDate: DateTime.now(),
+                    lastDate: DateTime(2101),
+                  );
+
+                  if (pickedDate != null && pickedDate != selectedDate) {
+                    setState(() {
+                      selectedDate = pickedDate;
+                    });
+                  }
+                },
+                child: Text('Select Date'),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text(
+                'Cancel',
+                style: TextStyle(
+                  color: Colors.red,
                 ),
-                TextButton(
-                  child: const Text('Add'),
-                  onPressed: () async {
-                    String newTaskDescription = descriptionController.text;
-                    String? newTaskTodoDate;
-
-                    if (selectedDate != null) {
-                      newTaskTodoDate = selectedDate?.toLocal().toString();
-                    }
-
-                    // Send a POST request to add the task
-                    String? token = await storage.read(key: "access_token");
-                    String url = "$baseUrls/api/tasks";
-                    final response = await http.post(
-                      Uri.parse(url),
-                      headers: {
-                        "Authorization": "Bearer $token",
-                        "Content-Type": "application/json",
-                      },
-                      body: jsonEncode({
-                        "touristGuideId": widget.guideId,
-                        "description": newTaskDescription,
-                        "todoDate": newTaskTodoDate,
-                        // Add other task properties as needed
-                      }),
-                    );
-
-                    if (response.statusCode == 201) {
-                      // Task added successfully, update the calendar
-                      fetchData();
-                      Navigator.of(context).pop(true); // Return true on success
-                    } else {
-                      // Handle error
-                      print("Error adding task: ${response.statusCode}");
-                    }
-                  },
+              ),
+              onPressed: () {
+                Navigator.of(context).pop(false); // Return false on cancel
+              },
+            ),
+            TextButton(
+              child: Text(
+                'Add',
+                style: TextStyle(
+                  color: Colors.blue,
                 ),
-              ],
-            );
-          },
+              ),
+              onPressed: () async {
+                if (descriptionController.text.isEmpty) {
+                  // Show an error message if the description is empty
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Please enter a description'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                } else {
+                  String newTaskDescription = descriptionController.text;
+                  String? newTaskTodoDate;
+
+                  if (selectedDate != null) {
+                    newTaskTodoDate = selectedDate?.toLocal().toString();
+                  }
+
+                  // Send a POST request to add the task
+                  String? token = await storage.read(key: "access_token");
+                  String url = "$baseUrls/api/tasks";
+                  final response = await http.post(
+                    Uri.parse(url),
+                    headers: {
+                      "Authorization": "Bearer $token",
+                      "Content-Type": "application/json",
+                    },
+                    body: jsonEncode({
+                      "touristGuideId": widget.guideId,
+                      "description": newTaskDescription,
+                      "todoDate": newTaskTodoDate,
+                      // Add other task properties as needed
+                    }),
+                  );
+
+                  if (response.statusCode == 201) {
+                    // Task added successfully, update the calendar
+                    fetchData();
+                    Navigator.of(context).pop(true); // Return true on success
+                  } else {
+                    // Handle error
+                    print("Error adding task: ${response.statusCode}");
+                  }
+                }
+              },
+            ),
+          ],
         );
       },
     );
 
-    if (result == true) {}
+    if (result == true) {
+      // Task was added successfully
+    }
   }
 
   void _deleteTask(Appointment appointment) async {
@@ -289,6 +322,117 @@ class _TaskListPageState extends State<TaskListPage> {
     } else {
       // Handle error
       print("Error deleting task: ${response.statusCode}");
+    }
+  }
+
+// Function to show the edit task dialog
+  Future<void> _showEditTaskDialog(
+      BuildContext context, Appointment appointment) async {
+    final TextEditingController descriptionController =
+        TextEditingController(text: appointment.subject);
+    DateTime? selectedDate = appointment.startTime;
+
+    final result = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text(
+            "Edit Task",
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              TextFormField(
+                controller: descriptionController,
+                decoration: InputDecoration(
+                  labelText: 'Task Description',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () async {
+                  final DateTime? pickedDate = await showDatePicker(
+                    context: context,
+                    initialDate: selectedDate ?? DateTime.now(),
+                    firstDate: DateTime.now(),
+                    lastDate: DateTime(2101),
+                  );
+
+                  if (pickedDate != null && pickedDate != selectedDate) {
+                    setState(() {
+                      selectedDate = pickedDate;
+                    });
+                  }
+                },
+                child: Text('Select Date'),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text(
+                'Cancel',
+                style: TextStyle(
+                  color: Colors.red,
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop(false); // Return false on cancel
+              },
+            ),
+            TextButton(
+              child: const Text(
+                'Save',
+                style: TextStyle(
+                  color: Colors.blue,
+                ),
+              ),
+              onPressed: () async {
+                String updatedTaskDescription = descriptionController.text;
+                String? updatedTaskTodoDate;
+
+                if (selectedDate != null) {
+                  updatedTaskTodoDate = selectedDate?.toLocal().toString();
+                }
+
+                // Send a PUT request to update the task
+                String? token = await storage.read(key: "access_token");
+                String url = "$baseUrls/api/tasks/${appointment.id}";
+                final response = await http.put(
+                  Uri.parse(url),
+                  headers: {
+                    "Authorization": "Bearer $token",
+                    "Content-Type": "application/json",
+                  },
+                  body: jsonEncode({
+                    "description": updatedTaskDescription,
+                    "todoDate": updatedTaskTodoDate,
+                    // Add other task properties as needed
+                  }),
+                );
+
+                if (response.statusCode == 200) {
+                  // Task updated successfully, update the calendar
+                  fetchData();
+                  Navigator.of(context).pop(true); // Return true on success
+                } else {
+                  // Handle error
+                  print("Error updating task: ${response.statusCode}");
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+
+    if (result == true) {
+      // Task was edited successfully
     }
   }
 
@@ -329,7 +473,10 @@ class _TaskListPageState extends State<TaskListPage> {
         actions: [
           // Add an icon button to the app bar for adding tasks
           IconButton(
-            icon: const Icon(Icons.add),
+            icon: Icon(
+              Icons.add_box,
+              color: Color(0xFF3A3557), // Set the desired color here
+            ),
             onPressed: () {
               _showAddTaskDialog(context);
             },
@@ -421,8 +568,8 @@ class _TaskListPageState extends State<TaskListPage> {
                           backgroundColor: Colors.blue,
                           icon: Icons.edit,
                           onPressed: (context) {
-                            // Handle edit action
-                            // You can open an edit dialog or navigate to an edit screen here
+                            // Show the edit task dialog
+                            _showEditTaskDialog(context, appointment);
                           },
                         ),
                       ],
@@ -442,19 +589,39 @@ class _TaskListPageState extends State<TaskListPage> {
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
-                                  title: const Text("Confirm Deletion"),
-                                  content: const Text(
-                                      "Are you sure you want to delete this task?"),
+                                  title: Text(
+                                    "Confirm Deletion",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  content: Text(
+                                    "Are you sure you want to delete this task?",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                    ),
+                                  ),
                                   actions: <Widget>[
                                     TextButton(
-                                      child: Text("Cancel"),
+                                      child: Text(
+                                        "Cancel",
+                                        style: TextStyle(
+                                          color: Colors.blue,
+                                        ),
+                                      ),
                                       onPressed: () {
                                         Navigator.of(context)
                                             .pop(); // Close the dialog
                                       },
                                     ),
                                     TextButton(
-                                      child: const Text("Delete"),
+                                      child: Text(
+                                        "Delete",
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                        ),
+                                      ),
                                       onPressed: () async {
                                         _deleteTask(appointment);
                                         Navigator.of(context).pop();

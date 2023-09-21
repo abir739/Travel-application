@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:zenify_trip/Secreens/ConcentricAnimationOnboarding.dart';
-import 'package:zenify_trip/Secreens/Profile/editprofile.dart';
+
 import 'package:zenify_trip/Secreens/login_test.dart';
-// import 'package:zenify_trip/Secreens/event_view.dart';
+
 import 'package:zenify_trip/constent.dart';
-// import 'package:zenify_trip/login.dart';
+
 import 'package:zenify_trip/modele/Event/Event.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -16,12 +16,10 @@ import 'package:get/get.dart';
 import 'package:zenify_trip/Secreens/CustomCalendarDataSource.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:zenify_trip/modele/accommodationsModel/accommodationModel.dart';
-
 import 'package:zenify_trip/modele/transportmodel/transportModel.dart';
 import 'package:zenify_trip/modele/traveller/TravellerModel.dart';
-
 import 'package:zenify_trip/traveller_Screens/Clientcalendar/event_detail_screen.dart';
-import 'package:zenify_trip/traveller_Screens/Notification/notif_guide_test.dart';
+
 // import 'package:zenify_trip/traveller_Screens/Notification/notif_Guide.dart';
 
 class TravellerCalendarPage extends StatefulWidget {
@@ -228,7 +226,7 @@ class _TravellerCalendarPageState extends State<TravellerCalendarPage> {
         id: transfer.id,
         note: "🚌 From ${transfer.from ?? 'N/A'} to ${transfer.to ?? 'N/A'}",
         recurrenceId: true,
-        startTime: transfer.date ?? DateTime.now(),
+        startTime: formatDateTimeInTimeZone(transfer.date ?? DateTime.now()),
         location: transfer.from ?? "transport",
         endTime:
             transfer.date!.add(Duration(hours: transfer.durationHours ?? 0)),
@@ -402,18 +400,13 @@ class _TravellerCalendarPageState extends State<TravellerCalendarPage> {
                               leading: const Icon(Icons.person),
                               title: const Text('Profil'),
                               onTap: () {
-                                // Handle drawer item click
-                                Get.to(const MainProfile()); // Close the drawer
+                                // Navigate to the profile page and pass the traveler's data if not null
                               },
                             ),
                             ListTile(
                               leading: const Icon(Icons.notification_add),
                               title: const Text('Send Notification'),
-                              onTap: () {
-                                // Handle drawer item click
-                                // Get.to(
-                                //     PushNotificationScreen()); // Close the drawer
-                              },
+                              onTap: () {},
                             ),
                             ListTile(
                               leading: const Icon(Icons.more_horiz),

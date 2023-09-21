@@ -11,15 +11,6 @@ class OneSignalHandler {
     // OneSignal.shared.setPermissionObserver((OSPermissionStateChanges changes) {
     //   print("PERMISSION STATE CHANGED: ${changes.jsonRepresentation()}");
     // });
-
-    OneSignal.shared.setNotificationWillShowInForegroundHandler(
-      (OSNotificationReceivedEvent event) {
-        final notificationCountNotifier =
-            Provider.of<NotificationCountNotifier>(context, listen: false);
-
-        notificationCountNotifier.increment();
-      },
-    );
     OneSignal.shared.setNotificationOpenedHandler(
       (OSNotificationOpenedResult notification) {
         print("${notification.notification.body} actions");
@@ -51,7 +42,16 @@ class OneSignalHandler {
         }
       },
     );
-  }
+  
+    OneSignal.shared.setNotificationWillShowInForegroundHandler(
+      (OSNotificationReceivedEvent event) {
+        final notificationCountNotifier =
+            Provider.of<NotificationCountNotifier>(context, listen: false);
+
+        notificationCountNotifier.increment();
+      },
+    );
+ }
 
   static Future<void> processBackgroundNotifications() async {
     // Handle background notifications here

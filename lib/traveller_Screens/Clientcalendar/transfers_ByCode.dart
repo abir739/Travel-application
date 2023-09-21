@@ -3,11 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:zenify_trip/Secreens/ConcentricAnimationOnboarding.dart';
-import 'package:zenify_trip/Secreens/Profile/editprofile.dart';
+
 import 'package:zenify_trip/Secreens/login_test.dart';
-// import 'package:zenify_trip/Secreens/event_view.dart';
 import 'package:zenify_trip/constent.dart';
-// import 'package:zenify_trip/login.dart';
 import 'package:zenify_trip/modele/Event/Event.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -19,10 +17,10 @@ import 'package:zenify_trip/modele/accommodationsModel/accommodationModel.dart';
 import 'package:zenify_trip/modele/transportmodel/transportModel.dart';
 import 'package:zenify_trip/modele/traveller/TravellerModel.dart';
 import 'package:zenify_trip/traveller_Screens/Clientcalendar/event_detail_screen.dart';
+import 'package:zenify_trip/traveller_Screens/profile_By_Code.dart';
 
 class CalendarPage extends StatefulWidget {
   final Traveller selectedTraveller;
-
   const CalendarPage({required this.selectedTraveller, Key? key})
       : super(key: key);
 
@@ -222,7 +220,7 @@ class _CalendarPageState extends State<CalendarPage> {
         id: transfer.id,
         note: "🚌 From ${transfer.from ?? 'N/A'} to ${transfer.to ?? 'N/A'}",
         recurrenceId: true,
-        startTime: transfer.date ?? DateTime.now(),
+        startTime: formatDateTimeInTimeZone(transfer.date ?? DateTime.now()),
         location: transfer.from ?? "transport",
         endTime:
             transfer.date!.add(Duration(hours: transfer.durationHours ?? 0)),
@@ -296,6 +294,15 @@ class _CalendarPageState extends State<CalendarPage> {
         transferList[index] = updatedEvent;
       }
     });
+  }
+
+  void _navigateToProfilePage() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) =>
+            ProfilePage(selectedTraveller: widget.selectedTraveller),
+      ),
+    );
   }
 
   Divider _buildDivider() {
@@ -396,8 +403,8 @@ class _CalendarPageState extends State<CalendarPage> {
                               leading: const Icon(Icons.person),
                               title: const Text('Profil'),
                               onTap: () {
-                                // Handle drawer item click
-                                Get.to(const MainProfile()); // Close the drawer
+                                // Close the drawer
+                                _navigateToProfilePage(); // Add parentheses to call the method
                               },
                             ),
                             ListTile(

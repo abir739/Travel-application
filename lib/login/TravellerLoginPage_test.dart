@@ -3,8 +3,6 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_svg/svg.dart';
 import 'package:zenify_trip/traveller_Screens/Clientcalendar/transfers_ByCode.dart';
-// import '../Secreens/Clientcalendar/client_calendar.dart';
-// import 'package:zenify_trip/traveller_Screens/Clientcalendar/tourist_calendar.dart';
 import '../constent.dart';
 import '../modele/traveller/TravellerModel.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
@@ -80,15 +78,15 @@ class _TravellerLoginPageState extends State<TravellerLoginPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Invalid Code'),
+          title: const Text('Invalid Code'),
           content:
-              Text('Please verify the code or enter another correct code.'),
+              const Text('Please verify the code or enter another correct code.'),
           actions: <Widget>[
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
               },
-              child: Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         );

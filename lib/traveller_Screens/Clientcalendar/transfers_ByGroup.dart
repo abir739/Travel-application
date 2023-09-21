@@ -217,7 +217,7 @@ class _GroupCalendarScreenState extends State<GroupCalendarScreen> {
         id: transfer.id,
         note: "🚌 From ${transfer.from ?? 'N/A'} to ${transfer.to ?? 'N/A'}",
         recurrenceId: true,
-        startTime: transfer.date ?? DateTime.now(),
+        startTime: formatDateTimeInTimeZone(transfer.date ?? DateTime.now()),
         location: transfer.from ?? "transport",
         endTime:
             transfer.date!.add(Duration(hours: transfer.durationHours ?? 0)),
