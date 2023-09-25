@@ -30,10 +30,12 @@ class OneSignalHandler {
           String screenName = additionalData['screen'];
           String ObjectType = additionalData['ObjectType'];
           String id = additionalData['id'];
+          String idt = additionalData['idT'];
           print("$screenName      print(screenName);");
           print("$ObjectType      print(ObjectType);");
           print("$id      print(id);");
-          _checkTokenAndNavigate(context, screenName, id, ObjectType);
+          print("$idt      print(id);");
+          _checkTokenAndNavigate(context, screenName, id, ObjectType,idt);
           // final notificationCountNotifier =
           //     Provider.of<NotificationCountNotifier>(context, listen: false);
 
@@ -77,7 +79,7 @@ class OneSignalHandler {
   // }
 
   static void _checkTokenAndNavigate(BuildContext context, String screenName,
-      String? id, String? ObjectType) async {
+      String? id, String? ObjectType,String? idt,) async {
     final token = await _getToken();
     if (screenName == 'notification' && token == null) {
       // final notificationCountNotifier =
@@ -92,7 +94,8 @@ class OneSignalHandler {
         Get.offNamed('notification', arguments: {
           'id': id,
           'routename': screenName,
-          'ObjectType': ObjectType
+          'ObjectType': ObjectType,
+          'idT': idt
         });
         // After the user logs in, navigate back to the original screen
         // Get.offNamed('notification');
@@ -118,10 +121,10 @@ class OneSignalHandler {
 //         }, // Replace 'your_id_here' with the actual ID
 //       );
       // User has a token or is navigating to a different screen, proceed with navigation
-      Get.offNamed('notification', arguments: {
+      Get.toNamed('notification', arguments: {
         'id': id,
         'routename': screenName,
-        'ObjectType': ObjectType
+        'ObjectType': ObjectType  ,'idT': idt
       });
     } else {
       Get.toNamed(screenName);

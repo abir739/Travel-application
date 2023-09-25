@@ -10,6 +10,7 @@ TouristGroup _$TouristGroupFromJson(Map<String, dynamic> json) => TouristGroup(
       id: json['id'] as String?,
       agencyId: json['agencyId'] as String?,
       tourOperatorId: json['tourOperatorId'] as String?,
+      touristGuideId: json['touristGuideId'] as String?,
       name: json['name'] as String?,
       departureDate: json['departureDate'] == null
           ? null

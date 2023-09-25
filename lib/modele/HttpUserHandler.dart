@@ -7,9 +7,9 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 class HttpUserHandler {
   final storage = const FlutterSecureStorage();
   String? token = "";
- Future<User> fetchUser(String url) async {
+ Future<User> fetchUser(String url, String token) async {
  
-    String? token = await storage.read(key: "access_token");
+    // String? token = await storage.read(key: "access_token");
 
     String formater(String url) {
     

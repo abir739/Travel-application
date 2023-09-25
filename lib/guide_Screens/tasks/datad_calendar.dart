@@ -13,7 +13,7 @@ class TaskDataSource extends CalendarDataSource {
         endTime:
             DateTime.now(), // Provide a default value when todoDate is null
         isAllDay: false, // Adjust as needed
-        subject: '☑️ ${task.description ?? ''}',
+        subject: '${task.description ?? ''}',
         color: const Color(0xFFCBA36E),
       );
     }).toList();

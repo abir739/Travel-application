@@ -10,6 +10,7 @@ Transport _$TransportFromJson(Map<String, dynamic> json) => Transport(
       id: json['id'] as String?,
       agencyId: json['agencyId'] as String?,
       touristGuideId: json['touristGuideId'] as String?,
+      touristGroupId: json['touristGroupId'] as String?,
       activityId: json['activityId'] as String?,
       transportCompanyId: json['transportCompanyId'] as String?,
       busId: json['busId'] as String?,
@@ -39,6 +40,9 @@ Transport _$TransportFromJson(Map<String, dynamic> json) => Transport(
       bus: json['bus'] == null
           ? null
           : Bus.fromJson(json['bus'] as Map<String, dynamic>),
+      touristGuide: json['touristGuide'] == null
+          ? null
+          : TouristGuide.fromJson(json['touristGuide'] as Map<String, dynamic>),
       driver: json['driver'] == null
           ? null
           : Driver.fromJson(json['driver'] as Map<String, dynamic>),
@@ -48,6 +52,7 @@ Map<String, dynamic> _$TransportToJson(Transport instance) => <String, dynamic>{
       'id': instance.id,
       'agencyId': instance.agencyId,
       'touristGuideId': instance.touristGuideId,
+      'touristGroupId': instance.touristGroupId,
       'activityId': instance.activityId,
       'transportCompanyId': instance.transportCompanyId,
       'busId': instance.busId,
@@ -66,5 +71,6 @@ Map<String, dynamic> _$TransportToJson(Transport instance) => <String, dynamic>{
       'plannings': instance.plannings,
       'touristGroups': instance.touristGroups,
       'bus': instance.bus,
+      'touristGuide': instance.touristGuide,
       'driver': instance.driver,
     };

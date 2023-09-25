@@ -109,7 +109,8 @@ class _PlaningtestState extends State<Planingtest>
 
     final userId = await storage.read(key: "id");
     try {
-      final user = await httpUserHandler.fetchUser('/api/users/$userId');
+      final user =
+          await httpUserHandler.fetchUser('/api/users/$userId', "$token");
 
       setState(() {
         users = [user];
@@ -276,69 +277,10 @@ class _PlaningtestState extends State<Planingtest>
                     children: [
                       Row(
                         children: [
-                          // badges.Badge(
-                          //   position: badges.BadgePosition.topStart(
-                          //       top: 2, start: 0.5),
-                          //   badgeContent: Text(notificationCoun.toString(),
-                          //       style: TextStyle(
-                          //         // foreground: Paint()..color = Colors.black,
-                          //         color: Color.fromARGB(224, 214, 211, 211),
-                          //       )),
-                          //   child: IconButton(
-                          //     color: Color.fromARGB(255, 209, 204, 204),
-                          //     icon: Icon(Icons.notifications),
-                          //     onPressed: () async {
-                          //       await resetNotificationCount(); // Reset notification count to 0
-                          //       Navigator.push(
-                          //         context,
-                          //         MaterialPageRoute(
-                          //             builder: (context) =>
-                          //                 NotificationScreen()),
-                          //       );
-                          //     },
-                          //     // color: Color.fromARGB(219, 39, 38, 40),
-                          //   ),
-                          // ),
-
-                          // InkWell(
-                          //   onTap: () {
-                          //     Get.to(GenerateQRPage(
-                          //         planningid: widget.planning!.id,
-                          //         touristGuideId: widget.touristGroup?.id));
-                          //     // Get.to(QrScanner());
-                          //   },
-                          //   child: SizedBox(
-                          //     height: 45,
-                          //     child: SvgPicture.asset('assets/scc.svg',
-                          //         height: 25,
-                          //         width: 25,
-                          //         // color: Color.fromARGB(255, 49, 8, 236),
-                          //         color: Color.fromARGB(255, 209, 204, 204)),
-                          //     // Image.asset('assets/LL.jpg'),
-                          //   ),
-                          // ),
-                          // // IconButton(
-                          //   onPressed: () {
-                          //     showSearch(
-                          //         context: context, delegate: SearchActivity());
-                          //   },
-                          //   icon: Icon(Icons.search_sharp),
-                          // ),
-                          // IconButton(
-                          //   onPressed: () {
-                          //     Get.to(PlanningScreen(planningid));
-                          //   },
-                          //   icon: Icon(Icons.calendar_month),
-                          // ),
+                          
                           IconButton(
                             onPressed: () {
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //       builder: (context) => MainProfile()),
-                              // );
-
-                              // Get.to(PushNotificationScreen());
+                            
                             },
                             icon: const Icon(Icons.notification_add),
                           ),

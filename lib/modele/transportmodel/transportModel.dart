@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import '../TouristGuide.dart';
 import '../bus/busModel.dart';
 import '../drivers/driversModel.dart';
 import '../touristGroup.dart';
@@ -11,6 +12,7 @@ class Transport {
   String? id;
   String? agencyId;
   String? touristGuideId;
+  String? touristGroupId;
   String? activityId;
   String? transportCompanyId;
   String? busId;
@@ -29,6 +31,7 @@ class Transport {
   List<String>? plannings;
   List<TouristGroup>? touristGroups;
   Bus? bus;
+  TouristGuide? touristGuide;
   Driver? driver;
 
   Transport({
@@ -36,7 +39,7 @@ class Transport {
     this.agencyId,
     this.touristGuideId,
     this.activityId,
-    this.transportCompanyId,
+    this.transportCompanyId,this.touristGroupId,
     this.busId,
     this.driverId,
     this.note,
@@ -53,7 +56,8 @@ class Transport {
     this.plannings,
     this.touristGroups,
     this.bus,
-this.driver
+this.driver,
+      this.touristGuide
   });
 
   factory Transport.fromJson(Map<String, dynamic> json) =>

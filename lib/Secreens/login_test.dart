@@ -90,9 +90,13 @@ class _MyLoginState extends State<MyLogin> {
           print(output["access_token"]);
           print(output["data"]);
           storeAccessToken(output["access_token"]);
+          // await storage.write(
+          //     key: "access_token", value: output["access_token"]);
           await storage.write(key: "id", value: output["data"]["id"]);
           await storage.write(key: "Role", value: output["data"]["role"]);
           String? Role = output["data"]["role"];
+          // Navigator.pushNamed(context, 'register');
+          // Get.to(() => GoogleBottomBar());
           if (Role == "Administrator") {
             Get.off(() => const PlaningSecreen());
           } else {

@@ -1,5 +1,6 @@
 
 import 'package:json_annotation/json_annotation.dart';
+import 'package:zenify_trip/modele/activitsmodel/usersmodel.dart';
 import '../modele/agance.dart';
 
 part 'TouristGuide.g.dart';
@@ -32,6 +33,7 @@ class TouristGuide {
   final String? updaterUserId;
   final DateTime? updatedAt;
   final DateTime? deletedAt;
+  User? user;
   Agency? agency;
   TouristGuide({
      this.id,
@@ -60,6 +62,7 @@ class TouristGuide {
      this.updaterUserId,
      this.updatedAt,
      this.deletedAt,
+      this.user,
 this.agency
   });
 factory TouristGuide.fromJson(Map<String, dynamic> json) => _$TouristGuideFromJson(json);

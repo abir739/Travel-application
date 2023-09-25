@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:zenify_trip/Secreens/ConcentricAnimationOnboarding.dart';
 import 'package:zenify_trip/Secreens/Notification/PushNotificationScreen.dart';
-import 'package:zenify_trip/Secreens/Profile/editprofile.dart';
+// import 'package:zenify_trip/Secreens/Profile/editprofile.dart';
 import 'package:zenify_trip/Secreens/event_view.dart';
 import 'package:zenify_trip/Secreens/login_test.dart';
 import 'package:zenify_trip/guide_Screens/calendar/filtre__ByGroups.dart';
@@ -21,6 +21,7 @@ import '../modele/transportmodel/transportModel.dart';
 import 'package:zenify_trip/Secreens/CustomCalendarDataSource.dart';
 import 'package:flutter_svg/svg.dart';
 import '../constent.dart';
+import 'package:zenify_trip/Secreens/Profile/Use_Profil.dart';
 
 class PlanningScreen extends StatefulWidget {
   TouristGuide? guid;
@@ -414,7 +415,10 @@ class _PlanningScreenState extends State<PlanningScreen> {
                             ),
 
                             ListTile(
-                              leading: const Icon(Icons.notification_add),
+                              leading: const Icon(
+                                Icons.notification_add,
+                                color: Color.fromARGB(255, 233, 206, 85),
+                              ),
                               title: const Text('Send Notification'),
                               onTap: () {
                                 // Handle drawer item click
@@ -491,25 +495,25 @@ class _PlanningScreenState extends State<PlanningScreen> {
 
                             _buildDivider(),
                             const SizedBox(height: 20.0),
-                            ListTile(
-                              leading: const Icon(
-                                Icons.notifications_active,
-                                color: Color.fromARGB(255, 233, 206, 85),
-                                size: 26,
-                              ),
-                              title: const Text(
-                                'Notifications',
-                                style: TextStyle(
-                                    fontFamily: 'Bahij Janna',
-                                    fontWeight: FontWeight.w900,
-                                    fontSize: 16),
-                              ),
-                              onTap: () {
-                                // Handle drawer item click
-                                // Get.to(
-                                //     const ConcentricAnimationOnboarding()); // Close the drawer
-                              },
-                            ),
+                            // ListTile(
+                            //   leading: const Icon(
+                            //     Icons.notifications_active,
+                            //     color: Color.fromARGB(255, 233, 206, 85),
+                            //     size: 26,
+                            //   ),
+                            //   title: const Text(
+                            //     'Notifications',
+                            //     style: TextStyle(
+                            //         fontFamily: 'Bahij Janna',
+                            //         fontWeight: FontWeight.w900,
+                            //         fontSize: 16),
+                            //   ),
+                            //   onTap: () {
+                            //     // Handle drawer item click
+                            //     // Get.to(
+                            //     //     const ConcentricAnimationOnboarding()); // Close the drawer
+                            //   },
+                            // ),
                             const SizedBox(height: 160.0),
                             Card(
                                 shape: RoundedRectangleBorder(

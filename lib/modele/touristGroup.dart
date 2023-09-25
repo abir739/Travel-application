@@ -1,11 +1,13 @@
 import 'package:json_annotation/json_annotation.dart';
 
 part 'touristGroup.g.dart';
+
 @JsonSerializable()
 class TouristGroup {
   final String? id;
   final String? agencyId;
   final String? tourOperatorId;
+  final String? touristGuideId;
   final String? name;
   final DateTime? departureDate;
   final String? departureAirlineCompanyId;
@@ -32,35 +34,36 @@ class TouristGroup {
   final DateTime? deletedAt;
 
   TouristGroup({
-     this.id,
-     this.agencyId,
-     this.tourOperatorId,
-     this.name,
-     this.departureDate,
-     this.departureAirlineCompanyId,
-     this.departureFlightNumber,
-     this.departureTransferId,
-     this.departureNote,
-     this.arrivalDate,
-     this.arrivalAirlineCompanyId,
-     this.arrivalFlightNumber,
-     this.arrivalTransferId,
-     this.arrivalNote,
-     this.reference,
-     this.shortCode,
-     this.confirmed,
-     this.originCountryId,
-     this.originCity,
-     this.destinationCountryId,
-     this.destinationCity,
-     this.languageId,
-     this.creatorUserId,
-     this.createdAt,
-     this.updaterUserId,
-     this.updatedAt,
-     this.deletedAt,
+    this.id,
+    this.agencyId,
+    this.tourOperatorId,
+    this.touristGuideId,
+    this.name,
+    this.departureDate,
+    this.departureAirlineCompanyId,
+    this.departureFlightNumber,
+    this.departureTransferId,
+    this.departureNote,
+    this.arrivalDate,
+    this.arrivalAirlineCompanyId,
+    this.arrivalFlightNumber,
+    this.arrivalTransferId,
+    this.arrivalNote,
+    this.reference,
+    this.shortCode,
+    this.confirmed,
+    this.originCountryId,
+    this.originCity,
+    this.destinationCountryId,
+    this.destinationCity,
+    this.languageId,
+    this.creatorUserId,
+    this.createdAt,
+    this.updaterUserId,
+    this.updatedAt,
+    this.deletedAt,
   });
-factory TouristGroup.fromJson(Map<String, dynamic> json) => _$TouristGroupFromJson(json);
+  factory TouristGroup.fromJson(Map<String, dynamic> json) =>
+      _$TouristGroupFromJson(json);
   Map<String, dynamic> toJson() => _$TouristGroupToJson(this);
-
 }

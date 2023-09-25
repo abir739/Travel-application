@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:zenify_trip/Secreens/ConcentricAnimationOnboarding.dart';
+import 'package:zenify_trip/Secreens/PlannigSecreen.dart';
+import 'package:zenify_trip/Secreens/Profile/Use_Profil.dart';
+// import 'package:zenify_trip/Secreens/Profile/editprofile.dart';
 
 import 'package:zenify_trip/Secreens/login_test.dart';
 
 import 'package:zenify_trip/constent.dart';
-
 import 'package:zenify_trip/modele/Event/Event.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -15,12 +17,12 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:zenify_trip/Secreens/CustomCalendarDataSource.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:zenify_trip/modele/TouristGuide.dart';
 import 'package:zenify_trip/modele/accommodationsModel/accommodationModel.dart';
 import 'package:zenify_trip/modele/transportmodel/transportModel.dart';
 import 'package:zenify_trip/modele/traveller/TravellerModel.dart';
+import 'package:zenify_trip/traveller_Screens/Call_Guide.dart';
 import 'package:zenify_trip/traveller_Screens/Clientcalendar/event_detail_screen.dart';
-
-// import 'package:zenify_trip/traveller_Screens/Notification/notif_Guide.dart';
 
 class TravellerCalendarPage extends StatefulWidget {
   String? group;
@@ -389,7 +391,10 @@ class _TravellerCalendarPageState extends State<TravellerCalendarPage> {
                               ),
                             ),
                             ListTile(
-                              leading: const Icon(Icons.calendar_today),
+                              leading: const Icon(
+                                Icons.calendar_today,
+                                color: Color.fromARGB(255, 64, 231, 167),
+                              ),
                               title: const Text('Calendar'),
                               onTap: () {
                                 // Handle drawer item click
@@ -397,14 +402,40 @@ class _TravellerCalendarPageState extends State<TravellerCalendarPage> {
                               },
                             ),
                             ListTile(
-                              leading: const Icon(Icons.person),
+                              leading: const Icon(
+                                Icons.person,
+                                color: Color.fromARGB(255, 14, 18, 230),
+                              ),
                               title: const Text('Profil'),
                               onTap: () {
-                                // Navigate to the profile page and pass the traveler's data if not null
+                                Get.to(const MainProfile());
                               },
                             ),
                             ListTile(
-                              leading: const Icon(Icons.notification_add),
+                              leading: const Icon(
+                                Icons.person,
+                                color: Color.fromARGB(255, 14, 18, 230),
+                              ),
+                              title: const Text('Your Guide Profile'),
+                              onTap: () {
+                                // Navigate to the TouristGuideProfilePage and pass the Traveller object
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        TouristGuideProfilePage(
+                                      traveller: widget
+                                          .traveller, // Pass the Traveller object here
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+
+                            ListTile(
+                              leading: const Icon(
+                                Icons.notification_add,
+                                color: Color.fromARGB(255, 233, 206, 85),
+                              ),
                               title: const Text('Send Notification'),
                               onTap: () {},
                             ),
@@ -418,26 +449,26 @@ class _TravellerCalendarPageState extends State<TravellerCalendarPage> {
                               },
                             ),
                             _buildDivider(),
-                            const SizedBox(height: 20.0),
-                            ListTile(
-                              leading: const Icon(
-                                Icons.notifications_active,
-                                color: Color.fromARGB(255, 233, 206, 85),
-                                size: 26,
-                              ),
-                              title: const Text(
-                                'Notifications',
-                                style: TextStyle(
-                                    fontFamily: 'Bahij Janna',
-                                    fontWeight: FontWeight.w900,
-                                    fontSize: 16),
-                              ),
-                              onTap: () {
-                                // Handle drawer item click
-                                // Get.to(
-                                //     const ConcentricAnimationOnboarding()); // Close the drawer
-                              },
-                            ),
+                            // const SizedBox(height: 20.0),
+                            // ListTile(
+                            //   leading: const Icon(
+                            //     Icons.notifications_active,
+                            //     color: Color.fromARGB(255, 233, 206, 85),
+                            //     size: 26,
+                            //   ),
+                            //   title: const Text(
+                            //     'Notifications',
+                            //     style: TextStyle(
+                            //         fontFamily: 'Bahij Janna',
+                            //         fontWeight: FontWeight.w900,
+                            //         fontSize: 16),
+                            //   ),
+                            //   onTap: () {
+                            //     // Handle drawer item click
+                            //     // Get.to(
+                            //     //     const ConcentricAnimationOnboarding()); // Close the drawer
+                            //   },
+                            // ),
                             const SizedBox(height: 250.0),
                             Card(
                                 shape: RoundedRectangleBorder(

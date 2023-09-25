@@ -12,7 +12,6 @@ import '../../modele/httpTravellerbyid.dart';
 import '../../modele/traveller/TravellerModel.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:get/get.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:provider/provider.dart';
 
@@ -45,6 +44,15 @@ class _TravellerFirstScreenState extends State<TravellerFirstScreen> {
     super.initState();
     _initializeSharedPreferences();
     _loadDataTraveller(widget.userList); // Pass the user list
+  }
+
+  void refresh() {
+    setState(() {
+      _loadDataTraveller(
+          widget.userList); // Load traveller data when the screen initializes
+      _initializeSharedPreferences();
+      prefs.setInt('notificationCount', 0);
+    });
   }
 
   Future<void> _initializeSharedPreferences() async {
@@ -239,55 +247,48 @@ class _TravellerFirstScreenState extends State<TravellerFirstScreen> {
                             final combinedCount = apiCount + notifier.count;
                             // Save the combined count to SharedPreferences
 
-                            prefs.setInt('notificationCount', combinedCount);
-                            if (combinedCount < (apiCount + notifier.count)) {
+                            // prefs.setInt('notificationCount', combinedCount);
+                            if (combinedCount > (apiCount + notifier.count)) {
                               final resulta = combinedCount - notificationCount;
+                              setState(() {
+                                prefs.setInt(
+                                    'notificationCount', combinedCount);
+                              });
                               return Text(
-                                '${notifier.count}',
+                                '${notifier.count.abs()}',
                                 style: TextStyle(
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
                               );
                             } else {
-                              reset = -(notificationCount - combinedCount);
+                              reset = combinedCount - apiCount;
 
                               return Text(
-                                '$reset +',
+                                '${reset.abs()}',
                                 style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
                               );
                             }
                           },
                         );
                       },
                     ),
-                    //  Consumer<NotificationCountNotifier>(
-                    //                     builder: (context, notifier, child) {
-                    //                       // Display the notification count using Text widget
-                    //                       return Text(
-                    //                         '${notifier.count}',
-                    //                         style: TextStyle(
-                    //                           fontSize: 18,
-                    //                           fontWeight: FontWeight.bold,
-                    //                         ),
-                    //                       );
-                    //                     },
-                    //                   ),
                     child: IconButton(
                       color: Color.fromARGB(255, 8, 8, 8),
                       iconSize: 40,
                       icon: Icon(Icons.notifications),
                       onPressed: () async {
-                        count
+                        await count
                             .fetchInlineCount(
                                 "/api/push-notificationsMobile?filters[tagsGroups]=${traveller.touristGroupId}")
                             .then((result) {
                           setState(() {
                             // inlineCount = result;
-                            prefs.setInt('notificationCount', inlineCount);
+
+                            prefs.setInt('notificationCount', 0);
                             reset = 0;
                           });
                           print('Inline Count: $result'); // Print the result
@@ -296,7 +297,13 @@ class _TravellerFirstScreenState extends State<TravellerFirstScreen> {
                         });
                         // prefs.setInt('notificationCount', 0);
                         //  await resetNotificationCount(); // Reset notification count to 0
-                        Get.toNamed('notificationScreen');
+                        // await Get.off(TravellerFirstScreen());
+                        // Future.delayed(Duration(milliseconds: 100), () {
+                        //   refresh();
+                        Get.toNamed('notificationScreen', arguments: {
+                          'touristGroupId': traveller.touristGroupId
+                        });
+                        // });
                       },
                       // color: Color.fromARGB(219, 39, 38, 40),
                     ),

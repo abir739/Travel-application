@@ -38,6 +38,9 @@ TouristGuide _$TouristGuideFromJson(Map<String, dynamic> json) => TouristGuide(
       deletedAt: json['deletedAt'] == null
           ? null
           : DateTime.parse(json['deletedAt'] as String),
+      user: json['user'] == null
+          ? null
+          : User.fromJson(json['user'] as Map<String, dynamic>),
       agency: json['agency'] == null
           ? null
           : Agency.fromJson(json['agency'] as Map<String, dynamic>),
@@ -70,5 +73,6 @@ Map<String, dynamic> _$TouristGuideToJson(TouristGuide instance) =>
       'updaterUserId': instance.updaterUserId,
       'updatedAt': instance.updatedAt?.toIso8601String(),
       'deletedAt': instance.deletedAt?.toIso8601String(),
+      'user': instance.user,
       'agency': instance.agency,
     };

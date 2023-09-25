@@ -56,7 +56,7 @@ class _MainProfileState extends State<MainProfile> {
 
     final userId = await storage.read(key: "id");
     try {
-      final user = await httpUserHandler.fetchUser('/api/users/$userId');
+      final user = await httpUserHandler.fetchUser('/api/users/$userId',"$token");
 
       setState(() {
         users = [user];

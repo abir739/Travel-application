@@ -51,7 +51,7 @@ class _MainProfileState extends State<MainProfile> {
 
     final userId = await storage.read(key: "id");
     try {
-      final user = await httpUserHandler.fetchUser('/api/users/$userId');
+      final user = await httpUserHandler.fetchUser('/api/users/$userId',"$token");
 
       setState(() {
         users = [user];
@@ -488,7 +488,7 @@ class _MainProfileState extends State<MainProfile> {
                             fit: BoxFit.cover,
                           )
                         : Image.network(
-                            '$baseUrls/assets/uploads/Mobile/picture/${selectedUser?.picture}',
+                            '$baseUrls/assets/uploads/Mobile/picture/${selectedUser?.picture}?timestamp=${DateTime.now().millisecondsSinceEpoch}',
                             headers: {
                               'Authorization': 'Bearer $token',
                             },
