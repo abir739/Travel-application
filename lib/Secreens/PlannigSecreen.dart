@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:jwt_decode/jwt_decode.dart';
+import 'package:zenify_trip/Secreens/Profile/User_Profil.dart';
 import '../constent.dart';
 import '../modele/HttpUserHandler.dart';
 import '../modele/activitsmodel/activitesmodel.dart';
@@ -14,7 +15,6 @@ import '../modele/activitsmodel/activityTempModel.dart';
 import '../modele/activitsmodel/httpActivitesTempid.dart';
 import '../modele/activitsmodel/usersmodel.dart';
 import '../modele/touristGroup.dart';
-import 'Profile/MainProfile.dart';
 import '../modele/HttpPlaning.dart';
 import '../modele/activitsmodel/httpActivites.dart';
 import '../modele/activitsmodel/listactivitey.dart';
@@ -43,9 +43,6 @@ HTTPHandlerActivitestempId activiteshanhlertemp = HTTPHandlerActivitestempId();
 const storage = FlutterSecureStorage();
 
 late Future<List<Item>> item;
-//the same
-// final httpHandlerp = Get.put(HTTPHandlerplaning());
-// late TabController _tabController;
 List<Tab> tabs = [];
 late List<Widget> tabViews;
 ListPlannings plannig = ListPlannings();
@@ -301,22 +298,7 @@ class _PlaningtestState extends State<Planingtest>
                                 padding: EdgeInsets.all(2.0),
                                 child: Icon(Icons.dashboard)),
                           ),
-                          // IconButton(
-                          //   splashRadius: 50,
-                          //   iconSize: 100,
-                          //   onPressed: () {
-                          //     if (_menuController.status == AnimationStatus.dismissed) {
-                          //       _menuController.reset();
-                          //       _menuController.animateTo(0.6);
-                          //     } else {
-                          //       _menuController.reverse();
-                          //     }
-                          //   },
-                          //   icon: Lottie.asset(Useanimations.facebook,
-                          //       controller: _menuController,
-                          //       height: 60,
-                          //       fit: BoxFit.fitHeight),
-                          // ),
+                         
                         ],
                       ),
                     ],
@@ -328,7 +310,7 @@ class _PlaningtestState extends State<Planingtest>
                   children: [
                     InkWell(
                       onTap: () {
-                        // Get.to(GenerateQRPage(planningid: planningid));
+                      
                       },
                       child: SizedBox(
                         height: 45,

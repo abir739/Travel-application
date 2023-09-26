@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
@@ -222,71 +223,71 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
                 chipDisplay: MultiSelectChipDisplay<TouristGroup>(),
               ),
             ),
-            Container(
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  color: Color.fromARGB(47, 181, 89, 3),
-                ),
-                alignment: Alignment.center,
-                padding: const EdgeInsets.all(2.0),
-                margin: const EdgeInsets.only(left: 20, right: 20),
-                child: touristGuides!.isEmpty
-                    ? ElevatedButton(
-                        onPressed: () {
-                          // Handle button press, navigate to desired screen or perform any action
-                          // Get.to(AddTouristGuideScreen());
-                        },
-                        child: const Text(
-                            'you are not effect to any tourist guid'),
-                      )
-                    : SizedBox(
-                        width: 800, // Set the desired width
-                        height: 60, // Set the desired height
-                        child: Row(
-                          children: [
-                            DropdownButton<TouristGuide>(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(20)),
-                              dropdownColor:
-                                  const Color.fromARGB(255, 229, 224, 224),
-                              iconEnabledColor:
-                                  const Color.fromARGB(160, 245, 241, 241),
-                              iconDisabledColor:
-                                  const Color.fromARGB(255, 158, 158, 158),
-                              value: selectedTouristGuide,
-                              items: touristGuides!.map((touristGuide) {
-                                return DropdownMenuItem<TouristGuide>(
-                                  value: touristGuide,
-                                  child: Row(
-                                    children: [
-                                      const Icon(
-                                        Icons.person,
-                                        size:
-                                            20, // Set the desired size of the icon
-                                      ),
-                                      const SizedBox(
-                                          width:
-                                              8), // Add some spacing between the icon and text
-                                      Text(
-                                        touristGuide.name ?? 'h',
-                                        style: const TextStyle(
-                                            fontSize: 16,
-                                            color:
-                                                Color.fromARGB(255, 103, 1, 1)),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              }).toList(),
-                              onChanged: (TouristGuide? newValue) {
-                                selectedTouristGuide = newValue!;
+            // Container(
+            //     decoration: const BoxDecoration(
+            //       borderRadius: BorderRadius.all(Radius.circular(10)),
+            //       color: Color.fromARGB(47, 181, 89, 3),
+            //     ),
+            //     alignment: Alignment.center,
+            //     padding: const EdgeInsets.all(2.0),
+            //     margin: const EdgeInsets.only(left: 20, right: 20),
+            //     child: touristGuides!.isEmpty
+            //         ? ElevatedButton(
+            //             onPressed: () {
+            //               // Handle button press, navigate to desired screen or perform any action
+            //               // Get.to(AddTouristGuideScreen());
+            //             },
+            //             child: const Text(
+            //                 'you are not effect to any tourist guid'),
+            //           )
+            //         : SizedBox(
+            //             width: 880, // Set the desired width
+            //             height: 50, // Set the desired height
+            //             child: Row(
+            //               children: [
+            //                 DropdownButton<TouristGuide>(
+            //                   borderRadius:
+            //                       const BorderRadius.all(Radius.circular(20)),
+            //                   dropdownColor:
+            //                       const Color.fromARGB(255, 229, 224, 224),
+            //                   iconEnabledColor:
+            //                       const Color.fromARGB(160, 245, 241, 241),
+            //                   iconDisabledColor:
+            //                       const Color.fromARGB(255, 158, 158, 158),
+            //                   value: selectedTouristGuide,
+            //                   items: touristGuides!.map((touristGuide) {
+            //                     return DropdownMenuItem<TouristGuide>(
+            //                       value: touristGuide,
+            //                       child: Row(
+            //                         children: [
+            //                           const Icon(
+            //                             Icons.person,
+            //                             size:
+            //                                 20, // Set the desired size of the icon
+            //                           ),
+            //                           const SizedBox(
+            //                               width:
+            //                                   8), // Add some spacing between the icon and text
+            //                           Text(
+            //                             touristGuide.name ?? 'h',
+            //                             style: const TextStyle(
+            //                                 fontSize: 16,
+            //                                 color:
+            //                                     Color.fromARGB(255, 103, 1, 1)),
+            //                           ),
+            //                         ],
+            //                       ),
+            //                     );
+            //                   }).toList(),
+            //                   onChanged: (TouristGuide? newValue) {
+            //                     selectedTouristGuide = newValue!;
 
-                                _loadDatagroup();
-                              },
-                            ),
-                          ],
-                        ),
-                      )),
+            //                     _loadDatagroup();
+            //                   },
+            //                 ),
+            //               ],
+            //             ),
+            //           )),
             const SizedBox(height: 32),
             // TextFields for title, message, picture URL, and link URL
             TextField(
@@ -299,11 +300,28 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
             ),
             TextField(
               controller: _bigPictureController,
-              decoration: const InputDecoration(labelText: 'Big Picture URL'),
+              decoration: const InputDecoration(
+                labelText: 'Big Picture URL',
+              ),
+              keyboardType: TextInputType.url,
+              textInputAction: TextInputAction.done,
+              inputFormatters: [
+                FilteringTextInputFormatter.deny(RegExp(
+                    r'[^\s]+')), // Allow only spaces and characters from the URL
+              ],
             ),
+
             TextField(
               controller: _linkUrlController,
-              decoration: const InputDecoration(labelText: 'Link URL'),
+              decoration: const InputDecoration(
+                labelText: 'Link URL',
+              ),
+              keyboardType: TextInputType.url,
+              textInputAction: TextInputAction.done,
+              inputFormatters: [
+                FilteringTextInputFormatter.deny(RegExp(
+                    r'[^\s]+')), // Allow only spaces and characters from the URL
+              ],
             ),
             const SizedBox(height: 60),
             ElevatedButton(

@@ -53,9 +53,6 @@ class _FileUploadScreenState extends State<FileUploadScreen> {
     // Get the access token and baseUrl
     String? token = await storage.read(key: "access_token");
 
-    // final String apiUrl =
-    //     '${baseUrls}/api/activity-templates/${widget.activity.activityTemplate!.id}';
-
     try {
       // Create the multipart request
       var request = http.MultipartRequest(

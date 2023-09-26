@@ -3,12 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:zenify_trip/Secreens/ConcentricAnimationOnboarding.dart';
-import 'package:zenify_trip/Secreens/PlannigSecreen.dart';
 import 'package:zenify_trip/Secreens/Profile/Use_Profil.dart';
-// import 'package:zenify_trip/Secreens/Profile/editprofile.dart';
-
 import 'package:zenify_trip/Secreens/login_test.dart';
-
 import 'package:zenify_trip/constent.dart';
 import 'package:zenify_trip/modele/Event/Event.dart';
 import 'dart:convert';
@@ -17,12 +13,11 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:zenify_trip/Secreens/CustomCalendarDataSource.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:zenify_trip/modele/TouristGuide.dart';
 import 'package:zenify_trip/modele/accommodationsModel/accommodationModel.dart';
 import 'package:zenify_trip/modele/transportmodel/transportModel.dart';
 import 'package:zenify_trip/modele/traveller/TravellerModel.dart';
-import 'package:zenify_trip/traveller_Screens/Call_Guide.dart';
 import 'package:zenify_trip/traveller_Screens/Clientcalendar/event_detail_screen.dart';
+import 'package:zenify_trip/traveller_Screens/Contact_guide.dart';
 
 class TravellerCalendarPage extends StatefulWidget {
   String? group;
@@ -392,17 +387,6 @@ class _TravellerCalendarPageState extends State<TravellerCalendarPage> {
                             ),
                             ListTile(
                               leading: const Icon(
-                                Icons.calendar_today,
-                                color: Color.fromARGB(255, 64, 231, 167),
-                              ),
-                              title: const Text('Calendar'),
-                              onTap: () {
-                                // Handle drawer item click
-                                Navigator.pop(context); // Close the drawer
-                              },
-                            ),
-                            ListTile(
-                              leading: const Icon(
                                 Icons.person,
                                 color: Color.fromARGB(255, 14, 18, 230),
                               ),
@@ -413,7 +397,19 @@ class _TravellerCalendarPageState extends State<TravellerCalendarPage> {
                             ),
                             ListTile(
                               leading: const Icon(
-                                Icons.person,
+                                Icons.calendar_today,
+                                color: Color.fromARGB(255, 14, 18, 230),
+                              ),
+                              title: const Text('Calendar'),
+                              onTap: () {
+                                // Handle drawer item click
+                                Navigator.pop(context); // Close the drawer
+                              },
+                            ),
+
+                            ListTile(
+                              leading: const Icon(
+                                Icons.admin_panel_settings,
                                 color: Color.fromARGB(255, 14, 18, 230),
                               ),
                               title: const Text('Your Guide Profile'),
@@ -434,13 +430,16 @@ class _TravellerCalendarPageState extends State<TravellerCalendarPage> {
                             ListTile(
                               leading: const Icon(
                                 Icons.notification_add,
-                                color: Color.fromARGB(255, 233, 206, 85),
+                                color: Color.fromARGB(255, 14, 18, 230),
                               ),
                               title: const Text('Send Notification'),
                               onTap: () {},
                             ),
                             ListTile(
-                              leading: const Icon(Icons.more_horiz),
+                              leading: const Icon(
+                                Icons.more_horiz,
+                                color: Color.fromARGB(255, 14, 18, 230),
+                              ),
                               title: const Text('More'),
                               onTap: () {
                                 // Handle drawer item click

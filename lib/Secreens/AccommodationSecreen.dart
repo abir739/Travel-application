@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:zenify_trip/Secreens/ConcentricAnimationOnboarding.dart';
 import 'package:zenify_trip/Secreens/Notification/PushNotificationScreen.dart';
-// import 'package:zenify_trip/Secreens/Profile/editprofile.dart';
 import 'package:zenify_trip/Secreens/event_view.dart';
 import 'package:zenify_trip/Secreens/login_test.dart';
 import 'package:zenify_trip/guide_Screens/calendar/filtre__ByGroups.dart';
@@ -21,7 +20,7 @@ import '../modele/transportmodel/transportModel.dart';
 import 'package:zenify_trip/Secreens/CustomCalendarDataSource.dart';
 import 'package:flutter_svg/svg.dart';
 import '../constent.dart';
-import 'package:zenify_trip/Secreens/Profile/Use_Profil.dart';
+import 'package:zenify_trip/Secreens/Profile/User_Profil.dart';
 
 class PlanningScreen extends StatefulWidget {
   TouristGuide? guid;
@@ -388,7 +387,10 @@ class _PlanningScreenState extends State<PlanningScreen> {
                               ),
                             ),
                             ListTile(
-                              leading: const Icon(Icons.person),
+                              leading: const Icon(
+                                Icons.person,
+                                color: Color.fromARGB(255, 14, 18, 230),
+                              ),
                               title: const Text('Profil'),
                               onTap: () {
                                 // Handle drawer item click
@@ -396,7 +398,10 @@ class _PlanningScreenState extends State<PlanningScreen> {
                               },
                             ),
                             ListTile(
-                              leading: const Icon(Icons.calendar_today),
+                              leading: const Icon(
+                                Icons.calendar_today,
+                                color: Color.fromARGB(255, 14, 18, 230),
+                              ),
                               title: const Text('Transfers'),
                               onTap: () {
                                 // Handle drawer item click
@@ -404,7 +409,10 @@ class _PlanningScreenState extends State<PlanningScreen> {
                               },
                             ),
                             ListTile(
-                              leading: const Icon(Icons.task_sharp),
+                              leading: const Icon(
+                                Icons.task_sharp,
+                                color: Color.fromARGB(255, 14, 18, 230),
+                              ),
                               title: const Text('Tasks'),
                               onTap: () {
                                 // Handle drawer item click
@@ -417,7 +425,7 @@ class _PlanningScreenState extends State<PlanningScreen> {
                             ListTile(
                               leading: const Icon(
                                 Icons.notification_add,
-                                color: Color.fromARGB(255, 233, 206, 85),
+                                color: Color.fromARGB(255, 14, 18, 230),
                               ),
                               title: const Text('Send Notification'),
                               onTap: () {
@@ -427,7 +435,10 @@ class _PlanningScreenState extends State<PlanningScreen> {
                               },
                             ),
                             ListTile(
-                              leading: const Icon(Icons.groups),
+                              leading: const Icon(
+                                Icons.groups,
+                                color: Color.fromARGB(255, 14, 18, 230),
+                              ),
                               title: const Text('Tourist Groups'),
                               onTap: () {
                                 // Toggle the dropdown's visibility
@@ -437,7 +448,10 @@ class _PlanningScreenState extends State<PlanningScreen> {
                                 });
                               },
                               // Add a trailing icon to indicate that this item has a dropdown
-                              trailing: const Icon(Icons.expand_more),
+                              trailing: const Icon(
+                                Icons.expand_more,
+                                color: Color.fromARGB(255, 14, 18, 230),
+                              ),
                             ),
 
                             // Wrap the options in an ExpansionTile to create a dropdown
@@ -484,7 +498,10 @@ class _PlanningScreenState extends State<PlanningScreen> {
                               ),
 
                             ListTile(
-                              leading: const Icon(Icons.more_horiz),
+                              leading: const Icon(
+                                Icons.more_horiz,
+                                color: Color.fromARGB(255, 14, 18, 230),
+                              ),
                               title: const Text('More'),
                               onTap: () {
                                 // Handle drawer item click

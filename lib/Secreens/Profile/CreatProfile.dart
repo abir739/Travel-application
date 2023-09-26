@@ -1,9 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:zenify_trip/Secreens/Profile/User_Profil.dart';
 import 'package:zenify_trip/Secreens/guidPlannig.dart';
-
-import './MainProfile.dart';
 import '../../NetworkHandler.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;

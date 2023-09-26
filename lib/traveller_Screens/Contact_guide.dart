@@ -24,24 +24,10 @@ class _TouristGuideProfilePageState extends State<TouristGuideProfilePage> {
   List<TouristGroup> _touristGroups = [];
   TouristGuide? touristGuide; // Declare touristGuide at the class level
   User? user;
-  bool loading = false;
-  bool dataLoaded = false;
-
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 2), () {
-      fetchData();
-      setState(() {
-        dataLoaded = true;
-      });
-    });
-  }
-
-  @override
-  void dispose() {
     fetchData();
-    super.dispose();
   }
 
   Future<void> fetchDataUser(String id, String? token) async {
@@ -57,8 +43,7 @@ class _TouristGuideProfilePageState extends State<TouristGuideProfilePage> {
         final userData = jsonDecode(response.body);
         setState(() {
           user = User.fromJson(userData);
-        });
-   // Assuming you have a User.fromJson constructor
+        }); // Assuming you have a User.fromJson constructor
       } else {
         print("Error fetching user data: Response was not 200");
         // Handle error here
@@ -76,9 +61,6 @@ class _TouristGuideProfilePageState extends State<TouristGuideProfilePage> {
     }
 
     // Fetch the selected tourist group
-    String url = formatter(
-        "$baseUrls/api/tourist-groups/8d55d871-1b6c-4584-9ece-ee645e64c09c");
-
     final touristGroupResponse = await http.get(
       Uri.parse(
           "$baseUrls/api/tourist-groups/8d55d871-1b6c-4584-9ece-ee645e64c09c"),
@@ -125,48 +107,30 @@ class _TouristGuideProfilePageState extends State<TouristGuideProfilePage> {
               fit: BoxFit.cover,
               height: 36.0,
             ),
-            const SizedBox(width: 30),
-            ShaderMask(
-              shaderCallback: (Rect bounds) {
-                return const LinearGradient(
-                  colors: [
-                    Color(0xFF3A3557),
-                    Color(0xFFCBA36E),
-                    Color(0xFFEB5F52),
-                  ],
-                ).createShader(bounds);
-              },
-              child: const Text(
-                'Your Guide Profil',
-                style: TextStyle(
-                  fontSize: 24,
-                  color: Colors
-                      .white, // You can adjust the font size and color here
-                ),
+            const SizedBox(width: 40),
+            const Text(
+              "Traveller Profil",
+              style: TextStyle(
+                color: Color.fromARGB(255, 68, 5, 150),
+                fontSize: 18,
               ),
             ),
           ],
         ),
       ),
       body: SingleChildScrollView(
-        child: dataLoaded
-            ? Column(
-                children: <Widget>[
-                  _buildHeader(touristGuide),
-                  _buildInfo(context, widthC, user),
-                  _buildMainInfo(context, widthC, user),
-                ],
-              )
-            : Center(child: CircularProgressIndicator()),
+        child: Column(
+          children: <Widget>[
+            _buildHeader(touristGuide!),
+            _buildMainInfo(context, widthC, user!),
+            _buildInfo(context, widthC, user!),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildHeader(TouristGuide? touristGuide) {
-    if (touristGuide?.id != null) {
-      // Return a loading indicator or placeholder
-      return CircularProgressIndicator();
-    }
+  Widget _buildHeader(TouristGuide touristGuide) {
     return Stack(
       children: <Widget>[
         Ink(
@@ -211,7 +175,7 @@ class _TouristGuideProfilePageState extends State<TouristGuideProfilePage> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(80),
                       child: Image.network(
-                        touristGuide?.user?.picture ??
+                        touristGuide.user?.picture ??
                             ''
                                 'https://img.freepik.com/free-vector/travel-time-typography-design_1308-99359.jpg?size=626&ext=jpg&ga=GA1.2.732483231.1691056791&semt=ais',
                         width: 80,
@@ -229,11 +193,7 @@ class _TouristGuideProfilePageState extends State<TouristGuideProfilePage> {
     );
   }
 
-  Widget _buildInfo(BuildContext context, double width, User? user) {
-    if (user?.id != null) {
-      // Return a loading indicator or placeholder
-      return CircularProgressIndicator();
-    }
+  Widget _buildMainInfo(BuildContext context, double width, User user) {
     return Container(
       width: width,
       margin: const EdgeInsets.all(10),
@@ -241,7 +201,7 @@ class _TouristGuideProfilePageState extends State<TouristGuideProfilePage> {
       child: Column(
         children: <Widget>[
           Text(
-            '${user?.firstName ?? ''} ${user?.lastName ?? ''}',
+            '${user.firstName ?? ''} ${user.lastName ?? ''}',
             style: const TextStyle(
               fontSize: 20,
               color: Color.fromARGB(255, 94, 36, 228),
@@ -250,7 +210,7 @@ class _TouristGuideProfilePageState extends State<TouristGuideProfilePage> {
           ),
           const SizedBox(height: 10),
           Text(
-            user?.username ?? 'Unknown Username', // Fallback value if null
+            user.username ?? 'Unknown Username', // Fallback value if null
             style: TextStyle(
               color: Colors.grey.shade50,
               fontStyle: FontStyle.italic,
@@ -262,11 +222,7 @@ class _TouristGuideProfilePageState extends State<TouristGuideProfilePage> {
     );
   }
 
-  Widget _buildMainInfo(BuildContext context, double width, User? user) {
-    if (user != null) {
-      // Return a loading indicator or placeholder
-      return CircularProgressIndicator();
-    }
+  Widget _buildInfo(BuildContext context, double width, User user) {
     return Container(
       padding: const EdgeInsets.all(10),
       child: Card(
@@ -281,7 +237,7 @@ class _TouristGuideProfilePageState extends State<TouristGuideProfilePage> {
                   color: Color.fromARGB(255, 94, 36, 228),
                 ),
                 title: const Text("E-Mail"),
-                subtitle: Text(user?.email ?? 'N/A'),
+                subtitle: Text(user.email ?? 'N/A'),
               ),
               const Divider(),
               ListTile(
