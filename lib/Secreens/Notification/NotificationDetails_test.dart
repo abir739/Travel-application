@@ -207,23 +207,42 @@ Widget TravelCard(Transport transfer) => Container(
               right: 0,
               child: Container(
                 padding: EdgeInsets.only(left: 8, right: 8, top: 4),
-                height: 90,
+                height: 120,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                     color: Colors.black.withAlpha(90)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      transfer.from ??" No Data",
-                      style: kAppTheme.textTheme.displaySmall,
-                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "From ",
+                          style: kAppTheme.textTheme.displaySmall,
+                        ),
+                        Text(
+                          transfer.from ??" No Data",
+                          style: kAppTheme.textTheme.displaySmall,
+                        ),
+                        Text(
+                          "  to  ",
+                          style: kAppTheme.textTheme.displaySmall,
+                        ),
+                        Text(
+                      transfer.to ?? " No Data",
+                          style: kAppTheme.textTheme.displaySmall,
+                        ),
+                      ],
+                    ), SizedBox(height: 20,),
                     Text(
                       "${transfer.touristGuide?.name } has update or create  " ?? " No Data",
-                      style: kAppTheme.textTheme.headlineLarge,
+                      style: kAppTheme.textTheme.headlineMedium,
+                    ),
+                    SizedBox(
+                      height: 20,
                     ),
                     Row(
-                      children: [Rating(rating: 4.0)],
+                      children: [Rating(rating: 4.6)],
                     )
                   ],
                 ),

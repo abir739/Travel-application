@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:zenify_trip/Secreens/login_test.dart';
 import '../../NetworkHandler.dart';
 import '../../constent.dart';
@@ -11,6 +12,8 @@ import '../../modele/planningmainModel.dart';
 import 'CreatProfile.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:zenify_trip/Secreens/Upload_Files/FileUploadScreen.dart';
+import 'package:get/get.dart';
 
 String? baseUrl = "";
 
@@ -31,13 +34,19 @@ class _MainProfileState extends State<MainProfile> {
   NetworkHandler networkHandler = NetworkHandler();
   FlutterSecureStorage storage = const FlutterSecureStorage();
   get selectedPlanning => PlanningMainModel();
-
+  final RefreshController _refreshController = RefreshController();
   TouristGuide? get selectedTouristGuide => TouristGuide();
   @override
   void initState() {
     super.initState();
     _loadUser();
     // fetchData();
+  }
+
+  Future<void> _onRefresh() async {
+    _loadUser();
+
+    _refreshController.refreshCompleted();
   }
 
   void _loadUser() async {
@@ -255,9 +264,26 @@ class _MainProfileState extends State<MainProfile> {
             color: Colors.black38,
           ),
         ),
-        // Add GestureDetector to handle tap on the profile picture
         GestureDetector(
           onTap: _updateProfilePicture,
+          // onTap: () async {
+          //   final newData = await Get.to(FileUploadScreen(
+          //       dynamicPath: 'profile',
+          //       id: selectedUser?.id ?? "",
+          //       fild: 'picture',
+          //       object: "api/users"));
+          //   if (newData != null) {
+          //     // You can use newData here
+          //     print("Received data from FileUploadScreen: $newData");
+          //     setState(() {
+          //       _onRefresh();
+          //     });
+          //   } else {
+          //     // Handle the case where newData is null
+          //     print("No data received from FileUploadScreen");
+          //   }
+          // },
+
           child: Container(
             width: double.infinity,
             margin: const EdgeInsets.only(top: 140),
@@ -283,6 +309,18 @@ class _MainProfileState extends State<MainProfile> {
                       borderRadius: BorderRadius.circular(80),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(80),
+                        // child: selectedUser?.picture != null
+                        //     ? Image.network(
+                        //         selectedUser?.picture ??
+                        //             'https://img.freepik.com/free-vector/travel-time-typography-design_1308-99359.jpg?size=626&ext=jpg&ga=GA1.2.732483231.1691056791&semt=ais',
+                        //         width: 80,
+                        //         height: 80,
+                        //         fit: BoxFit.fill,
+                        //       )
+                        //     : Image.network(
+                        //         '${baseUrls}/assets/uploads/profil/${selectedUser?.picture}',
+                        //         fit: BoxFit.cover,
+                        //       ),
                         child: Image.network(
                           selectedUser?.picture ??
                               'https://img.freepik.com/free-vector/travel-time-typography-design_1308-99359.jpg?size=626&ext=jpg&ga=GA1.2.732483231.1691056791&semt=ais',

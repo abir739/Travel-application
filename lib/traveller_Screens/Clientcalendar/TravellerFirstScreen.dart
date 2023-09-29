@@ -13,7 +13,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:provider/provider.dart';
-
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 class TravellerFirstScreen extends StatefulWidget {
   final List<dynamic> userList; // Add this parameter
 
@@ -34,15 +34,18 @@ class _TravellerFirstScreenState extends State<TravellerFirstScreen> {
   final count = HTTPHandlerCount();
   int notificationCount = 0;
   static late SharedPreferences prefs;
+  final RefreshController _refreshController = RefreshController();
   int apiCount = 0; // Initialize with a default value
   int inlineCount = 0; // Initialize with a default value
   int reset = 0;
+  String newDataFromSecondPage = ""; 
 
   @override
   void initState() {
     super.initState();
     _initializeSharedPreferences();
     _loadDataTraveller(widget.userList); // Pass the user list
+    _onRefresh();
   }
 
   void refresh() {
@@ -52,6 +55,13 @@ class _TravellerFirstScreenState extends State<TravellerFirstScreen> {
       _initializeSharedPreferences();
       prefs.setInt('notificationCount', 0);
     });
+  }
+Future<void> _onRefresh() async {
+    await _loadDataTraveller(
+          widget.userList); 
+    _initializeSharedPreferences();
+    prefs.setInt('notificationCount', 0);
+    _refreshController.refreshCompleted();
   }
 
   Future<void> _initializeSharedPreferences() async {

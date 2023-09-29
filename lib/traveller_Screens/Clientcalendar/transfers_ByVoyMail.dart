@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:zenify_trip/Secreens/ConcentricAnimationOnboarding.dart';
-import 'package:zenify_trip/Secreens/Profile/Use_Profil.dart';
+import 'package:zenify_trip/Secreens/Profile/User_Profil.dart';
 import 'package:zenify_trip/Secreens/login_test.dart';
 import 'package:zenify_trip/constent.dart';
 import 'package:zenify_trip/modele/Event/Event.dart';

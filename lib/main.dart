@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
+import 'package:zenify_trip/Secreens/Upload_Files/FileUploadScreen.dart';
 import 'package:zenify_trip/login/RoleSelectionPage.dart';
 import 'package:zenify_trip/register.dart';
 import 'package:get/get.dart';
@@ -55,6 +56,7 @@ class MyApp extends StatelessWidget {
             ),
         // Add this route
         'SplashScreen': (context) => SplashScreen(), // Add this route
+        'FileUploadScreen': (context) => FileUploadScreen(dynamicPath: "",fild: "",object: "",id: ""),
         'GuideHome': (context) =>
             PlaningSecreen(), // Add this routeActivityDetailScreen
         'notification': (context) {

@@ -4,6 +4,9 @@ import '../../modele/HttpPushNotification.dart';
 import '../../modele/activitsmodel/httpActivites.dart';
 import '../../modele/activitsmodel/pushnotificationmodel.dart';
 import 'package:intl/intl.dart';
+import 'package:get/get.dart';
+import '../../theme.dart';
+import '../Transfer/transferdetailsfromnotification.dart';
 
 class NotificationScreen extends StatelessWidget {
   String? groupsid;
@@ -58,7 +61,7 @@ class NotificationList extends StatefulWidget {
 class _NotificationListState extends State<NotificationList> {
   final httpHandler = HTTPHandlerPushNotification();
   final count = HTTPHandlerCount();
-  int limit = 6;
+ int limit = 12;
   String formatTimestamp(DateTime? dateTime) {
     final now = DateTime.now();
     final difference = now.difference(dateTime!);
@@ -159,7 +162,17 @@ class _NotificationListState extends State<NotificationList> {
                               ),
                             ),
                           ),
-                        Card(
+                          GestureDetector(
+                            onTap: () {
+                              // Handle the click event for "See Fewer Notifications"
+                              // setState(() {
+                              // limit = limit + 6;
+                              print(notification.type);
+                              Get.to(TransportDetailSecreen(
+                                  notification.category));
+                              // });
+                            },
+                            child:Card(
                           color: Colors.white,
                           elevation: 4,
                           margin: const EdgeInsets.symmetric(
@@ -188,6 +201,11 @@ class _NotificationListState extends State<NotificationList> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
+                                      Text("🚍 "),
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+
                                       Text(title,
                                           style: const TextStyle(
                                               fontSize:
@@ -205,7 +223,7 @@ class _NotificationListState extends State<NotificationList> {
                               ],
                             ),
                           ),
-                        ),
+                        ),),
                       ],
                     );
                   },
