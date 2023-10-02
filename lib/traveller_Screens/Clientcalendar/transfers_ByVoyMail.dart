@@ -18,10 +18,12 @@ import 'package:zenify_trip/modele/transportmodel/transportModel.dart';
 import 'package:zenify_trip/modele/traveller/TravellerModel.dart';
 import 'package:zenify_trip/traveller_Screens/Clientcalendar/event_detail_screen.dart';
 import 'package:zenify_trip/traveller_Screens/Contact_guide.dart';
+import 'package:zenify_trip/traveller_Screens/Traveller-Provider.dart';
+import 'package:provider/provider.dart';
 
 class TravellerCalendarPage extends StatefulWidget {
   String? group;
-  Traveller? traveller;
+  Traveller? traveller; // Accept the traveller object
 
   TravellerCalendarPage({Key? key, this.group, this.traveller})
       : super(key: key);
@@ -62,6 +64,10 @@ class _TravellerCalendarPageState extends State<TravellerCalendarPage> {
   void initState() {
     super.initState();
     _initializeData();
+
+    final travellerProvider =
+        Provider.of<TravellerProvider>(context, listen: false);
+    final traveller = travellerProvider.traveller;
   }
 
   Future<void> _initializeData() async {

@@ -14,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+
 class TravellerFirstScreen extends StatefulWidget {
   final List<dynamic> userList; // Add this parameter
 
@@ -38,7 +39,7 @@ class _TravellerFirstScreenState extends State<TravellerFirstScreen> {
   int apiCount = 0; // Initialize with a default value
   int inlineCount = 0; // Initialize with a default value
   int reset = 0;
-  String newDataFromSecondPage = ""; 
+  String newDataFromSecondPage = "";
 
   @override
   void initState() {
@@ -56,9 +57,9 @@ class _TravellerFirstScreenState extends State<TravellerFirstScreen> {
       prefs.setInt('notificationCount', 0);
     });
   }
-Future<void> _onRefresh() async {
-    await _loadDataTraveller(
-          widget.userList); 
+
+  Future<void> _onRefresh() async {
+    await _loadDataTraveller(widget.userList);
     _initializeSharedPreferences();
     prefs.setInt('notificationCount', 0);
     _refreshController.refreshCompleted();
@@ -304,11 +305,6 @@ Future<void> _onRefresh() async {
                         }).catchError((error) {
                           print('Error: $error'); // Handle errors if any
                         });
-                        // prefs.setInt('notificationCount', 0);
-                        //  await resetNotificationCount(); // Reset notification count to 0
-                        // await Get.off(TravellerFirstScreen());
-                        // Future.delayed(Duration(milliseconds: 100), () {
-                        //   refresh();
                         Get.toNamed('notificationScreen', arguments: {
                           'touristGroupId': traveller.touristGroupId
                         });
@@ -406,8 +402,10 @@ Future<void> _onRefresh() async {
                   onPressed: () {
                     Get.to(() => TravellerCalendarPage(
                           group: traveller.touristGroupId,
+                          traveller:
+                              traveller, // Pass the traveller object here
                         ));
-                    Navigator.pushNamed(context, 'TravellerCalendarPage');
+                    // Navigator.pushNamed(context, 'TravellerCalendarPage');
                   },
                   child: const Center(
                     child: Text(

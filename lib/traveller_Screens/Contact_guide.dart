@@ -63,11 +63,12 @@ class _TouristGuideProfilePageState extends State<TouristGuideProfilePage> {
     // Fetch the selected tourist group
     final touristGroupResponse = await http.get(
       Uri.parse(
-          "$baseUrls/api/tourist-groups/8d55d871-1b6c-4584-9ece-ee645e64c09c"),
+          "$baseUrls/api/tourist-groups/${widget.traveller?.touristGroupId}"),
       headers: {
         "Authorization": "Bearer $token",
       },
     );
+    print("group: ${widget.traveller?.touristGroupId}");
     // Fetch the selected tourist group
     print("${touristGroupResponse.body}");
     if (touristGroupResponse.statusCode == 200) {
@@ -107,12 +108,24 @@ class _TouristGuideProfilePageState extends State<TouristGuideProfilePage> {
               fit: BoxFit.cover,
               height: 36.0,
             ),
-            const SizedBox(width: 40),
-            const Text(
-              "Traveller Profil",
-              style: TextStyle(
-                color: Color.fromARGB(255, 68, 5, 150),
-                fontSize: 18,
+            const SizedBox(width: 70),
+            ShaderMask(
+              shaderCallback: (Rect bounds) {
+                return const LinearGradient(
+                  colors: [
+                    Color(0xFF3A3557),
+                    Color(0xFFCBA36E),
+                    Color(0xFFEB5F52),
+                  ],
+                ).createShader(bounds);
+              },
+              child: const Text(
+                'Your Guide',
+                style: TextStyle(
+                  fontSize: 24,
+                  color: Colors
+                      .white, // You can adjust the font size and color here
+                ),
               ),
             ),
           ],

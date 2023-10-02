@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:timezone/data/latest.dart' as tzdata;
 import 'package:zenify_trip/traveller_Screens/Clientcalendar/TravellerFirstScreen.dart';
+import 'package:zenify_trip/traveller_Screens/Traveller-Provider.dart';
 import 'Controller/dependency_injection.dart';
 import 'ResetPasswordWithPhoneNumberScreen.dart';
 import 'Secreens/Notification/NotificationCountNotifierProvider.dart';
@@ -27,6 +28,8 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (_) => NotificationCountNotifier()),
         ChangeNotifierProvider(create: (_) => TouristGroupProvider()),
+          ChangeNotifierProvider(
+      create: (context) => TravellerProvider()),
         // Add more providers as needed
       ],
       child: MyApp(),
