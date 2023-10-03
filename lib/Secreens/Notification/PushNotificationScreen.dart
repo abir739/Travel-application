@@ -171,11 +171,23 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
               height: 36.0,
             ),
             const SizedBox(width: 30),
-            const Text(
-              'Push notification',
-              style: TextStyle(
-                color: Color.fromARGB(255, 68, 5, 150),
-                fontSize: 24,
+            ShaderMask(
+              shaderCallback: (Rect bounds) {
+                return const LinearGradient(
+                  colors: [
+                    Color(0xFF3A3557),
+                    Color(0xFFCBA36E),
+                    Color(0xFFEB5F52),
+                  ],
+                ).createShader(bounds);
+              },
+              child: const Text(
+                'Push notification',
+                style: TextStyle(
+                  fontSize: 24,
+                  color: Colors
+                      .white, // You can adjust the font size and color here
+                ),
               ),
             ),
           ],

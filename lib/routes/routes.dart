@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:zenify_trip/Secreens/Notification/NotificationDetails_test.dart';
-import 'package:zenify_trip/traveller_Screens/Clientcalendar/TravellerFirstScreen.dart';
+import 'package:zenify_trip/traveller_Screens/Traveller-First-Screen.dart';
 
 // import '../Secreens/Notifications/NotificationDetails.dart';
 
-import '../login.dart';
+import 'package:zenify_trip/login/login_Page.dart';
 import '../main.dart';
 
 class AppRoutes {

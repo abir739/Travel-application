@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zenify_trip/constent.dart';
-import 'package:zenify_trip/login.dart';
+import 'package:zenify_trip/login/login_Page.dart';
 import 'dart:convert';
 import 'package:flutter_svg/svg.dart';
 import 'package:zenify_trip/modele/TouristGuide.dart';
@@ -131,15 +131,19 @@ class _TouristGuideProfilePageState extends State<TouristGuideProfilePage> {
           ],
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            _buildHeader(touristGuide!),
-            _buildMainInfo(context, widthC, user!),
-            _buildInfo(context, widthC, user!),
-          ],
-        ),
-      ),
+      body: (touristGuide == null || user == null)
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  _buildHeader(touristGuide!),
+                  _buildMainInfo(context, widthC, user!),
+                  _buildInfo(context, widthC, user!),
+                ],
+              ),
+            ),
     );
   }
 

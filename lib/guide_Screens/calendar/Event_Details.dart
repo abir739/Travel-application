@@ -1,24 +1,27 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:multi_select_flutter/chip_display/multi_select_chip_display.dart';
 import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
 import 'package:multi_select_flutter/util/multi_select_list_type.dart';
-import 'package:http/http.dart' as http;
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:zenify_trip/constent.dart';
-import 'package:zenify_trip/guide_Screens/calendar/transfert_data.dart';
-import 'package:zenify_trip/login.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:zenify_trip/login/login_Page.dart';
 import 'package:zenify_trip/modele/TouristGuide.dart';
-import 'package:zenify_trip/modele/touristGroup.dart'; // Updated import
-
+import 'package:zenify_trip/modele/touristGroup.dart';
+import 'package:zenify_trip/modele/transportmodel/transportModel.dart';
 
 class EventView extends StatefulWidget {
-  final TransportEvent event;
-  final Function(TransportEvent updatedEvent) onSave;
+  final Transport transport;
+  final Function(Transport updatedTransport) onSave;
 
-  const EventView({super.key, required this.event, required this.onSave});
+  const EventView({
+    Key? key,
+    required this.transport,
+    required this.onSave,
+  }) : super(key: key);
 
   @override
   _EventViewState createState() => _EventViewState();
@@ -29,9 +32,9 @@ class _EventViewState extends State<EventView> {
   TouristGuide? guid;
   late TextEditingController _noteController;
   late TextEditingController _durationController;
-  late TextEditingController _messageController; // Updated controller name
-  late TextEditingController _titleController; // Updated controller name
-  late TextEditingController _typeController; // Updated controller name
+  late TextEditingController _messageController;
+  late TextEditingController _titleController;
+  late TextEditingController _typeController;
   bool sendNotification = false;
   bool showNotificationFields = false;
 
@@ -40,9 +43,9 @@ class _EventViewState extends State<EventView> {
     super.initState();
     fetchTouristGroups();
 
-    _noteController = TextEditingController(text: widget.event.transport.note);
-    _durationController = TextEditingController(
-        text: widget.event.transport.durationHours.toString());
+    _noteController = TextEditingController(text: widget.transport.note);
+    _durationController =
+        TextEditingController(text: widget.transport.durationHours.toString());
 
     _messageController = TextEditingController(); // Initialize controllers
     _titleController = TextEditingController(); // Initialize controllers
@@ -53,52 +56,17 @@ class _EventViewState extends State<EventView> {
   void dispose() {
     _noteController.dispose();
     _durationController.dispose();
-    _messageController.dispose(); // Dispose of controllers
-    _titleController.dispose(); // Dispose of controllers
-    _typeController.dispose(); // Dispose of controllers
-
     super.dispose();
   }
 
-  Future<void> fetchTouristGroups() async {
-    String? token = await storage.read(key: "access_token");
-    String formatter(String url) {
-      return baseUrls + url;
-    }
-
-    String url =
-        formatter("/api/tourist-groups/transfrid/${widget.event.transport.id}");
-
-    final response = await http.get(
-      Uri.parse(url),
-      headers: {
-        "Authorization": "Bearer $token",
-      },
-    );
-
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> data = jsonDecode(response.body);
-      final List<dynamic> results = data["results"];
-      _touristGroups =
-          results.map((groupData) => TouristGroup.fromJson(groupData)).toList();
-      setState(() {});
-    } else {
-      print("Error fetching tourist groups: ${response.statusCode}");
-      // Handle error here
-    }
-  }
-
-  // Define a function to update the event details
-  void updateEventDetails(String newNote, int newDuration) {
-    widget.event.transport.note = newNote;
-    widget.event.transport.durationHours = newDuration;
-  }
-
   void _saveChanges() async {
-    widget.event.transport.note = _noteController.text;
-    widget.event.transport.durationHours = int.parse(_durationController.text);
+    // Update the properties of the existing transport object
+    widget.transport.note = _noteController.text;
+    widget.transport.durationHours = int.parse(_durationController.text);
 
-    widget.onSave(widget.event);
+    // Call the onSave callback with the updated transport object
+    widget.onSave(widget.transport);
+
     String formatter(String url) {
       return baseUrls + url;
     }
@@ -123,7 +91,7 @@ class _EventViewState extends State<EventView> {
       updatePayload.addAll(newData);
 
       String? token = await storage.read(key: "access_token");
-      String url = formatter("/api/transfers/${widget.event.transport.id}");
+      String url = formatter("/api/transfers/${widget.transport.id}");
 
       // Perform the PATCH request to update the event
       final response = await http.patch(
@@ -142,9 +110,37 @@ class _EventViewState extends State<EventView> {
       } else {
         print("API Error: ${response.statusCode}");
       }
-      Navigator.pop(context, true);
+      // Navigator.pop(context, true);
     } catch (e) {
       print("Error: $e");
+    }
+  }
+
+  Future<void> fetchTouristGroups() async {
+    String? token = await storage.read(key: "access_token");
+    String formatter(String url) {
+      return baseUrls + url;
+    }
+
+    String url =
+        formatter("/api/tourist-groups/transfrid/${widget.transport.id}");
+
+    final response = await http.get(
+      Uri.parse(url),
+      headers: {
+        "Authorization": "Bearer $token",
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = jsonDecode(response.body);
+      final List<dynamic> results = data["results"];
+      _touristGroups =
+          results.map((groupData) => TouristGroup.fromJson(groupData)).toList();
+      setState(() {});
+    } else {
+      print("Error fetching tourist groups: ${response.statusCode}");
+      // Handle error here
     }
   }
 
@@ -186,14 +182,19 @@ class _EventViewState extends State<EventView> {
                 ),
               ),
               const SizedBox(height: 26),
-              Text('Description: ${widget.event.transport.from}'),
+              Text(
+                'Description: 🚌 From ${widget.transport.from ?? 'N/A'} to ${widget.transport.to ?? 'N/A'}',
+              ), // Update with your field
               const SizedBox(height: 14),
-              Text('Date: ${widget.event.startTime.toString()}'),
+              Text(
+                'Date: ${widget.transport.date != null ? formatDateTimeInTimeZone(widget.transport.date!).toString() : 'N/A'}', // Update with your field
+              ),
               const SizedBox(height: 14),
               TextFormField(
                 controller: _noteController,
                 decoration: const InputDecoration(labelText: 'Title'),
               ),
+
               const SizedBox(height: 14),
               TextFormField(
                 controller: _durationController,
@@ -286,6 +287,7 @@ class _EventViewState extends State<EventView> {
                   ],
                 ),
               ),
+
               const SizedBox(height: 20),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(

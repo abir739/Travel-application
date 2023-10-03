@@ -1,16 +1,20 @@
+import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:get/get.dart';
+import 'package:twilio/twilio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'Secreens/Notification/NotificationCountNotifierProvider.dart';
+import 'package:telephony/telephony.dart';
+import 'constent.dart';
+
+Twilio twilio = Twilio(
+    accountSid: accountSid, authToken: authToken, twilioNumber: twilioNumber);
 
 class OneSignalHandler {
+  static Telephony telephony = Telephony.instance;
   static void initialize(BuildContext context) {
-    // OneSignal.shared.setPermissionObserver((OSPermissionStateChanges changes) {
-    //   print("PERMISSION STATE CHANGED: ${changes.jsonRepresentation()}");
-    // });
     OneSignal.shared.setNotificationOpenedHandler(
       (OSNotificationOpenedResult notification) {
         print("${notification.notification.body} actions");
@@ -35,7 +39,7 @@ class OneSignalHandler {
           print("$ObjectType      print(ObjectType);");
           print("$id      print(id);");
           print("$idt      print(id);");
-          _checkTokenAndNavigate(context, screenName, id, ObjectType,idt);
+          _checkTokenAndNavigate(context, screenName, id, ObjectType, idt);
           // final notificationCountNotifier =
           //     Provider.of<NotificationCountNotifier>(context, listen: false);
 
@@ -44,7 +48,7 @@ class OneSignalHandler {
         }
       },
     );
-  
+
     OneSignal.shared.setNotificationWillShowInForegroundHandler(
       (OSNotificationReceivedEvent event) {
         final notificationCountNotifier =
@@ -53,7 +57,7 @@ class OneSignalHandler {
         notificationCountNotifier.increment();
       },
     );
- }
+  }
 
   static Future<void> processBackgroundNotifications() async {
     // Handle background notifications here
@@ -78,8 +82,13 @@ class OneSignalHandler {
   //   print("Notification count incremented to: $notificationCount");
   // }
 
-  static void _checkTokenAndNavigate(BuildContext context, String screenName,
-      String? id, String? ObjectType,String? idt,) async {
+  static void _checkTokenAndNavigate(
+    BuildContext context,
+    String screenName,
+    String? id,
+    String? ObjectType,
+    String? idt,
+  ) async {
     final token = await _getToken();
     if (screenName == 'notification' && token == null) {
       // final notificationCountNotifier =
@@ -124,14 +133,15 @@ class OneSignalHandler {
       Get.toNamed('notification', arguments: {
         'id': id,
         'routename': screenName,
-        'ObjectType': ObjectType  ,'idT': idt
+        'ObjectType': ObjectType,
+        'idT': idt
       });
     } else {
       Get.toNamed(screenName);
     }
   }
 
- static void _handlePromptForPushPermission() {
+  static void _handlePromptForPushPermission() {
     print("Prompting for Permission");
     OneSignal.shared.promptUserForPushNotificationPermission().then((accepted) {
       print("Accepted permission: $accepted");
@@ -141,5 +151,72 @@ class OneSignalHandler {
   static Future<String?> _getToken() async {
     FlutterSecureStorage storage = FlutterSecureStorage();
     return await storage.read(key: "access_token");
+  }
+static Future<String?> listenToIncomingSMS(
+      BuildContext context, Telephony telephony) {
+    Completer<String?> validationCodeCompleter = Completer<String?>();
+
+    telephony.listenIncomingSms(
+      onNewMessage: (SmsMessage message) {
+        // Extract the validation code from the received SMS
+        final validationCode = extractValidationCodeFromSMS(message.body);
+
+        if (validationCode != null) {
+          // Resolve the Future with the validation code
+          validationCodeCompleter.complete(validationCode);
+          print(validationCode); // Print the validation code here
+          handleIncomingValidationCode(context, validationCode);
+        }
+      },
+      listenInBackground: false,
+    );
+
+    return validationCodeCompleter.future;
+  }
+
+  // static Future<String?> listenToIncomingSMS(
+  //     BuildContext context, Telephony telephony) async {
+  //   Completer<String?> validationCodeCompleter = Completer<String?>();
+
+  //   telephony.listenIncomingSms(
+  //     onNewMessage: (SmsMessage message) {
+  //       // Extract the validation code from the received SMS
+  //       final validationCode = extractValidationCodeFromSMS(message.body);
+  //  storage.write(key: "code", value: validationCode);
+  //       if (validationCode != null) {
+  //         // Resolve the Future with the validation code
+  //         // validationCodeCompleter.complete(validationCode);
+  //          storage.write(key: "code", value: validationCode);
+  //         print(validationCodeCompleter.future);
+  //         // handleIncomingValidationCode(context, validationCode);
+  //       }
+  //     },
+  //     listenInBackground: false,
+  //   );
+
+  //   return validationCodeCompleter.future;
+  // }
+
+  static String handleIncomingValidationCode(
+      BuildContext context, String code) {
+    // Your code to handle the incoming validation code
+    print("$code codeeee");
+    return code;
+  }
+
+  static String? extractValidationCodeFromSMS(String? messageBody) {
+    // Define a regular expression pattern to match a 6-digit code
+    final RegExp regex = RegExp(r'\b\d{6}\b');
+
+    // Search for the code pattern in the message body
+    final Match? match = regex.firstMatch(messageBody ?? "hh");
+
+    // If a match is found, extract and return the code
+    if (match != null) {
+      return match.group(0);
+    } else {
+      // If no match is found, return null or handle it as needed
+      return null;
+    }
   }
 }

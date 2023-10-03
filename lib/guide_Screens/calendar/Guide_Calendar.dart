@@ -4,22 +4,22 @@ import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:zenify_trip/Secreens/ConcentricAnimationOnboarding.dart';
 import 'package:zenify_trip/Secreens/Notification/PushNotificationScreen.dart';
-import 'package:zenify_trip/Secreens/event_view.dart';
-import 'package:zenify_trip/Secreens/login_test.dart';
+import 'package:zenify_trip/guide_Screens/calendar/Event_Details.dart';
+import 'package:zenify_trip/login/login_Page.dart';
 import 'package:zenify_trip/guide_Screens/calendar/filtre__ByGroups.dart';
 import 'package:zenify_trip/guide_Screens/tasks/tasks_Calendar.dart';
 import 'package:zenify_trip/guide_Screens/travellers_list_screen.dart';
 import 'package:zenify_trip/modele/Event/Event.dart';
 import 'package:zenify_trip/modele/TouristGuide.dart';
-import '../modele/accommodationsModel/accommodationModel.dart';
+import '../../modele/accommodationsModel/accommodationModel.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
-import '../modele/transportmodel/transportModel.dart';
+import '../../modele/transportmodel/transportModel.dart';
 import 'package:zenify_trip/Secreens/CustomCalendarDataSource.dart';
 import 'package:flutter_svg/svg.dart';
-import '../constent.dart';
+import '../../constent.dart';
 import 'package:zenify_trip/Secreens/Profile/User_Profil.dart';
 
 class PlanningScreen extends StatefulWidget {

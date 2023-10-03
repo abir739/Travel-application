@@ -83,6 +83,8 @@ dependencies:
   badges: ^3.1.2
   font_awesome_flutter: ^10.5.0
   mailer: ^6.0.1
+  telephony: ^0.2.0
+  twilio: ^0.0.2
 dependency_overrides:
   platform: ^3.1.0
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:zenify_trip/Secreens/login_test.dart';
+import 'package:zenify_trip/login/login_Page.dart';
 import '../../NetworkHandler.dart';
 import '../../constent.dart';
 import '../../modele/HttpUserHandler.dart';
@@ -170,7 +170,7 @@ class _MainProfileState extends State<MainProfile> {
               fit: BoxFit.cover,
               height: 36.0,
             ),
-            const SizedBox(width: 30),
+            const SizedBox(width: 60),
             ShaderMask(
               shaderCallback: (Rect bounds) {
                 return const LinearGradient(
@@ -182,7 +182,7 @@ class _MainProfileState extends State<MainProfile> {
                 ).createShader(bounds);
               },
               child: const Text(
-                'Profil',
+                'Your Profil',
                 style: TextStyle(
                   fontSize: 24,
                   color: Colors

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zenify_trip/Secreens/Profile/User_Profil.dart';
-import 'package:zenify_trip/Secreens/guidPlannig.dart';
+import 'package:zenify_trip/guide_Screens/Guide_First_Page.dart';
 
 import 'PushNotificationScreen.dart';
 

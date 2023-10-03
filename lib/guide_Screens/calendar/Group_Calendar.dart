@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:zenify_trip/Secreens/CustomCalendarDataSource.dart';
-import 'package:zenify_trip/guide_Screens/calendar/eventdetail_test.dart';
+import 'package:zenify_trip/guide_Screens/calendar/Event-ByGroup_Details.dart';
 import 'package:zenify_trip/guide_Screens/calendar/transfert_data.dart';
 import 'package:zenify_trip/modele/Event/Event.dart';
 import 'dart:convert';
@@ -11,7 +11,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:zenify_trip/modele/transportmodel/transportModel.dart';
 import 'package:flutter_svg/svg.dart';
-// import 'package:zenify_trip/traveller_Screens/Clientcalendar/event_detail_screen.dart';
 import '../../constent.dart';
 import '../../modele/planningmainModel.dart';
 

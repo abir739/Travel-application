@@ -6,13 +6,14 @@ import 'package:zenify_trip/modele/tasks/taskModel.dart';
 class TaskDataSource extends CalendarDataSource {
   TaskDataSource(List<Tasks> source) {
     appointments = source.map((task) {
+      DateTime todoDate = task.todoDate ?? DateTime.now();
+      DateTime endTime = todoDate.add(Duration(hours: 20));
+
       return Appointment(
         id: task.id,
-        startTime: formatDateTimeInTimeZone(task.todoDate ??
-            DateTime.now()), // Provide a default value when todoDate is null
-        endTime:
-            DateTime.now(), // Provide a default value when todoDate is null
-        isAllDay: false, // Adjust as needed
+        startTime: formatDateTimeInTimeZone(todoDate),
+        endTime: formatDateTimeInTimeZone(endTime),
+        isAllDay: false,
         subject: '${task.description ?? ''}',
         color: const Color(0xFFCBA36E),
       );

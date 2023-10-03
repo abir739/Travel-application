@@ -1701,6 +1701,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.0"
+  telephony:
+    dependency: "direct main"
+    description:
+      name: telephony
+      sha256: "821e074acec3c611e48edadd50a6d9fef864943771a545da7924adcc8509ada9"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.0"
   term_glyph:
     dependency: transitive
     description:
@@ -1749,6 +1757,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.2"
+  twilio:
+    dependency: "direct main"
+    description:
+      name: twilio
+      sha256: bcf1c5f03478461b4acd4682253a2c034c051bb2cc325072057c7ce87f56a87b
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.2"
   typed_data:
     dependency: transitive
     description:

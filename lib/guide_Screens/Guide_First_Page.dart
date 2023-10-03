@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zenify_trip/NetworkHandler.dart';
-import 'package:zenify_trip/Secreens/AccommodationSecreen.dart';
-// import 'package:zenify_trip/guide_Screens/calendar/menu.dart';
+import 'package:zenify_trip/guide_Screens/calendar/Guide_Calendar.dart';
 import 'package:zenify_trip/modele/touristGroup.dart';
 import '../modele/HttpPlaning.dart';
 import '../modele/TouristGuide.dart';
@@ -20,7 +19,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import '../modele/traveller/TravellerModel.dart';
-import 'TouristGroupProvider.dart';
+import '../Secreens/TouristGroupProvider.dart';
 
 class PlaningSecreen extends StatefulWidget {
   const PlaningSecreen({super.key});
@@ -31,8 +30,6 @@ class PlaningSecreen extends StatefulWidget {
 
 class _PlaningSecreenState extends State<PlaningSecreen> {
   TextEditingController groupkeycontroller = TextEditingController();
-  // GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  // final _globalkey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
@@ -45,14 +42,10 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
   final httpHandler = HTTPHandlerhttpToristguid();
   final guidbyuserid = HTTPHandlerToristGuidbyId();
   final Travelleruserid = HTTPHandlerTravellerbyId();
-  // String baseUrl = "http://192.168.1.14:3000/";
-  // final httpHandler = HTTPHandlerhttpToristguid();
   final httpHandlertoristguid = HTTPHandlerhttpToristguid();
   final httpHandlertorist = HTTPHandlerhttpGroup();
   final httpHandlerPlanning = HTTPHandlerplaning();
   final count = HTTPHandlerCount();
-  // late List<TouristGuide> touristGuides;
-  // late TouristGuide selectedTouristGuide;
   List<TouristGuide>? touristGuides;
   List<TouristGroup>? touristGroup;
   List<PlanningMainModel>? planning;
@@ -60,16 +53,6 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
   TouristGroup? selectedTouristGroup = TouristGroup();
   PlanningMainModel? selectedPlanning = PlanningMainModel();
   final TouristGroupProvider _touristGroupProvider = TouristGroupProvider();
-// TouristGuide? selectedTouristGuide=
-// TouristGuide(
-//   id: "default_id",
-//   name: "default_name",
-//   fullName: "default_full_name",
-//   logo: "default_logo",
-//   primaryColor: "default_primary_color",
-//   secondaryColor: "default_secondary_color",
-//   subDomain: "default_sub_domain",
-// );
   int subscriptionCount = 0;
   final storage = new FlutterSecureStorage();
   late String errorText;
@@ -97,87 +80,23 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
     _loadDataGuid();
     readRoleFromToken();
     initPlatformState();
-    // OneSignal.shared.setAppId('a83993b3-1680-49fa-a371-c5ad4c55849a');
-    // OneSignal.shared
-    //     .setSubscriptionObserver((OSSubscriptionStateChanges changes) {
-    //   print("SUBSCRIPTION STATE CHANGED: ${changes.jsonRepresentation()}");
-    // });
-    // OneSignal.shared.promptUserForPushNotificationPermission();
-    // organisation();
   }
 
   Future<void> logout() async {
     // Delete sensitive data from secure storage
     await storage.deleteAll();
-
-    // Clear data associated with the private screen (if applicable)
-    // Example: clear private screen-related variables or state
-    // ...
-
-    // Navigate to the login screen
     Get.offNamed('login');
   }
-  // void logout() async {
-  //   await storage.delete(key: "access_token");
-  //   await storage.delete(key: "Role");
-
-  //   // _accessToken = null;
-  //   // _userData = null;
-  //   Get.off(SplashScreen());
-  // }
 
   Future<void> initPlatformState() async {
     OneSignal.shared.setAppId(
       oneSignalAppId,
-      // iOSSettings: {
-      //   OSiOSSettings.autoPrompt: true,
-      //   OSiOSSettings.inAppLaunchUrl: true
-      // },
     );
 
-    // OneSignal.shared
-    //     .(OSNotificationDisplayType.notification);
-
-    //This method only work when app is in foreground.
-    //   OneSignal.shared
-    //       .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
-    //     OSNotification notification1 = result.notification;
-
-    //     OSNotification notification = result.notification;
-    //     OSNotificationAction? action = result.action;
-
-    //     // Access notification properties
-    //     String notificationId = notification.notificationId;
-    //     String? title = notification.title;
-    //     String? body = notification.body;
-    //     Map<String, dynamic>? additionalData = notification.additionalData;
-
-    //     // Access action properties
-    //     OSNotificationActionType? actionType = action?.type;
-    //     String? actionId = action?.actionId;
-    //     // Map<String, dynamic>? actionData = action?.additionalData;
-    //     print('title $title bodys $body actionType $actionType');
-    //     // Perform your desired actions based on the notification and action data
-    //     // Navigator.push(context, MaterialPageRoute(builder: (_) => Planingtest()));
-    //   });
-    //   OneSignal.shared.setNotificationOpenedHandler(
-    //     (OSNotificationOpenedResult result) async {
-    //       var data = result.notification.additionalData;
-    //       // globals.appNavigator.currentState.push(
-    //       // MaterialPageRoute(
-    //       //   builder: (context) => SecondPage(
-    //       //     postId: data['post_id'].toString(),
-    //       //   ),
-    //       // ),
-    //       // );
-    //     },
-    //   );
   }
 
   Future<Traveller> _loadDataTraveller() async {
     final userId = await storage.read(key: "id");
-    // String? accessToken = await getAccessToken();
-    // print('${widget.token} token');
     final travellerdetail =
         await Travelleruserid.fetchData("/api/travellers/UserId/$userId");
     setState(() {
@@ -192,8 +111,6 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
 
   Future<TouristGuide> _loadDataGuid() async {
     final userId = await storage.read(key: "id");
-    // String? accessToken = await getAccessToken();
-    // print('${widget.token} token');
     final toristguiddetail =
         await guidbyuserid.fetchData("/api/tourist-guides/UserIds/$userId");
     setState(() {
@@ -211,15 +128,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
       touristGuides = []; // initialize the list to an empty list
     });
     final data = await httpHandler.fetchData("/api/tourist-guides");
-    // randomImagePath =
-    //     selecterundomimagepath[random.nextInt(selecterundomimagepath.length)];
-    // print(randomImagePath);
     if (data == null) {
-      // Data is null, navigate to the 'addtouristguid' screen
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(builder: (context) => AddTouristGuideScreen()),
-      // );
       return; // Stop further execution of the function
     }
     setState(() {
@@ -236,49 +145,15 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
       print("Error creating tags: $error");
     });
     setState(() {
-      // OneSignal.shared.deleteTag('$Groupids').then((success) {
-      //   print("Old tags deleted successfully");
-      // }).catchError((error) {
-      //   print("Error deleting old tags: $error");
-      // });
-      // try {
-      // OneSignal.shared.setAppId('ce7f9114-b051-4672-a9c5-0eec08d625e8');
-      // OneSignal.shared
-      //     .setSubscriptionObserver((OSSubscriptionStateChanges changes) {
-      //   print("SUBSCRIPTION STATE CHANGED: ${changes.jsonRepresentation()}");
-      // });
-      // OneSignal.shared.promptUserForPushNotificationPermission();
       OneSignal.shared.sendTags({'Guids': '$Groupids'}).then((success) {
         print("Tags created successfully $Groupids");
       }).catchError((error) {
         print("Error creating tags: $error");
       });
-      // } catch (e) {
-      //   print('Error initializing OneSignal: $e');
-      // }
-      // selectedTouristGroup = newValue!;
-      // tag = newValue.id!;
-      // _loadDataplanning();
-      // if (traveller.touristGroupId != null) {
-      //   try {
-      //     OneSignal.shared.setAppId('ce7f9114-b051-4672-a9c5-0eec08d625e8');
       OneSignal.shared
           .setSubscriptionObserver((OSSubscriptionStateChanges changes) {
         print("SUBSCRIPTION STATE CHANGED: ${changes.jsonRepresentation()}");
       });
-      //     OneSignal.shared.promptUserForPushNotificationPermission();
-      //     OneSignal.shared.sendTags({
-      //       '${traveller.touristGroupId}': '${traveller.touristGroupId}'
-      //     }).then((success) {
-      //       print("Tags created successfully ${traveller.touristGroupId}");
-      //     }).catchError((error) {
-      //       print("Error creating tags: $error");
-      //     });
-      //   } catch (e) {
-      //     print('Error initializing OneSignal: $e');
-      //   }
-      // }
-      // print(selectedTouristGroup!.id);
     });
   }
 
@@ -289,11 +164,6 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
     final data = await httpHandlertorist
         .fetchData("/api/tourist-groups/touristGuideId/${guid?.id}");
     if (data == null) {
-      // Data is null, navigate to the 'addtouristguid' screen
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(builder: (context) => AddTouristGuideScreen()),
-      // );
       return; // Stop further execution of the function
     }
     setState(() {
@@ -303,24 +173,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
       isLoading = false;
     });
   }
-// void _loadDatagroup() async {
-//     try {
-//       // Fetch data using your httpHandlertorist's fetchData method
-//       final data = await httpHandlertorist
-//           .fetchData("/api/tourist-groups/touristGuideId/${guid?.id}");
 
-//       if (data == null) {
-//         // Data is null, handle this scenario
-//         return;
-//       }
-
-//       // Update the tourist groups using the provider
-//       _touristGroupProvider.updateSelectedTouristGroup(data.first);
-//     } catch (error) {
-//       // Handle any errors that occur during data fetching
-//       print('Error loading tourist group data: $error');
-//     }
-//   }
   void _loadDataplanning() async {
     setState(() {
       planning = []; // initialize the list to an empty list
@@ -328,7 +181,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
 
     final data = await httpHandlerPlanning.fetchData("/api/plannings");
 
-// /touristGroupId/${selectedTouristGroup!.id}");
+
 
     setState(() {
       print('$data data1');
@@ -340,10 +193,6 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
       } else {
         print('$data data');
         selectedPlanning = null;
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(builder: (context) => AddPlanningScreen()),
-        // );
       }
     });
   }
@@ -362,8 +211,6 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
 
   @override
   Widget build(BuildContext context) {
-    // final touristGroupProvider = Provider.of<TouristGroupProvider>(context);
-
     final selectedPlanningProvider = Provider.of<TouristGroupProvider>(context);
     final selectedp = selectedPlanningProvider.selectedPlanning;
     final selectedg =
@@ -374,15 +221,15 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
         body: Container(
           child: Center(
             child: FutureBuilder(
-              future: Future.delayed(Duration(seconds: 5)),
+              future: Future.delayed(const Duration(seconds: 5)),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   // Show a loading indicator or any other widget while waiting
                   return Center(
                     child: CircularProgressIndicator(
-                      backgroundColor: Color.fromARGB(255, 219, 10, 10),
+                      backgroundColor: const Color.fromARGB(255, 219, 10, 10),
                       valueColor: new AlwaysStoppedAnimation<Color>(
-                          Color.fromARGB(255, 24, 10, 221)),
+                          const Color.fromARGB(255, 24, 10, 221)),
                     ),
                   );
                 } else {
@@ -394,22 +241,22 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                         SizedBox(
                           height: Get.width * 0.7,
                         ),
-                        Text('session Tim out.... ',
+                        const Text('session Tim out.... ',
                             style: TextStyle(
                                 fontWeight: FontWeight.w900,
                                 fontSize: 20,
                                 color: Color.fromARGB(255, 90, 3, 203))),
                         ElevatedButton(
-                          child: Text('Logout'),
+                          child: const Text('Logout'),
                           style: ElevatedButton.styleFrom(
                             primary: Colors
                                 .red, // Change the button's background color
                             onPrimary: Colors.white, // Change the text color
-                            textStyle: TextStyle(
+                            textStyle: const TextStyle(
                                 fontSize: 16), // Change the text style
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 16), // Adjust the padding
-                            minimumSize: Size(120,
+                            minimumSize: const Size(120,
                                 40), // Set a minimum width and height for the button
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(
@@ -417,8 +264,6 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                             ),
                           ),
                           onPressed: () async {
-                            // await storage.delete(key: "access_token");
-                            // await storage.delete(key: "Role");
                             logout();
                           },
                         ),
@@ -490,9 +335,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
             ],
           ),
         );
-        //     ],
-        //   ),
-        // );
+        
       } else {
         return Scaffold(
           body: Stack(
@@ -508,7 +351,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                     InkWell(
                       onTap: () {
                         showModalBottomSheet(
-                          backgroundColor: Color.fromARGB(0, 3, 3, 169),
+                          backgroundColor: const Color.fromARGB(0, 3, 3, 169),
                           context: context,
                           builder: ((builder) => bottomSheet()),
                         );
@@ -518,7 +361,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                         'assets/Frame.svg',
                         height: 80,
                         width: 80,
-                        // color: Color.fromARGB(255, 49, 8, 236),
+                      
                       ),
                     )
                   ],
@@ -530,66 +373,63 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                         color: Color.fromARGB(244, 181, 180, 179),
                       ),
                       alignment: Alignment.center,
-                      padding: EdgeInsets.all(5.0),
-                      margin: EdgeInsets.symmetric(horizontal: 16),
+                      padding: const EdgeInsets.all(5.0),
+                      margin: const EdgeInsets.symmetric(horizontal: 16),
                       child: touristGroup!.isEmpty
                           ? ElevatedButton(
                               style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty
-                                    .all<Color>(Color.fromARGB(184, 209, 17,
+                                    .all<Color>(const Color.fromARGB(184, 209, 17,
                                         17)), // Set the desired background color
                               ),
                               onPressed: () {
-                                // Handle button press, navigate to desired screen or perform any action
-                                // Get.to(AddTouristGroupScreen());
+                                
                               },
-                              child: Text('you are not effect  group'),
+                              child: const Text('you are not effect  group'),
                             )
                           : Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 DropdownButton<TouristGroup>(
                                   borderRadius:
-                                      BorderRadius.all(Radius.circular(20)),
+                                      const BorderRadius.all(Radius.circular(20)),
                                   dropdownColor:
-                                      Color.fromARGB(255, 210, 151, 3),
+                                      const Color.fromARGB(255, 210, 151, 3),
                                   iconEnabledColor:
-                                      Color.fromARGB(161, 0, 0, 0),
+                                      const Color.fromARGB(161, 0, 0, 0),
                                   iconDisabledColor:
-                                      Color.fromARGB(255, 158, 158, 158),
+                                      const Color.fromARGB(255, 158, 158, 158),
                                   value: selectedTouristGroup,
                                   items: touristGroup!.map((touristGroup) {
                                     return DropdownMenuItem<TouristGroup>(
                                         value: touristGroup,
                                         child: Row(
                                           children: [
-                                            Icon(
+                                            const Icon(
                                               Icons.group,
                                               size:
                                                   20, // Set the desired size of the icon
                                             ),
-                                            SizedBox(
+                                            const SizedBox(
                                                 width: 4), // Adjust spacing
                                             Container(
                                               width:
                                                   100, // Adjust this width as needed
 
                                               child: Text(
-                                                // touristGroup.name!.length > 5
-                                                // ? '${touristGroup.name!.substring(0, 5)}...' // Truncate the content if it's longer than 20 characters
-                                                // :
+                                                
                                                 touristGroup.name ??
                                                     'i known grop',
-                                                // p.name ?? 'i known Plannig',
+                                                
                                                 overflow: TextOverflow.ellipsis,
                                                 maxLines: 3,
 
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                     fontSize: 16,
                                                     color: Color.fromARGB(
                                                         255, 88, 19, 2)),
@@ -647,14 +487,13 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                                 ElevatedButton(
                                   style: ButtonStyle(
                                     backgroundColor: MaterialStateProperty
-                                        .all<Color>(Color.fromARGB(184, 209, 17,
+                                        .all<Color>(const Color.fromARGB(184, 209, 17,
                                             17)), // Set the desired background color
                                   ),
                                   onPressed: () {
-                                    // Handle button press, navigate to desired screen or perform any action
-                                    // Get.to(AddTouristGroupScreen());
+                                  
                                   },
-                                  child: Text('new Goup'),
+                                  child: const Text('new Goup'),
                                 ),
                                 FutureBuilder<int>(
                                   future: count.fetchInlineCount(
@@ -663,18 +502,18 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                                   builder: (context, snapshot) {
                                     if (snapshot.connectionState ==
                                         ConnectionState.waiting) {
-                                      // Display a loading indicator while fetching the inline count
-                                      return CircularProgressIndicator(
+                                 
+                                      return const CircularProgressIndicator(
                                           strokeWidth: 1.0);
                                     }
                                     if (snapshot.hasError) {
                                       // Handle the error if the inline count couldn't be fetched
-                                      return Text("Error");
+                                      return const Text("Error");
                                     }
                                     final inlineCount = snapshot.data ?? 0;
                                     return Text(
                                       " $inlineCount",
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontWeight: FontWeight.w800,
                                           fontSize: 20),
                                     );
@@ -686,24 +525,24 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                     const SizedBox(height: 32),
 
                     Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                         color: Color.fromARGB(226, 207, 71, 3),
                       ),
                       alignment: Alignment.center,
-                      padding: EdgeInsets.all(5.0),
-                      margin: EdgeInsets.only(left: 40, right: 40),
+                      padding: const EdgeInsets.all(5.0),
+                      margin: const EdgeInsets.only(left: 40, right: 40),
                       child: planning!.isEmpty
                           ? ElevatedButton(
                               style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty
-                                    .all<Color>(Color.fromARGB(184, 209, 17,
+                                    .all<Color>(const Color.fromARGB(184, 209, 17,
                                         17)), // Set the desired background color
                               ),
                               onPressed: () {
                                 // Get.to(AddPlanningScreen());
                               },
-                              child: Text('Plannig'),
+                              child: const Text('Plannig'),
                             )
                           : Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -714,13 +553,13 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                                   height: 50,
                                   child: DropdownButton<PlanningMainModel>(
                                     dropdownColor:
-                                        Color.fromARGB(255, 210, 151, 3),
+                                        const Color.fromARGB(255, 210, 151, 3),
                                     iconEnabledColor:
-                                        Color.fromARGB(161, 0, 0, 0),
+                                        const Color.fromARGB(161, 0, 0, 0),
                                     iconDisabledColor:
-                                        Color.fromARGB(255, 158, 158, 158),
+                                        const Color.fromARGB(255, 158, 158, 158),
                                     borderRadius:
-                                        BorderRadius.all(Radius.circular(20)),
+                                        const BorderRadius.all(Radius.circular(20)),
                                     value: selectedPlanning,
                                     items: planning!.map((p) {
                                       return DropdownMenuItem<
@@ -740,7 +579,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                                                 p.name ?? 'i known Planning',
                                                 overflow: TextOverflow.ellipsis,
                                                 maxLines: 3,
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                   fontSize: 16,
                                                   color: Color.fromARGB(
                                                       255, 83, 6, 3),
@@ -761,20 +600,20 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                                 ElevatedButton(
                                   style: ButtonStyle(
                                     backgroundColor: MaterialStateProperty
-                                        .all<Color>(Color.fromARGB(184, 209, 17,
+                                        .all<Color>(const Color.fromARGB(184, 209, 17,
                                             17)), // Set the desired background color
                                   ),
                                   onPressed: () {
                                     // Get.to(AddPlanningScreen());
                                   },
-                                  child: Text('Plannig'),
+                                  child: const Text('Plannig'),
                                 )
                               ],
                             ),
                     ),
                     planning!.isEmpty
-                        ? Column(
-                            children: const [
+                        ? const Column(
+                            children: [
                               SizedBox(height: 50),
                               Text(
                                   'Please Create tourist guid and plannig first',
@@ -785,7 +624,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                             children: [
                               const SizedBox(height: 60),
                               Container(
-                                decoration: BoxDecoration(
+                                decoration: const BoxDecoration(
                                   gradient: LinearGradient(
                                     begin: Alignment.topLeft,
                                     end: Alignment.bottomRight,
@@ -801,22 +640,16 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                                   style: ButtonStyle(
                                     backgroundColor:
                                         MaterialStateProperty.all<Color>(
-                                      Color.fromARGB(0, 236, 230, 230),
+                                      const Color.fromARGB(0, 236, 230, 230),
                                     ),
                                   ),
                                   onPressed: () {
-                                    //   Get.to(Planingtest(
-                                    //   touristGroup: selectedTouristGroup,
-                                    //   planning: selectedPlanning,
-                                    // ));
-                                    // Get.to(PlanningScreen(
-                                    //     selectedPlanning!.id, guid));
-                                    // Get.to(PushNotificationUpdateScreen());
+                                  
                                   },
                                   child: SizedBox(
                                     width: Get.width * 0.5,
                                     height: Get.height * 0.06,
-                                    child: Row(
+                                    child: const Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceAround,
                                       children: [
@@ -843,23 +676,16 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                                 style: ButtonStyle(
                                   backgroundColor:
                                       MaterialStateProperty.all<Color>(
-                                    Color.fromARGB(0, 236, 230, 230),
+                                    const Color.fromARGB(0, 236, 230, 230),
                                   ),
                                 ),
                                 onPressed: () {
-                                  //   Get.to(Planingtest(
-                                  //   touristGroup: selectedTouristGroup,
-                                  //   planning: selectedPlanning,
-                                  // ));
-                                  // Get.to(TravellerCalendarPage(
-                                  //   planning: selectedPlanning,
-                                  //   group: travller.touristGroupId,
-                                  // ));
+                               
                                 },
                                 child: SizedBox(
                                   width: Get.width * 0.5,
                                   height: Get.height * 0.06,
-                                  child: Row(
+                                  child: const Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceAround,
                                     children: [
@@ -881,24 +707,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                           ),
 
                     const SizedBox(height: 50),
-                    // ClockWidget(),
-                    // selectedTouristGuide?.agency?.mobile == null
-                    //     ? Container()
-                    //     : GestureDetector(
-                    //         onTap: () {
-                    //           launch(
-                    //               'tel:${selectedTouristGuide?.agency?.mobile ?? ""}');
-                    //         },
-                    //         child: Text(
-                    //           'Call   : ${selectedTouristGuide?.agency?.mobile ?? "h"}',
-                    //           style: TextStyle(
-                    //             fontWeight: FontWeight.bold,
-                    //             fontSize: 40,
-                    //             color: Color.fromARGB(255, 246, 242, 239),
-                    //             decoration: TextDecoration.underline,
-                    //           ),
-                    //         ),
-                    //       ),
+                    
                   ],
                 ),
               )
@@ -911,17 +720,14 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
 
   Widget bottomSheet() {
     return
-//  Container(padding:EdgeInsets.all(15),
-//       width: MediaQuery.of(context).size.width,
-//       child:
         Card(
-      margin: EdgeInsets.all(14),
+      margin: const EdgeInsets.all(14),
       shape: RoundedRectangleBorder(
-        side: BorderSide(color: Color.fromARGB(235, 79, 2, 2)),
+        side: const BorderSide(color: Color.fromARGB(235, 79, 2, 2)),
         borderRadius: BorderRadius.circular(15),
       ),
       child: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -933,7 +739,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
         ),
         height: Get.height * 0.25,
         width: MediaQuery.of(context).size.width,
-        margin: EdgeInsets.symmetric(
+        margin: const EdgeInsets.symmetric(
           horizontal: 2,
           vertical: 2,
         ),
@@ -941,7 +747,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
           children: <Widget>[
             Column(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 SvgPicture.asset(
@@ -950,7 +756,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                   width: 80,
                   // color: Color.fromARGB(255, 49, 8, 236),
                 ),
-                Row(
+                const Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -974,7 +780,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                     ),
                   ],
                 ),
-                Text(
+                const Text(
                   "For more Details ...",
                   style: TextStyle(
                       fontSize: 22.0,
@@ -982,7 +788,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 5,
             ),
             Column(
@@ -1000,7 +806,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                               child: Row(
                                 children: [
                                   TextButton.icon(
-                                    icon: Icon(
+                                    icon: const Icon(
                                       Icons.phone,
                                       color: Colors.white,
                                     ),
@@ -1010,36 +816,22 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                                     },
                                     label: Text(
                                         'Call   : ${selectedTouristGuide?.agency?.mobile ?? "h"}',
-                                        style: TextStyle(color: Colors.white)),
+                                        style: const TextStyle(color: Colors.white)),
                                   ),
-                                  // Text(
-
-                                  //   style: TextStyle(
-                                  //     fontWeight: FontWeight.bold,
-                                  //     fontSize: 10,
-                                  //     color: Color.fromARGB(255, 3, 9, 0),
-                                  //     decoration: TextDecoration.underline,
-                                  //   ),
-                                  // ),
+                                  
                                 ],
                               ),
                             ),
 
-                      // TextButton.icon(
-                      //   icon: Icon(Icons.phone),
-                      //   onPressed: () {
-
-                      //   },
-                      //   label: Text("Gallery"),
-                      // ),
+                     
                     ]),
                 selectedTouristGuide?.agency?.website != null
                     ? TextButton.icon(
-                        icon: Icon(Icons.assistant, color: Colors.white),
+                        icon: const Icon(Icons.assistant, color: Colors.white),
                         onPressed: () {
                           launch(selectedTouristGuide!.agency!.website!);
                         },
-                        label: Text(
+                        label: const Text(
                           "Web Site",
                           style: TextStyle(color: Colors.white),
                         ),

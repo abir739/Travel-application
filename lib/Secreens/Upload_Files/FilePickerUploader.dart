@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
@@ -6,56 +6,53 @@ import 'package:path/path.dart' as path;
 import 'dart:convert';
 import 'dart:async';
 import 'package:async/async.dart';
-import '../../constent.dart';
 import 'package:zenify_trip/login/login_Page.dart';
-import 'package:get/get.dart';
-class FileUploadScreen extends StatefulWidget {
-  @override
-  final String dynamicPath;
-  final String id;
-  final String fild;
-  final String object;
-  FileUploadScreen(
-      {required this.dynamicPath,
-      required this.fild,
-      required this.id,
-      required this.object}); // Constructor to receive the dynamic path
-  _FileUploadScreenState createState() => _FileUploadScreenState();
-}
+import '../../constent.dart';
 
-class _FileUploadScreenState extends State<FileUploadScreen> {
-  File? image;
-
-  Future<void> pickFile() async {
+class FilePickerUploader {
+  Future<String?> pickAndUploadFile({
+    required String dynamicPath,
+    required String id,
+    required String object,
+    required String field,
+  }) async {
     FilePickerResult? result =
-        await FilePicker.platform.pickFiles(allowMultiple: true);
+        await FilePicker.platform.pickFiles(allowMultiple: false,type: FileType.image);
 
     if (result != null) {
       for (PlatformFile file in result.files) {
         print('File picked: ${file.name}');
         String filePath = file.path!;
-        setState(() {
-          image = File(filePath);
-        });
-        await uploadFile(File(filePath));
+        File image = File(filePath);
+        String? uploadedFileName = await uploadFile(
+          file: image,
+          dynamicPath: dynamicPath,
+          object: object,id:id,
+          field: field,
+        );
         print('File uploaded successfully!');
-        // Close the current page and navigate back to the previous page
-        final newData =
-            "Data from FileUploadScreen"; // Replace with actual data
- Get.back(result: newData);
+
+        if (uploadedFileName != null) {
+          return uploadedFileName;
+        }
       }
     } else {
       // User canceled the picker
       print('User canceled the picker');
     }
+
+    return null; // Return null if no file was uploaded
   }
 
-  Future<void> uploadFile(File file) async {
+  Future<String?> uploadFile({
+    required File file,
+    required String dynamicPath,
+    required String object,
+    required String id,
+    required String field,
+  }) async {
     // Get the access token and baseUrl
     String? token = await storage.read(key: "access_token");
-
-    // final String apiUrl =
-    //     '${baseUrls}/api/activity-templates/${widget.activity.activityTemplate!.id}';
 
     try {
       // Create the multipart request
@@ -68,8 +65,6 @@ class _FileUploadScreenState extends State<FileUploadScreen> {
       request.headers.addAll({'Authorization': 'Bearer $token'});
 
       // Add the dynamic 'path' parameter to the request body
-      String dynamicPath = widget
-          .dynamicPath; // Access the dynamic path from the widget property
       request.fields['path'] = dynamicPath;
 
       // Add the file to the request
@@ -90,38 +85,42 @@ class _FileUploadScreenState extends State<FileUploadScreen> {
         if (fileNames != null && fileNames.isNotEmpty) {
           var fileName = fileNames[0]; // Assuming the first file name
           print('File uploaded successfully! File Name: $fileName');
-          print("${widget.object}");
-          print("${widget.id} api/users");
-          print("${baseUrls}");
+          print(object);
+          print('$id api/users');
+          print(baseUrls);
           // Now you can proceed with the PATCH request to update the image field
-          await updateImageField(fileName);
+          await updateImageField(fileName, object, id, field);
+          return fileName; // Return the uploaded file name
         }
       } else {
         print('Error uploading files : ${uploadResponse.statusCode}');
         throw Exception('Error uploading files : ${uploadResponse.statusCode}');
       }
-
-      // Remaining code for response handling...
     } catch (e) {
-      // Error handling...
+      print('Error uploading file: $e');
+      return null;
     }
   }
 
-  Future<void> updateImageField(String fileName) async {
+  Future<void> updateImageField(
+    String fileName,
+    String object,
+    String id,
+    String field,
+  ) async {
     // Get the access token and baseUrl
     String? token = await storage.read(key: "access_token");
-    // String? baseUrl = await storage.read(key: "baseurl");
-    final String apiUrl = '${baseUrls}/${widget.object}/${widget.id}';
 
     try {
-      print("${token} token");
+      final String apiUrl = '${baseUrls}/$object/$id';
+
       // Make the PATCH request to update the image field
       final logoUpdateResponse = await http.patch(
         Uri.parse(apiUrl),
         headers: {
           'Authorization': 'Bearer $token',
         },
-        body: {"${widget.fild}": fileName}, // Use the extracted file name here
+        body: {field: fileName}, // Use the extracted file name here
       );
 
       // Check the response status code for logo update
@@ -134,28 +133,4 @@ class _FileUploadScreenState extends State<FileUploadScreen> {
       print('Error updating logo: $e');
     }
   }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('File Upload Screen'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (image != null) Image.file(image!), // Display the picked image
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: pickFile,
-              child: Text('Pick and Upload File'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }
-
-// Note: Make sure to replace 'storage', 'baseUrls', and other necessary variables as per your application.

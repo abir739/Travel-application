@@ -8,7 +8,7 @@ import 'package:zenify_trip/register.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:timezone/data/latest.dart' as tzdata;
-import 'package:zenify_trip/traveller_Screens/Clientcalendar/TravellerFirstScreen.dart';
+import 'package:zenify_trip/traveller_Screens/Traveller-First-Screen.dart';
 import 'package:zenify_trip/traveller_Screens/Traveller-Provider.dart';
 import 'Controller/dependency_injection.dart';
 import 'ResetPasswordWithPhoneNumberScreen.dart';
@@ -16,7 +16,7 @@ import 'Secreens/Notification/NotificationCountNotifierProvider.dart';
 import 'Secreens/Notification/notificationlist.dart';
 import 'Secreens/Notifications/NotificationDetails.dart';
 import 'Secreens/TouristGroupProvider.dart';
-import 'Secreens/guidPlannig.dart';
+import 'guide_Screens/Guide_First_Page.dart';
 import 'constent.dart';
 import 'onesignal_handler.dart';
 
@@ -43,6 +43,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     OneSignalHandler.initialize(context);
+    OneSignalHandler.listenToIncomingSMS(context, OneSignalHandler.telephony);
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       home: SplashScreen(),
@@ -59,7 +60,9 @@ class MyApp extends StatelessWidget {
             ),
         // Add this route
         'SplashScreen': (context) => SplashScreen(), // Add this route
-        'FileUploadScreen': (context) => FileUploadScreen(dynamicPath: "",fild: "",object: "",id: ""),
+         'FileUploadScreen': (context) => FileUploadScreen(
+            dynamicPath: "", fild: "", object: "", id: ""),
+
         'GuideHome': (context) =>
             PlaningSecreen(), // Add this routeActivityDetailScreen
         'notification': (context) {

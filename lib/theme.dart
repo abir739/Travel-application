@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:zenify_trip/modele/constants/colors.dart';
-
+import 'modele/constants/colors.dart';
 
 ThemeData kAppTheme = ThemeData(
     focusColor: kAccentColor,
     primaryColor: kPrimaryColor,
     highlightColor: kHighlightColor,
     scaffoldBackgroundColor: kPrimaryColor,
-
-   
+    buttonBarTheme: ButtonBarThemeData(
+      buttonTextTheme:
+          ButtonTextTheme.primary, // Replace with your desired text theme
+    ),
+   elevatedButtonTheme:ElevatedButtonThemeData(style: ButtonStyle(
+    backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 152, 2, 152)),),), // Set the background color to blue
+  
   appBarTheme: AppBarTheme(
         backgroundColor:
           AppPrimaryColor, // Make the AppBar background transparent
@@ -73,7 +77,7 @@ ThemeData kAppTheme = ThemeData(
         fontSize: 14,
       ),
       subtitle1: TextStyle(
-        color: Color.fromARGB(255, 98, 2, 117),
+        color: Color.fromARGB(255, 27, 2, 168),
         fontWeight: FontWeight.w600,
         fontSize: 13,
       ),
