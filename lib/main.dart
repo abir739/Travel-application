@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
-import 'package:zenify_trip/Secreens/Upload_Files/FileUploadScreen.dart';
 import 'package:zenify_trip/login/RoleSelectionPage.dart';
 import 'package:zenify_trip/register.dart';
 import 'package:get/get.dart';
@@ -11,7 +10,6 @@ import 'package:timezone/data/latest.dart' as tzdata;
 import 'package:zenify_trip/traveller_Screens/Traveller-First-Screen.dart';
 import 'package:zenify_trip/traveller_Screens/Traveller-Provider.dart';
 import 'Controller/dependency_injection.dart';
-import 'ResetPasswordWithPhoneNumberScreen.dart';
 import 'Secreens/Notification/NotificationCountNotifierProvider.dart';
 import 'Secreens/Notification/notificationlist.dart';
 import 'Secreens/Notifications/NotificationDetails.dart';
@@ -28,8 +26,7 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (_) => NotificationCountNotifier()),
         ChangeNotifierProvider(create: (_) => TouristGroupProvider()),
-          ChangeNotifierProvider(
-      create: (context) => TravellerProvider()),
+        ChangeNotifierProvider(create: (context) => TravellerProvider()),
         // Add more providers as needed
       ],
       child: MyApp(),
@@ -43,28 +40,22 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     OneSignalHandler.initialize(context);
-    OneSignalHandler.listenToIncomingSMS(context, OneSignalHandler.telephony);
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       home: SplashScreen(),
       routes: {
-        'register': (context) => MyRegister(),
-        'resetPassword': (context) => ResetPasswordWithPhoneNumberScreen(),
+        'register': (context) => const MyRegister(),
         'login': (context) => const RoleSelectionPage(),
         'notificationScreen': (context) => NotificationScreen(
               groupsid: '',
             ),
-        'planning': (context) => PlaningSecreen(), // Add this route
-        'Traveller': (context) => TravellerFirstScreen(
+        'planning': (context) => const PlaningSecreen(), // Add this route
+        'Traveller': (context) => const TravellerFirstScreen(
               userList: [],
             ),
-        // Add this route
+// Add this route
         'SplashScreen': (context) => SplashScreen(), // Add this route
-         'FileUploadScreen': (context) => FileUploadScreen(
-            dynamicPath: "", fild: "", object: "", id: ""),
 
-        'GuideHome': (context) =>
-            PlaningSecreen(), // Add this routeActivityDetailScreen
         'notification': (context) {
           final args =
               Get.arguments; // Get the arguments passed when navigating
@@ -74,13 +65,9 @@ class MyApp extends StatelessWidget {
           final routname = args != null
               ? args['routename'] as String
               : null; // Extract the 'id' argument
-          final ObjectType = args != null
-              ? args['ObjectType'] as String
-              : null; // Extract the 'id' argument
-          return ActivityDetailScreen(
-            id: id,
-            ObjectType: ObjectType,
-          );
+          print("ID from route: $id"); // Print the 'id'
+          print(" routename: $routname"); // Print the 'id'
+          return ActivityDetailScreen(id: id);
         } // Add this routeActivityDetailScreen
       },
       initialRoute: 'SplashScreen',
@@ -96,65 +83,8 @@ class MyApp extends StatelessWidget {
     FlutterSecureStorage storage = FlutterSecureStorage();
     return await storage.read(key: "Role");
   }
-
-//   Future<String?> _getInitialRoute() async {
-//     // Use the appropriate method to access the storage
-//     String? token = await _getToken();
-//     String? role = await _getRole();
-
-//     if (token != null && role == "Administrator") {
-//       return 'planning';
-//     } else if (token != null && role != "Administrator") {
-//       return 'Traveller';
-//     } else {
-//       return 'login';
-//     }
-//   }
 }
-// class SplashScreen extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return FutureBuilder<String>(
-//       future: _getInitialRoute(),
-//       builder: (context, snapshot) {
-//         if (snapshot.connectionState == ConnectionState.waiting) {
-//           return CircularProgressIndicator();
-//         } else if (snapshot.hasError) {
-//           return Text('Error: ${snapshot.error}');
-//         } else {
-//           String initialRoute = snapshot.data!;
-//           WidgetsBinding.instance!.addPostFrameCallback((_) {
-//             Navigator.of(context).pushReplacementNamed(initialRoute);
-//           });
-//           return Scaffold(); // Return an empty Scaffold while navigating
-//         }
-//       },
-//     );
-//   }
 
-//   Future<String> _getInitialRoute() async {
-//     String? token = await _getToken();
-//     String? role = await _getRole();
-
-//     if (token != null && role == "Administrator") {
-//       return 'planning';
-//     } else if (token != null && role != "Administrator") {
-//       return 'Traveller';
-//     } else {
-//       return 'login';
-//     }
-//   }
-// }
-
-// Future<String?> _getToken() async {
-//   FlutterSecureStorage storage = FlutterSecureStorage();
-//   return await storage.read(key: "access_token");
-// }
-
-// Future<String?> _getRole() async {
-//   FlutterSecureStorage storage = FlutterSecureStorage();
-//   return await storage.read(key: "Role");
-// }
 class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

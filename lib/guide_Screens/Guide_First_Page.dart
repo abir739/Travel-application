@@ -92,7 +92,6 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
     OneSignal.shared.setAppId(
       oneSignalAppId,
     );
-
   }
 
   Future<Traveller> _loadDataTraveller() async {
@@ -150,6 +149,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
       }).catchError((error) {
         print("Error creating tags: $error");
       });
+
       OneSignal.shared
           .setSubscriptionObserver((OSSubscriptionStateChanges changes) {
         print("SUBSCRIPTION STATE CHANGED: ${changes.jsonRepresentation()}");
@@ -180,8 +180,6 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
     });
 
     final data = await httpHandlerPlanning.fetchData("/api/plannings");
-
-
 
     setState(() {
       print('$data data1');
@@ -335,7 +333,6 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
             ],
           ),
         );
-        
       } else {
         return Scaffold(
           body: Stack(
@@ -361,7 +358,6 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                         'assets/Frame.svg',
                         height: 80,
                         width: 80,
-                      
                       ),
                     )
                   ],
@@ -384,20 +380,21 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                           ? ElevatedButton(
                               style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty
-                                    .all<Color>(const Color.fromARGB(184, 209, 17,
+                                    .all<Color>(const Color.fromARGB(
+                                        184,
+                                        209,
+                                        17,
                                         17)), // Set the desired background color
                               ),
-                              onPressed: () {
-                                
-                              },
+                              onPressed: () {},
                               child: const Text('you are not effect  group'),
                             )
                           : Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 DropdownButton<TouristGroup>(
-                                  borderRadius:
-                                      const BorderRadius.all(Radius.circular(20)),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(20)),
                                   dropdownColor:
                                       const Color.fromARGB(255, 210, 151, 3),
                                   iconEnabledColor:
@@ -422,13 +419,10 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                                                   100, // Adjust this width as needed
 
                                               child: Text(
-                                                
                                                 touristGroup.name ??
                                                     'i known grop',
-                                                
                                                 overflow: TextOverflow.ellipsis,
                                                 maxLines: 3,
-
                                                 style: const TextStyle(
                                                     fontSize: 16,
                                                     color: Color.fromARGB(
@@ -487,12 +481,13 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                                 ElevatedButton(
                                   style: ButtonStyle(
                                     backgroundColor: MaterialStateProperty
-                                        .all<Color>(const Color.fromARGB(184, 209, 17,
+                                        .all<Color>(const Color.fromARGB(
+                                            184,
+                                            209,
+                                            17,
                                             17)), // Set the desired background color
                                   ),
-                                  onPressed: () {
-                                  
-                                  },
+                                  onPressed: () {},
                                   child: const Text('new Goup'),
                                 ),
                                 FutureBuilder<int>(
@@ -502,7 +497,6 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                                   builder: (context, snapshot) {
                                     if (snapshot.connectionState ==
                                         ConnectionState.waiting) {
-                                 
                                       return const CircularProgressIndicator(
                                           strokeWidth: 1.0);
                                     }
@@ -523,7 +517,6 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                             ),
                     ),
                     const SizedBox(height: 32),
-
                     Container(
                       decoration: const BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -536,7 +529,10 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                           ? ElevatedButton(
                               style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty
-                                    .all<Color>(const Color.fromARGB(184, 209, 17,
+                                    .all<Color>(const Color.fromARGB(
+                                        184,
+                                        209,
+                                        17,
                                         17)), // Set the desired background color
                               ),
                               onPressed: () {
@@ -556,10 +552,10 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                                         const Color.fromARGB(255, 210, 151, 3),
                                     iconEnabledColor:
                                         const Color.fromARGB(161, 0, 0, 0),
-                                    iconDisabledColor:
-                                        const Color.fromARGB(255, 158, 158, 158),
-                                    borderRadius:
-                                        const BorderRadius.all(Radius.circular(20)),
+                                    iconDisabledColor: const Color.fromARGB(
+                                        255, 158, 158, 158),
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(20)),
                                     value: selectedPlanning,
                                     items: planning!.map((p) {
                                       return DropdownMenuItem<
@@ -600,7 +596,10 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                                 ElevatedButton(
                                   style: ButtonStyle(
                                     backgroundColor: MaterialStateProperty
-                                        .all<Color>(const Color.fromARGB(184, 209, 17,
+                                        .all<Color>(const Color.fromARGB(
+                                            184,
+                                            209,
+                                            17,
                                             17)), // Set the desired background color
                                   ),
                                   onPressed: () {
@@ -643,9 +642,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                                       const Color.fromARGB(0, 236, 230, 230),
                                     ),
                                   ),
-                                  onPressed: () {
-                                  
-                                  },
+                                  onPressed: () {},
                                   child: SizedBox(
                                     width: Get.width * 0.5,
                                     height: Get.height * 0.06,
@@ -679,9 +676,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                                     const Color.fromARGB(0, 236, 230, 230),
                                   ),
                                 ),
-                                onPressed: () {
-                               
-                                },
+                                onPressed: () {},
                                 child: SizedBox(
                                   width: Get.width * 0.5,
                                   height: Get.height * 0.06,
@@ -705,9 +700,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                               ),
                             ],
                           ),
-
                     const SizedBox(height: 50),
-                    
                   ],
                 ),
               )
@@ -719,8 +712,7 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
   }
 
   Widget bottomSheet() {
-    return
-        Card(
+    return Card(
       margin: const EdgeInsets.all(14),
       shape: RoundedRectangleBorder(
         side: const BorderSide(color: Color.fromARGB(235, 79, 2, 2)),
@@ -816,14 +808,12 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                                     },
                                     label: Text(
                                         'Call   : ${selectedTouristGuide?.agency?.mobile ?? "h"}',
-                                        style: const TextStyle(color: Colors.white)),
+                                        style: const TextStyle(
+                                            color: Colors.white)),
                                   ),
-                                  
                                 ],
                               ),
                             ),
-
-                     
                     ]),
                 selectedTouristGuide?.agency?.website != null
                     ? TextButton.icon(

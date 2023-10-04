@@ -11,6 +11,7 @@ import 'package:zenify_trip/guide_Screens/tasks/tasks_Calendar.dart';
 import 'package:zenify_trip/guide_Screens/travellers_list_screen.dart';
 import 'package:zenify_trip/modele/Event/Event.dart';
 import 'package:zenify_trip/modele/TouristGuide.dart';
+import 'package:zenify_trip/modele/activitsmodel/activitesmodel.dart';
 import '../../modele/accommodationsModel/accommodationModel.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -36,8 +37,10 @@ class _PlanningScreenState extends State<PlanningScreen> {
   String? date;
   double? _width = 0.0, cellWidth = 0.0;
   String _string = '';
+  List<Activity> activityList = [];
   List<Accommodations> accommodationList = [];
   List<Transport> transferList = [];
+
   int selectedIndex = 0;
   double activityProgress = 0.0;
   Map<CalendarEvent, Color> eventColors = {};
@@ -69,14 +72,47 @@ class _PlanningScreenState extends State<PlanningScreen> {
     setState(() {
       print("data refreshed");
       transfersList = transfersList1;
-      calendarDataSource = _getCalendarDataSources(transfersList1);
+      calendarDataSource = _getCalendarDataSources(
+          accommodationList, activityList, transferList);
     });
   }
 
   List<CalendarEvent> convertToCalendarEvents(
+    List<Accommodations> accommodations,
+    List<Activity> activities,
     List<Transport> transfers,
   ) {
     List<CalendarEvent> CalendarEvents = [];
+    // Convert accommodations to events
+    for (var accommodation in accommodations) {
+      CalendarEvents.add(CalendarEvent(
+        title: "Accom: ${accommodation.note}",
+        description: "A-T",
+        id: accommodation.id,
+        startTime: accommodation.date,
+        endTime: accommodation.date!
+            .add(Duration(days: accommodation.countNights ?? 0)),
+        color: Color.fromARGB(255, 25, 44, 151),
+      ));
+    }
+
+    // Convert activities to events
+    for (var activity in activities) {
+      CalendarEvents.add(CalendarEvent(
+        displayNameTextStyle: TextStyle(
+          fontStyle: FontStyle.italic,
+          fontSize: 10,
+          fontWeight: FontWeight.w400,
+        ),
+        title: "A-c :${activity.name}",
+        id: activity.id,
+        description: "Activity ${activity.name}",
+        startTime: activity.departureDate,
+        endTime: activity.returnDate, color: Color.fromARGB(255, 121, 1, 125),
+        // cardcolor: Color(int.parse(activity.activityTemplate!.primaryColor!.replaceAll("#", "0x")))
+      ));
+    }
+
     for (var transfer in transfers) {
       CalendarEvents.add(CalendarEvent(
         title: "T-R ${transfer.note}",
@@ -100,13 +136,16 @@ class _PlanningScreenState extends State<PlanningScreen> {
 
   Future<void> fetchData() async {
     try {
+      activityList = await fetchActivities(
+          "/api/plannings/activitiestransfertaccommondation/touristGuidId/${widget.guid?.id}");
+      accommodationList = await fetchAccommodations(
+          "/api/plannings/activitiestransfertaccommondation/047c80d9-14c8-4735-b355-d8f5beaa90e6");
+
       transferList = await fetchTransfers(
           "/api/transfers/touristGuidId/${widget.guid?.id}");
       setState(() {
         List<CalendarEvent> events = convertToCalendarEvents(
-//             accommodationList, activityList
-// ,
-            transferList);
+            accommodationList, activityList, transferList);
       });
     } catch (e) {
       // Handle error
@@ -116,11 +155,19 @@ class _PlanningScreenState extends State<PlanningScreen> {
 
   Future<Map<String, List<dynamic>>> fetchDataAndOrganizeEvents() async {
     try {
-      transfersList = await fetchTransfers(
-        "/api/transfers/touristGuidId/${widget.guid!.id}",
+      List<Activity> activitiesList = await fetchActivities(
+        "/api/plannings/activitiestransfertaccommondation/touristGuidId/${widget.guid?.id}",
+      );
+      List<Accommodations> accommodationsList = await fetchAccommodations(
+        "/api/plannings/activitiestransfertaccommondation/047c80d9-14c8-4735-b355-d8f5beaa90e6",
+      );
+      List<Transport> transfersList = await fetchTransfers(
+        "/api/plannings/activitiestransfertaccommondation/touristGuidId/${widget.guid?.id}",
       );
 
       List<CalendarEvent> CalendarEvents = convertToCalendarEvents(
+        accommodationsList,
+        activitiesList,
         transfersList,
       );
 
@@ -144,8 +191,8 @@ class _PlanningScreenState extends State<PlanningScreen> {
       }
 
       return {
-        // 'activities': activitiesList,
-        // 'accommodations': accommodationsList,
+        'activities': activitiesList,
+        'accommodations': accommodationsList,
         'transfers': transfersList,
       };
     } catch (e) {
@@ -162,6 +209,37 @@ class _PlanningScreenState extends State<PlanningScreen> {
     });
 
     return CustomCalendarDataSource(CalendarEvents, eventColors);
+  }
+
+  Future<List<Activity>> fetchActivities(String url) async {
+    String? token = await storage.read(key: "access_token");
+    String? baseUrl = await storage.read(key: "baseurl");
+
+    String formatter(String url) {
+      return baseUrls + url;
+    }
+
+    url = formatter(url);
+
+    List<Activity> activityList = [];
+
+    final response = await http.get(headers: {
+      "Authorization": "Bearer $token",
+      "Accept": "application/json, text/plain, */*",
+      "Accept-Encoding": "gzip, deflate, br",
+      "Accept-Language": "en-US,en;q=0.9",
+      "Connection": "keep-alive",
+    }, Uri.parse(url));
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      var data = jsonDecode(response.body);
+      List<dynamic> resultList = data['activities'];
+      print("resultList $resultList");
+      activityList = resultList.map((e) => Activity.fromJson(e)).toList();
+      return activityList;
+    } else {
+      throw Exception('${response.statusCode} err');
+    }
   }
 
   Future<List<Accommodations>> fetchAccommodations(String url) async {
@@ -212,8 +290,40 @@ class _PlanningScreenState extends State<PlanningScreen> {
   }
 
   CalendarDataSource<Object?> _getCalendarDataSources(
-      List<Transport> transports) {
+    List<Accommodations> accommodations,
+    List<Activity> activities,
+    List<Transport> transports,
+  ) {
     List<CalendarEvent> calendarEvents = [];
+    // Convert accommodations to events
+    for (var accommodation in accommodations) {
+      calendarEvents.add(CalendarEvent(
+        title: "Accom: ${accommodation.note}",
+        description: "A-T",
+        id: accommodation.id,
+        startTime: accommodation.date,
+        endTime: accommodation.date!
+            .add(Duration(days: accommodation.countNights ?? 0)),
+        color: Color.fromARGB(255, 25, 44, 151),
+      ));
+    }
+
+    // Convert activities to events
+    for (var activity in activities) {
+      calendarEvents.add(CalendarEvent(
+        displayNameTextStyle: TextStyle(
+          fontStyle: FontStyle.italic,
+          fontSize: 10,
+          fontWeight: FontWeight.w400,
+        ),
+        title: "A-c :${activity.name}",
+        id: activity.id,
+        description: "Activity ${activity.name}",
+        startTime: activity.departureDate,
+        endTime: activity.returnDate, color: Color.fromARGB(255, 121, 1, 125),
+        // cardcolor: Color(int.parse(activity.activityTemplate!.primaryColor!.replaceAll("#", "0x")))
+      ));
+    }
 
     for (Transport transfer in transports) {
       print(transports);

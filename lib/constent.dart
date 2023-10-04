@@ -1,12 +1,7 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-//const String baseUrls = "https://api.zenify-trip.continuousnet.com";
-const String baseUrls = "http://192.168.1.92:3000";
-final String oneSignalAppId = 'ce7f9114-b051-4672-a9c5-0eec08d625e8';
-final accountSid = 'ACc47bfeda04bc38275dded333a92666bc';
-final authToken = '70b4d4ec6bec695f4c0dfd9205a9e5b1';
-final twilioNumber = '+12564154864';
-
+const String baseUrls = "https://api.zenify-trip.continuousnet.com";
+//const String baseUrls = "http://192.168.152.143:3000";
 Future<String?> getBaseUrl() async {
   final storage = const FlutterSecureStorage();
   return await storage.read(key: "baseurl");

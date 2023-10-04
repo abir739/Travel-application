@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:zenify_trip/Secreens/Upload_Files/FilePickerUploader.dart';
 import 'package:zenify_trip/login/login_Page.dart';
 import '../../NetworkHandler.dart';
 import '../../constent.dart';
@@ -12,7 +13,6 @@ import '../../modele/planningmainModel.dart';
 import 'CreatProfile.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:zenify_trip/Secreens/Upload_Files/FileUploadScreen.dart';
 import 'package:get/get.dart';
 
 String? baseUrl = "";
@@ -25,6 +25,7 @@ class MainProfile extends StatefulWidget {
 }
 
 class _MainProfileState extends State<MainProfile> {
+  FilePickerUploader uploader = FilePickerUploader();
   bool circular = true;
   String token = '';
   final httpUserHandler = HttpUserHandler();
@@ -247,95 +248,306 @@ class _MainProfileState extends State<MainProfile> {
     }
 
     return Stack(
-      children: <Widget>[
-        Ink(
-          height: 200,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: NetworkImage(
-                  'https://img.freepik.com/free-vector/travel-time-typography-design_1308-90406.jpg?size=626&ext=jpg&ga=GA1.2.732483231.1691056791&semt=ais'),
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-        Ink(
-          height: 200,
-          decoration: const BoxDecoration(
-            color: Colors.black38,
-          ),
-        ),
-        GestureDetector(
-          onTap: _updateProfilePicture,
-          // onTap: () async {
-          //   final newData = await Get.to(FileUploadScreen(
-          //       dynamicPath: 'profile',
-          //       id: selectedUser?.id ?? "",
-          //       fild: 'picture',
-          //       object: "api/users"));
-          //   if (newData != null) {
-          //     // You can use newData here
-          //     print("Received data from FileUploadScreen: $newData");
-          //     setState(() {
-          //       _onRefresh();
-          //     });
-          //   } else {
-          //     // Handle the case where newData is null
-          //     print("No data received from FileUploadScreen");
-          //   }
-          // },
+//       children: <Widget>[
+//         Ink(
+//           height: 200,
+//           decoration: const BoxDecoration(
+//             image: DecorationImage(
+//               image: selectedUser?.picture != null
+//       ? Image.network(
+//           'https://img.freepik.com/free-vector/travel-time-typography-design_1308-99359.jpg?size=626&ext=jpg&ga=GA1.2.732483231.1691056791&semt=ais',
+//           fit: BoxFit.fitWidth,
+//         )
+//       : Image.network(
+//           '${baseUrls}/assets/uploads/traveller/${selectedUser?.picture}',
+//           fit: BoxFit.cover,
+//         ),
+//               fit: BoxFit.cover,
+//             ),
+//           ),
+//        Positioned(
+//               bottom: 20.0,
+//               right: 20.0,
+//               child: InkWell(
+//                 onTap: () async {
+//                   String? newData = await uploader.pickAndUploadFile(
+//                     dynamicPath: 'traveller', // Replace with your dynamic path
+//                     id: '${selectedUser?.id}', // Replace with your id
+//                     object: 'api/users', // Replace with your object
+//                     field: 'picture', // Replace with your field
+//                   );
 
-          child: Container(
-            width: double.infinity,
-            margin: const EdgeInsets.only(top: 140),
-            child: Column(
-              children: <Widget>[
-                Card(
-                  elevation: 2,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(100),
+//                   if (newData != null) {
+//                     // You can use newData here
+//                     print("Received data from FileUploadScreen: $newData");
+//                     setState(() {
+//                       _onRefresh();
+//                     });
+//                   } else {
+//                     // Handle the case where newData is null
+//                     print("No data received from FileUploadScreen");
+//                   }
+//                 },
+//                 child: Icon(
+//                   Icons.camera_sharp,
+//                   color: Color.fromARGB(149, 241, 244, 243),
+//                   size: 28.0,
+//                 ),
+//               ),
+//             ),
+//         ),
+//         Ink(
+//           height: 200,
+//           decoration: const BoxDecoration(
+//             color: Colors.black38,
+//           ),
+//         ),
+//         GestureDetector(
+//           // onTap: _updateProfilePicture,
+//           onTap: () async {
+//             String? uploadedFileName = await uploader.pickAndUploadFile(
+//               dynamicPath: 'selectedUser', // Replace with your dynamic path
+//               id: "${selectedUser?.id}", // Replace with your id
+//               object: 'api/users', // Replace with your object
+//               field: 'picture', // Replace with your field
+//             );
+
+//             if (uploadedFileName != null) {
+//               // The file was uploaded successfully, and uploadedFileName contains the file name.
+//               setState(() {
+//                 _onRefresh();
+//               });
+//               print('Uploaded file name: $uploadedFileName');
+//             } else {
+//               // No file was uploaded or an error occurred during the upload process.
+//               print('File uploadedFileName.');
+//               setState(() {
+//                 _onRefresh();
+//               });
+//             }
+//           },
+
+//           child: Container(
+//             width: double.infinity,
+//             margin: const EdgeInsets.only(top: 140),
+//             child: Column(
+//               children: <Widget>[
+//                 Card(
+//                   elevation: 2,
+//                   shape: RoundedRectangleBorder(
+//                     borderRadius: BorderRadius.circular(100),
+//                   ),
+//                   color: Colors.grey.shade500,
+//                   child: Container(
+//                     width: 150,
+//                     height: 150,
+//                     decoration: BoxDecoration(
+//                       borderRadius: BorderRadius.circular(100),
+//                       border: Border.all(
+//                         color: Colors.white,
+//                         width: 6.0,
+//                       ),
+//                     ),
+//                     child: ClipRRect(
+//                       borderRadius: BorderRadius.circular(80),
+//                       child: ClipRRect(
+//                         borderRadius: BorderRadius.circular(80),
+//  child: selectedUser?.picture == null
+//                         ? CircleAvatar(
+//                             radius: 50,
+//                             backgroundImage: Image.network(
+//                               'https://img.freepik.com/free-vector/travel-time-typography-design_1308-99359.jpg?size=626&ext=jpg&ga=GA1.2.732483231.1691056791&semt=ais',
+//                               fit: BoxFit.cover,
+//                             ).image,
+//                           )
+//                         : CircleAvatar(
+//                             radius: 50,
+//                             backgroundImage: Image.network(
+//                               '${baseUrls}/assets/uploads/traveller/${selectedUser?.picture}',
+//                               fit: BoxFit.cover,
+//                             ).image,
+//                           ),
+//                   ),
+//                   Positioned(
+//                     bottom: 30.0,
+//                     right: 10.0,
+//                     child: InkWell(
+//                       onTap: () async {
+//                         String? uploadedFileName =
+//                             await uploader.pickAndUploadFile(
+//                           dynamicPath:
+//                               'traveller', // Replace with your dynamic path
+//                           id: "${selectedUser?.id}", // Replace with your id
+//                           object: 'api/users', // Replace with your object
+//                           field: 'picture', // Replace with your field
+//                         );
+
+//                         if (uploadedFileName != null) {
+//                           // The file was uploaded successfully, and uploadedFileName contains the file name.
+//                           setState(() {
+//                             _onRefresh();
+//                           });
+//                           print('Uploaded file name: $uploadedFileName');
+//                         } else {
+//                           // No file was uploaded or an error occurred during the upload process.
+//                           print('File uploadedFileName.');
+//                           setState(() {
+//                             _onRefresh();
+//                           });
+//                         }
+//                       },
+//                       child: Icon(
+//                         Icons.camera_alt,
+//                         color: Color.fromARGB(223, 134, 137, 137),
+//                         size: 28.0,
+//                       ),
+//                     ),
+//                   ),
+//                 ]),
+//               ),
+//             ),
+//                   ),
+//                 ),
+//               ],
+
+      children: <Widget>[
+        Stack(
+          clipBehavior: Clip.none,
+          alignment: Alignment.center,
+          children: [
+            Ink(
+              height: Get.height * 0.30,
+              width: Get.width * 1.7,
+              decoration: BoxDecoration(
+                color: Colors.blue, // Set the background color
+                borderRadius: BorderRadius.circular(10.0), // Set border radius
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2), // Set shadow color
+                    blurRadius: 5.0, // Set shadow blur radius
                   ),
-                  color: Colors.grey.shade500,
-                  child: Container(
-                    width: 150,
-                    height: 150,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
-                      border: Border.all(
-                        color: Colors.white,
-                        width: 6.0,
-                      ),
+                ],
+              ),
+              child: selectedUser?.picture == null
+                  ? Image.network(
+                      'https://img.freepik.com/free-vector/travel-time-typography-design_1308-99359.jpg?size=626&ext=jpg&ga=GA1.2.732483231.1691056791&semt=ais',
+                      fit: BoxFit.fitWidth,
+                    )
+                  : Image.network(
+                      '$baseUrls/assets/uploads/traveller/${selectedUser?.picture}',
+                      fit: BoxFit.cover,
                     ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(80),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(80),
-                        // child: selectedUser?.picture != null
-                        //     ? Image.network(
-                        //         selectedUser?.picture ??
-                        //             'https://img.freepik.com/free-vector/travel-time-typography-design_1308-99359.jpg?size=626&ext=jpg&ga=GA1.2.732483231.1691056791&semt=ais',
-                        //         width: 80,
-                        //         height: 80,
-                        //         fit: BoxFit.fill,
-                        //       )
-                        //     : Image.network(
-                        //         '${baseUrls}/assets/uploads/profil/${selectedUser?.picture}',
-                        //         fit: BoxFit.cover,
-                        //       ),
-                        child: Image.network(
-                          selectedUser?.picture ??
-                              'https://img.freepik.com/free-vector/travel-time-typography-design_1308-99359.jpg?size=626&ext=jpg&ga=GA1.2.732483231.1691056791&semt=ais',
-                          width: 80,
-                          height: 80,
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
             ),
-          ),
-        ),
+            Ink(
+              height: 200,
+              decoration: const BoxDecoration(
+                color: Colors.black38,
+              ),
+            ),
+            Positioned(
+              bottom: 20.0,
+              right: 20.0,
+              child: InkWell(
+                onTap: () async {
+                  String? newData = await uploader.pickAndUploadFile(
+                    dynamicPath: 'traveller', // Replace with your dynamic path
+                    id: '${selectedUser?.id}', // Replace with your id
+                    object: 'api/users', // Replace with your object
+                    field: 'picture', // Replace with your field
+                  );
+
+                  if (newData != null) {
+                    // You can use newData here
+                    print("Received data from FileUploadScreen: $newData");
+                    setState(() {
+                      _onRefresh();
+                    });
+                  } else {
+                    // Handle the case where newData is null
+                    print("No data received from FileUploadScreen");
+                  }
+                },
+                child: const Icon(
+                  Icons.edit,
+                  color: Color.fromARGB(146, 7, 7, 7),
+                  size: 30.0,
+                ),
+              ),
+            ),
+            Ink(
+              height: 200,
+              decoration: const BoxDecoration(
+                color: Colors.black38,
+              ),
+            ),
+            Positioned(
+              top: 30,
+              bottom: 10.0,
+              left: 110,
+              child: Align(
+                alignment: Alignment.center,
+                child: Stack(clipBehavior: Clip.none, children: [
+                  Container(
+                    padding: const EdgeInsets.all(
+                        6.0), // Adjust the padding values as needed
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Color.fromARGB(197, 255, 255, 255),
+                    ),
+                    child: selectedUser?.picture == null
+                        ? CircleAvatar(
+                            radius: 80,
+                            backgroundImage: Image.network(
+                              'https://img.freepik.com/free-vector/travel-time-typography-design_1308-99359.jpg?size=626&ext=jpg&ga=GA1.2.732483231.1691056791&semt=ais',
+                              fit: BoxFit.cover,
+                            ).image,
+                          )
+                        : CircleAvatar(
+                            radius: 80,
+                            backgroundImage: Image.network(
+                              '$baseUrls/assets/uploads/traveller/${selectedUser?.picture}',
+                              fit: BoxFit.cover,
+                            ).image,
+                          ),
+                  ),
+                  Positioned(
+                    bottom: 40.0,
+                    right: 150.0,
+                    left: 130,
+                    child: InkWell(
+                      onTap: () async {
+                        String? newData = await uploader.pickAndUploadFile(
+                          dynamicPath:
+                              'traveller', // Replace with your dynamic path
+                          id: '${selectedUser?.id}', // Replace with your id
+                          object: 'api/users', // Replace with your object
+                          field: 'picture', // Replace with your field
+                        );
+
+                        if (newData != null) {
+                          // You can use newData here
+                          print(
+                              "Received data from FileUploadScreen: $newData");
+                          setState(() {
+                            _onRefresh();
+                          });
+                        } else {
+                          // Handle the case where newData is null
+                          print("No data received from FileUploadScreen");
+                        }
+                      },
+                      // child: const Icon(
+                      //   Icons.camera_sharp,
+                      //   color: Color.fromARGB(147, 7, 7, 7),
+                      //   size: 28.0,
+                      // ),
+                    ),
+                  ),
+                ]),
+              ),
+            ),
+          ],
+        )
       ],
     );
   }
