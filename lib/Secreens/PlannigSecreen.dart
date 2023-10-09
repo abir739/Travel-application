@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:zenify_trip/Secreens/Profile/User_Profil.dart';
-import '../constent.dart';
+import '../services/constent.dart';
 import '../modele/HttpUserHandler.dart';
 import '../modele/activitsmodel/activitesmodel.dart';
 import '../modele/activitsmodel/activityTempModel.dart';

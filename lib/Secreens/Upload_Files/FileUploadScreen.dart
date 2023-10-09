@@ -6,7 +6,7 @@ import 'package:path/path.dart' as path;
 import 'dart:convert';
 import 'dart:async';
 import 'package:async/async.dart';
-import '../../constent.dart';
+import '../../services/constent.dart';
 import 'package:zenify_trip/login/login_Page.dart';
 import 'package:get/get.dart';
 class FileUploadScreen extends StatefulWidget {

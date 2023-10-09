@@ -9,7 +9,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:zenify_trip/modele/traveller/TravellerModel.dart';
 
 
-import '../constent.dart';
+import '../services/constent.dart';
 
 class HTTPHandlerTravellerbyId {
 

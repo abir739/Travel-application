@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-import 'package:zenify_trip/constent.dart';
+import 'package:zenify_trip/services/constent.dart';
 import 'package:zenify_trip/modele/tasks/taskModel.dart';
 
 class TaskDataSource extends CalendarDataSource {

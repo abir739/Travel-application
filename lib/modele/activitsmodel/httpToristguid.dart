@@ -7,7 +7,7 @@ import 'package:zenify_trip/modele/TouristGuide.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 
-import '../../constent.dart';
+import '../../services/constent.dart';
 
 class HTTPHandlerhttpToristguid {
   Timer? timer;

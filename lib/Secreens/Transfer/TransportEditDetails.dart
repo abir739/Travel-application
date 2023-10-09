@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:zenify_trip/constent.dart';
+import 'package:zenify_trip/services/constent.dart';
 import 'package:zenify_trip/modele/transportmodel/transportModel.dart';
 import 'package:intl/intl.dart';
 

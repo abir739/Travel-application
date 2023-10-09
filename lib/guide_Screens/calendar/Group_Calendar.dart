@@ -11,7 +11,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:zenify_trip/modele/transportmodel/transportModel.dart';
 import 'package:flutter_svg/svg.dart';
-import '../../constent.dart';
+import '../../services/constent.dart';
 import '../../modele/planningmainModel.dart';
 
 class GroupCalendarScreen extends StatefulWidget {

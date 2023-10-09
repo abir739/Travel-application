@@ -11,7 +11,7 @@ import 'package:zenify_trip/guide_Screens/Guide_First_Page.dart';
 import 'package:zenify_trip/modele/activitsmodel/activityTempModel.dart';
 import 'package:zenify_trip/modele/agance.dart';
 
-import '../constent.dart';
+import '../services/constent.dart';
 import '../modele/HttpActivityTemp.dart';
 import '../modele/HttpAgancy.dart';
 import '../modele/HttpPlaning.dart';

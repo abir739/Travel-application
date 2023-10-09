@@ -15,7 +15,7 @@ import 'Secreens/Notification/notificationlist.dart';
 import 'Secreens/Notifications/NotificationDetails.dart';
 import 'Secreens/TouristGroupProvider.dart';
 import 'guide_Screens/Guide_First_Page.dart';
-import 'constent.dart';
+import 'services/constent.dart';
 import 'onesignal_handler.dart';
 
 void main() {

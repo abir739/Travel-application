@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:zenify_trip/constent.dart';
+import 'package:zenify_trip/services/constent.dart';
 
 import 'package:zenify_trip/modele/transportmodel/transportModel.dart';
 

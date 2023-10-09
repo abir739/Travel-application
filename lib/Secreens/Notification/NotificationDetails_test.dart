@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zenify_trip/modele/TouristGuide.dart';
 
-import '../../constent.dart';
+import '../../services/constent.dart';
 import '../../modele/activitsmodel/httpTransportid.dart';
 import '../../modele/activitsmodel/pushnotificationmodel.dart';
 import '../../modele/httpNotificationId.dart';

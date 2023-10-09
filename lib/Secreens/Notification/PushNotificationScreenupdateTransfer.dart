@@ -10,7 +10,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 
-import '../../constent.dart';
+import '../../services/constent.dart';
 import '../../modele/TouristGuide.dart';
 import '../../modele/activitsmodel/httpActivites.dart';
 import '../../modele/activitsmodel/httpToristGroup.dart';

@@ -5,7 +5,7 @@ import 'package:flutter_country_picker_nm/flutter_country_picker_nm.dart';
 import 'package:http/http.dart' as http;
 
 import 'ResetPasswordScreen .dart';
-import 'constent.dart';
+import 'services/constent.dart';
 
 class ResetPasswordWithPhoneNumberScreen extends StatefulWidget {
   const ResetPasswordWithPhoneNumberScreen({Key? key}) : super(key: key);

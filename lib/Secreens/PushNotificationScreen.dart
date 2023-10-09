@@ -6,7 +6,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:zenify_trip/modele/touristGroup.dart';
 // ignore: depend_on_referenced_packages
 
-import '../constent.dart';
+import '../services/constent.dart';
 import '../modele/TouristGuide.dart';
 import '../modele/activitsmodel/httpActivites.dart';
 import '../modele/activitsmodel/httpToristGroup.dart';

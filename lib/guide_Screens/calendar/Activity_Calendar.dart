@@ -20,7 +20,7 @@ import 'package:get/get.dart';
 import '../../modele/transportmodel/transportModel.dart';
 import 'package:zenify_trip/Secreens/CustomCalendarDataSource.dart';
 import 'package:flutter_svg/svg.dart';
-import '../../constent.dart';
+import '../../services/constent.dart';
 import 'package:zenify_trip/Secreens/Profile/User_Profil.dart';
 
 class PlanningScreen extends StatefulWidget {
@@ -137,7 +137,7 @@ class _PlanningScreenState extends State<PlanningScreen> {
   Future<void> fetchData() async {
     try {
       activityList = await fetchActivities(
-          "/api/plannings/activitiestransfertaccommondation/touristGuidId/${widget.guid?.id}");
+          "/api/activities/touristGuidId/${widget.guid?.id}");
       accommodationList = await fetchAccommodations(
           "/api/plannings/activitiestransfertaccommondation/047c80d9-14c8-4735-b355-d8f5beaa90e6");
 
@@ -156,7 +156,7 @@ class _PlanningScreenState extends State<PlanningScreen> {
   Future<Map<String, List<dynamic>>> fetchDataAndOrganizeEvents() async {
     try {
       List<Activity> activitiesList = await fetchActivities(
-        "/api/plannings/activitiestransfertaccommondation/touristGuidId/${widget.guid?.id}",
+        "/api/activities/touristGuidId/${widget.guid?.id}",
       );
       List<Accommodations> accommodationsList = await fetchAccommodations(
         "/api/plannings/activitiestransfertaccommondation/047c80d9-14c8-4735-b355-d8f5beaa90e6",

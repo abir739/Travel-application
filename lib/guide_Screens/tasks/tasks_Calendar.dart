@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-import 'package:zenify_trip/constent.dart';
+import 'package:zenify_trip/services/constent.dart';
 import 'package:zenify_trip/guide_Screens/tasks/datad_calendar.dart';
 import 'package:zenify_trip/login/login_Page.dart';
 import 'package:zenify_trip/modele/tasks/taskModel.dart';
@@ -102,7 +102,7 @@ class _TaskListPageState extends State<TaskListPage> {
                           },
                         ),
                       ),
-                      if (entry.key < appointments.length - 1) Divider(),
+                      if (entry.key < appointments.length - 1) const Divider(),
                     ],
                   ),
                 )
@@ -180,7 +180,7 @@ class _TaskListPageState extends State<TaskListPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(
+          title: const Text(
             "Add Task",
             style: TextStyle(
               fontSize: 20,
@@ -192,7 +192,7 @@ class _TaskListPageState extends State<TaskListPage> {
             children: <Widget>[
               TextFormField(
                 controller: descriptionController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Task Description',
                   border: OutlineInputBorder(),
                 ),
@@ -203,7 +203,7 @@ class _TaskListPageState extends State<TaskListPage> {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () async {
                   final DateTime? pickedDate = await showDatePicker(
@@ -219,13 +219,13 @@ class _TaskListPageState extends State<TaskListPage> {
                     });
                   }
                 },
-                child: Text('Select Date'),
+                child: const Text('Select Date'),
               ),
             ],
           ),
           actions: <Widget>[
             TextButton(
-              child: Text(
+              child: const Text(
                 'Cancel',
                 style: TextStyle(
                   color: Colors.red,
@@ -236,7 +236,7 @@ class _TaskListPageState extends State<TaskListPage> {
               },
             ),
             TextButton(
-              child: Text(
+              child: const Text(
                 'Add',
                 style: TextStyle(
                   color: Colors.blue,
@@ -246,7 +246,7 @@ class _TaskListPageState extends State<TaskListPage> {
                 if (descriptionController.text.isEmpty) {
                   // Show an error message if the description is empty
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
+                    const SnackBar(
                       content: Text('Please enter a description'),
                       backgroundColor: Colors.red,
                     ),
@@ -348,12 +348,12 @@ class _TaskListPageState extends State<TaskListPage> {
             children: <Widget>[
               TextFormField(
                 controller: descriptionController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Task Description',
                   border: OutlineInputBorder(),
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () async {
                   final DateTime? pickedDate = await showDatePicker(
@@ -369,7 +369,7 @@ class _TaskListPageState extends State<TaskListPage> {
                     });
                   }
                 },
-                child: Text('Select Date'),
+                child: const Text('Select Date'),
               ),
             ],
           ),
@@ -473,7 +473,7 @@ class _TaskListPageState extends State<TaskListPage> {
         actions: [
           // Add an icon button to the app bar for adding tasks
           IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.add_box,
               color: Color(0xFF3A3557), // Set the desired color here
             ),
@@ -589,14 +589,14 @@ class _TaskListPageState extends State<TaskListPage> {
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
-                                  title: Text(
+                                  title: const Text(
                                     "Confirm Deletion",
                                     style: TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  content: Text(
+                                  content: const Text(
                                     "Are you sure you want to delete this task?",
                                     style: TextStyle(
                                       fontSize: 16,
@@ -604,7 +604,7 @@ class _TaskListPageState extends State<TaskListPage> {
                                   ),
                                   actions: <Widget>[
                                     TextButton(
-                                      child: Text(
+                                      child: const Text(
                                         "Cancel",
                                         style: TextStyle(
                                           color: Colors.blue,
@@ -616,7 +616,7 @@ class _TaskListPageState extends State<TaskListPage> {
                                       },
                                     ),
                                     TextButton(
-                                      child: Text(
+                                      child: const Text(
                                         "Delete",
                                         style: TextStyle(
                                           color: Colors.red,

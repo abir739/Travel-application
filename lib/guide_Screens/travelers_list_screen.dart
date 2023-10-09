@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:http/http.dart' as http;
 import 'package:zenify_trip/guide_Screens/TravelerProfileScreen.dart';
-import 'package:zenify_trip/constent.dart';
+import 'package:zenify_trip/services/constent.dart';
 import 'package:zenify_trip/login/login_Page.dart';
 import 'package:zenify_trip/modele/traveller/TravellerModel.dart';
 import 'package:url_launcher/url_launcher.dart';

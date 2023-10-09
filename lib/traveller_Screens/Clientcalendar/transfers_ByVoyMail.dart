@@ -5,7 +5,7 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:zenify_trip/Secreens/ConcentricAnimationOnboarding.dart';
 import 'package:zenify_trip/Secreens/Profile/User_Profil.dart';
 import 'package:zenify_trip/login/login_Page.dart';
-import 'package:zenify_trip/constent.dart';
+import 'package:zenify_trip/services/constent.dart';
 import 'package:zenify_trip/modele/Event/Event.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;

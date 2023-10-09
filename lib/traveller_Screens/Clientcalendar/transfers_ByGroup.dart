@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:zenify_trip/guide_Screens/calendar/Event_Details.dart';
-import 'package:zenify_trip/constent.dart';
+import 'package:zenify_trip/services/constent.dart';
 import 'package:zenify_trip/modele/Event/Event.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;

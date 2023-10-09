@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:zenify_trip/NetworkHandler.dart';
 import 'package:zenify_trip/guide_Screens/Guide_First_Page.dart';
-import 'package:zenify_trip/constent.dart';
+import 'package:zenify_trip/services/constent.dart';
 import 'package:zenify_trip/traveller_Screens/Traveller-First-Screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:wave/config.dart';
