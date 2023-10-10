@@ -62,9 +62,3 @@ String transportEmoji = '🚗';
 String tasksEmoji = '📋';
 String addNotificationEmoji = '🔔';
 String informationsEmoji = 'ℹ️';
-
-
-
-
-
-
