@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zenify_trip/NetworkHandler.dart';
-import 'package:zenify_trip/guide_Screens/Events-Calendar-Guide.dart';
-// import 'package:zenify_trip/guide_Screens/calendar/Guide_Calendar.dart';
+//import 'package:zenify_trip/guide_Screens/Events-Calendar-Guide.dart';
+import 'package:zenify_trip/guide_Screens/calendar/Guide_Calendar.dart';
+import 'package:zenify_trip/menu/hidden_drawGuid.dart';
 import 'package:zenify_trip/modele/touristGroup.dart';
 import '../modele/HttpPlaning.dart';
 import '../modele/TouristGuide.dart';
@@ -302,7 +303,9 @@ class _PlaningSecreenState extends State<PlaningSecreen> {
                               ),
                             ),
                             onPressed: () {
-                              Get.to(EventCalendar(guideId: guid!.id));
+                              // Get.to(EventCalendar(guideId: guid!.id));
+                              // Get.to(PlanningScreen(guid));
+                              Get.to(HiddenDrawerGuid(guid));
                               sendtags(guid!.id);
                             },
                             child: SizedBox(

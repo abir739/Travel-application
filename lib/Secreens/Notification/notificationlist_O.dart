@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-
+import 'package:zenify_trip/Secreens/Notification/NotificationDetails.dart';
 import '../../modele/HttpPushNotification.dart';
 import '../../modele/activitsmodel/httpActivites.dart';
 import '../../modele/activitsmodel/pushnotificationmodel.dart';
 import 'package:intl/intl.dart';
+import 'package:get/get.dart';
+
+import '../Transfer/transferdetailsfromnotification.dart';
 
 class NotificationScreen extends StatelessWidget {
   String? groupsid;
@@ -11,9 +14,6 @@ class NotificationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Notification '),
-      ),
       body: NotificationList(groupsid: groupsid),
     );
   }
@@ -29,7 +29,7 @@ class NotificationList extends StatefulWidget {
 class _NotificationListState extends State<NotificationList> {
   final httpHandler = HTTPHandlerPushNotification();
   final count = HTTPHandlerCount();
-  int limit = 6;
+  int limit = 12;
   String formatTimestamp(DateTime? dateTime) {
     final now = DateTime.now();
     final difference = now.difference(dateTime!);
@@ -79,31 +79,37 @@ class _NotificationListState extends State<NotificationList> {
                   final dateFormat = DateFormat('MMMM d, yyyy');
                   final timeFormat = DateFormat('hh:mm a');
                   // Display the list of notifications
-                  final notificationsList = ListView.builder(
+                  final notificationsList = ListView.separated(
                     itemCount: snapshot.data!.length +
                         1, // Add 1 for "See Fewer Notifications"
                     itemBuilder: (context, index) {
                       if (index == snapshot.data!.length) {
                         // This is the last item, add the "See Fewer Notifications" GestureDetector
-                        return Center(
-                          child: GestureDetector(
-                            onTap: () {
-                              // Handle the click event for "See Fewer Notifications"
-                              setState(() {
-                                limit = limit + 6;
-                              });
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                "See Fewer Notifications",
-                                style: TextStyle(
-                                  color: Colors.blue,
-                                  decoration: TextDecoration.underline,
+                        return Column(
+                          children: [
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Center(
+                              child: GestureDetector(
+                                onTap: () {
+                                  // Handle the click event for "See Fewer Notifications"
+                                  setState(() {
+                                    limit = limit + 6;
+                                  });
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    "See Fewer Notifications",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 24),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
+                          ],
                         );
                       }
 
@@ -132,34 +138,74 @@ class _NotificationListState extends State<NotificationList> {
                               child: Text(
                                 formattedDate, // Use the formatted date
                                 style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.grey,
-                                ),
+                                    fontWeight: FontWeight.bold, fontSize: 24),
                               ),
                             ),
-                          Card(
-                            color: Colors.white,
-                            elevation: 3,
-                            margin: EdgeInsets.symmetric(
-                              vertical: 8,
-                              horizontal: 16,
-                            ),
-                            child: ListTile(
-                                leading: CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2NKsAR38L2Nsk1q1H_u3EWO_oo9ggQwYXig&usqp=CAU"),
-                                ),
+                          GestureDetector(
+                            onTap: () {
+                              // Handle the click event for "See Fewer Notifications"
+                              // setState(() {
+                              // limit = limit + 6;
+                              print(notification.type);
+                              Get.to(ActivityDetailScreen(
+                                  notification: notification));
+                              // });
+                            },
+                            child: Chip(
+                              avatar: CircleAvatar(
+                                backgroundImage: NetworkImage(
+                                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2NKsAR38L2Nsk1q1H_u3EWO_oo9ggQwYXig&usqp=CAU"),
+                              ),
+                              label: ListTile(
                                 title: Text(notification.title ?? "title"),
-                                trailing: Text(
-                                    formatTimestamp(notification.createdAt)),
-                               subtitle : Text(notification.message??"Message"),
-//  Text(
-//                               "${notification.message ?? "message"}\n$formattedTime", // Include formatted time
-//                             ),
+                                trailing: notification.type == "Transfer"
+                                    ? Column(
+                                        children: [
+                                          Text("🚍 "),
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                          Text(
+                                            formatTimestamp(
+                                                notification.createdAt),
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 20),
+                                          )
+                                        ],
+                                      )
+                                    : Text(
+                                        formatTimestamp(notification.createdAt),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20),
+                                      ),
+                                subtitle: Text(
+                                  notification.message ?? "Message",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20),
                                 ),
+                                //  Text(
+                                //                               "${notification.message ?? "message"}\n$formattedTime", // Include formatted time
+                                //                             ),
+                              ),
+                            ),
                           ),
                         ],
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) {
+                      // This function defines the separators between items.
+                      // You can return a widget that represents the separator.
+                      return Divider(
+                        endIndent: Get.width * 0.2,
+                        indent: Get.width * 0.2,
+                        height:
+                            5, // Adjust the height of the separator as needed
+                        thickness: 2,
+                        color: Color.fromARGB(80, 18, 2,
+                            160), // Customize the color of the separator
                       );
                     },
                   );

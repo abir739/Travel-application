@@ -85,6 +85,10 @@ dependencies:
   mailer: ^6.0.1
   telephony: ^0.2.0
   twilio: ^0.0.2
+  settings_ui: ^2.0.2
+  animated_theme_switcher: ^2.0.8
+  hidden_drawer_menu: ^3.0.1
+  android_alarm_manager_plus: ^4.0.0
 dependency_overrides:
   platform: ^3.1.0
 

@@ -5,8 +5,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class ActivityDetailScreen extends StatefulWidget {
   final String? id;
+  final PushNotification? notification;
 
-  const ActivityDetailScreen({super.key, this.id});
+  const ActivityDetailScreen({
+    Key? key,
+    this.id,
+    this.notification,
+  }) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
@@ -46,7 +51,6 @@ class _ActivityDetailScreenState extends State<ActivityDetailScreen> {
       rethrow; // You should throw the error to propagate it
     }
   }
-
 
   @override
   Widget build(BuildContext context) {

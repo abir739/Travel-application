@@ -1,23 +1,49 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+
+import 'package:flutter_summernote/flutter_summernote.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+
+import 'package:http/http.dart' as http;
+
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:get/get.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:intl/intl.dart';
+import 'package:location/location.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
+
+import 'package:stream_transform/stream_transform.dart';
+
 import 'dart:async';
+import 'package:path/path.dart' as path;
+import 'package:async/async.dart';
+import 'package:get/get.dart';
+import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
+
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:zenify_trip/modele/activitsmodel/activitesmodel.dart';
 import 'package:zenify_trip/modele/transportmodel/transportModel.dart';
+
+import '../../../modele/activitsmodel/activityTempModel.dart';
+
+import '../../modele/Event/Event.dart';
+import '../../modele/activitsmodel/httpActivitesTempid.dart';
 import '../../modele/activitsmodel/httpTransportid.dart';
 import '../../theme.dart';
+import 'TransportEditDetails.dart';
 
 class TransportDetailSecreen extends StatefulWidget {
   String? id;
 
-
-  TransportDetailSecreen(this.id, {Key? key})
-      : super(key: key);
+  TransportDetailSecreen(this.id, {Key? key}) : super(key: key);
 
   @override
-  _TransportDetailSecreenState createState() =>
-      _TransportDetailSecreenState();
+  _TransportDetailSecreenState createState() => _TransportDetailSecreenState();
 }
 
 class _TransportDetailSecreenState extends State<TransportDetailSecreen> {
@@ -31,8 +57,8 @@ class _TransportDetailSecreenState extends State<TransportDetailSecreen> {
   Future<Transport> _loadData() async {
     // String? accessToken = await getAccessToken();
 
-    final updatedData = await trasferhandler.fetchData(
-        "/api/transfers-mobile/${widget.id}");
+    final updatedData =
+        await trasferhandler.fetchData("/api/transfers-mobile/${widget.id}");
     setState(() {
       transport = updatedData;
 
@@ -57,11 +83,7 @@ class _TransportDetailSecreenState extends State<TransportDetailSecreen> {
     // getAccessToken();
     // _transport = widget.id;
     _loadData();
-
-  
   }
-
-
 
   @override
   void dispose() {
@@ -109,25 +131,24 @@ class _TransportDetailSecreenState extends State<TransportDetailSecreen> {
                     Row(
                       children: [
                         Text(
-                         " from ",style:  kAppTheme.textTheme.displayLarge,
+                          " from ",
+                          style: kAppTheme.textTheme.displayLarge,
                         ),
                         Text(
-                          transport.from ?? "No description",style:
-                          kAppTheme.textTheme.displayLarge,
+                          transport.from ?? "No description",
+                          style: kAppTheme.textTheme.displayLarge,
                         ),
                         Text(
-                          " to ",style:
-                          kAppTheme.textTheme.displayLarge,
-                        
+                          " to ",
+                          style: kAppTheme.textTheme.displayLarge,
                         ),
                         Text(
                           transport.to ?? "No description",
-                          style:
-                          kAppTheme.textTheme.displayLarge,
+                          style: kAppTheme.textTheme.displayLarge,
                         ),
                       ],
                     ),
-                    
+
                     // Add more widgets to display other properties of 'activites'
 // ElevatedButton(
 //                       onPressed: () {
@@ -143,7 +164,6 @@ class _TransportDetailSecreenState extends State<TransportDetailSecreen> {
 //                       },
 //                       child: Text("Edit Transport Details"),
 //                     ),
-
                   ],
                 ),
               ),

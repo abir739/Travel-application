@@ -9,7 +9,6 @@ import 'package:zenify_trip/modele/tasks/taskModel.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class TaskListPage extends StatefulWidget {
   final String? guideId;
@@ -439,50 +438,50 @@ class _TaskListPageState extends State<TaskListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 207, 207, 219),
-        title: Row(
-          children: [
-            SvgPicture.asset(
-              'assets/Frame.svg',
-              fit: BoxFit.cover,
-              height: 36.0,
-            ),
-            const SizedBox(width: 30),
-            ShaderMask(
-              shaderCallback: (Rect bounds) {
-                return const LinearGradient(
-                  colors: [
-                    Color(0xFF3A3557),
-                    Color(0xFFCBA36E),
-                    Color(0xFFEB5F52),
-                  ],
-                ).createShader(bounds);
-              },
-              child: const Text(
-                '  Tasks List',
-                style: TextStyle(
-                  fontSize: 24,
-                  color: Colors
-                      .white, // You can adjust the font size and color here
-                ),
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          // Add an icon button to the app bar for adding tasks
-          IconButton(
-            icon: const Icon(
-              Icons.add_box,
-              color: Color(0xFF3A3557), // Set the desired color here
-            ),
-            onPressed: () {
-              _showAddTaskDialog(context);
-            },
-          ),
-        ],
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: const Color.fromARGB(255, 207, 207, 219),
+      //   title: Row(
+      //     children: [
+      //       SvgPicture.asset(
+      //         'assets/Frame.svg',
+      //         fit: BoxFit.cover,
+      //         height: 36.0,
+      //       ),
+      //       const SizedBox(width: 30),
+      //       ShaderMask(
+      //         shaderCallback: (Rect bounds) {
+      //           return const LinearGradient(
+      //             colors: [
+      //               Color(0xFF3A3557),
+      //               Color(0xFFCBA36E),
+      //               Color(0xFFEB5F52),
+      //             ],
+      //           ).createShader(bounds);
+      //         },
+      //         child: const Text(
+      //           '  Tasks List',
+      //           style: TextStyle(
+      //             fontSize: 24,
+      //             color: Colors
+      //                 .white, // You can adjust the font size and color here
+      //           ),
+      //         ),
+      //       ),
+      //     ],
+      //   ),
+      //   actions: [
+      //     // Add an icon button to the app bar for adding tasks
+      //     IconButton(
+      //       icon: const Icon(
+      //         Icons.add_box,
+      //         color: Color(0xFF3A3557), // Set the desired color here
+      //       ),
+      //       onPressed: () {
+      //         _showAddTaskDialog(context);
+      //       },
+      //     ),
+      //   ],
+      // ),
       body: RefreshIndicator(
         onRefresh: fetchData,
         child: ListView(
@@ -521,7 +520,7 @@ class _TaskListPageState extends State<TaskListPage> {
                           ),
                         ),
                         const SizedBox(
-                          height: 8,
+                          height: 18,
                         ),
                         Text(
                           details.appointments.length.toString(),

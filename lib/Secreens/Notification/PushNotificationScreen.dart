@@ -161,38 +161,38 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 207, 207, 219),
-        title: Row(
-          children: [
-            SvgPicture.asset(
-              'assets/Frame.svg',
-              fit: BoxFit.cover,
-              height: 36.0,
-            ),
-            const SizedBox(width: 30),
-            ShaderMask(
-              shaderCallback: (Rect bounds) {
-                return const LinearGradient(
-                  colors: [
-                    Color(0xFF3A3557),
-                    Color(0xFFCBA36E),
-                    Color(0xFFEB5F52),
-                  ],
-                ).createShader(bounds);
-              },
-              child: const Text(
-                'Push notification',
-                style: TextStyle(
-                  fontSize: 24,
-                  color: Colors
-                      .white, // You can adjust the font size and color here
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: const Color.fromARGB(255, 207, 207, 219),
+      //   title: Row(
+      //     children: [
+      //       SvgPicture.asset(
+      //         'assets/Frame.svg',
+      //         fit: BoxFit.cover,
+      //         height: 36.0,
+      //       ),
+      //       const SizedBox(width: 30),
+      //       ShaderMask(
+      //         shaderCallback: (Rect bounds) {
+      //           return const LinearGradient(
+      //             colors: [
+      //               Color(0xFF3A3557),
+      //               Color(0xFFCBA36E),
+      //               Color(0xFFEB5F52),
+      //             ],
+      //           ).createShader(bounds);
+      //         },
+      //         child: const Text(
+      //           'Push notification',
+      //           style: TextStyle(
+      //             fontSize: 24,
+      //             color: Colors
+      //                 .white, // You can adjust the font size and color here
+      //           ),
+      //         ),
+      //       ),
+      //     ],
+      //   ),
+      // ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(

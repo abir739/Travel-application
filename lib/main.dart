@@ -2,13 +2,19 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
+import 'package:zenify_trip/Secreens/TravelerProvider.dart';
+import 'package:zenify_trip/Secreens/TravellerCalender.dart';
+import 'package:zenify_trip/Settings/AppSettings.dart';
 import 'package:zenify_trip/login/RoleSelectionPage.dart';
+import 'package:zenify_trip/menu/hidden_draw.dart';
+import 'package:zenify_trip/menu/hidden_drawGuid.dart';
 import 'package:zenify_trip/register.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:timezone/data/latest.dart' as tzdata;
+import 'package:zenify_trip/services/GuideProvider.dart';
+import 'package:zenify_trip/theme.dart';
 import 'package:zenify_trip/traveller_Screens/Traveller-First-Screen.dart';
-import 'package:zenify_trip/traveller_Screens/Traveller-Provider.dart';
 import 'Controller/dependency_injection.dart';
 import 'Secreens/Notification/NotificationCountNotifierProvider.dart';
 import 'Secreens/Notification/notificationlist.dart';
@@ -17,16 +23,30 @@ import 'Secreens/TouristGroupProvider.dart';
 import 'guide_Screens/Guide_First_Page.dart';
 import 'services/constent.dart';
 import 'onesignal_handler.dart';
+import 'package:zenify_trip/routes/SettingsProvider.dart';
+import 'package:zenify_trip/routes/themeprovider.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // OneSignalHandler.initialize(context);
+  WidgetsFlutterBinding.ensureInitialized();
+  // Initialize dependencies
+  DependencyInjection.init();
+  await AppSettingsLoader.loadHideEmptyScheduleWeek();
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(
+          create: (_) => ThemeModelp(),
+        ), // Create a theme model
         ChangeNotifierProvider(create: (_) => NotificationCountNotifier()),
         ChangeNotifierProvider(create: (_) => TouristGroupProvider()),
-        ChangeNotifierProvider(create: (context) => TravellerProvider()),
+        ChangeNotifierProvider(create: (_) => TravelerProvider()),
+        ChangeNotifierProvider(create: (_) => guidProvider()),
+        ChangeNotifierProvider(create: (_) => TravelerProvider()),
+        ChangeNotifierProvider(create: (_) => guidProvider()),
+        ChangeNotifierProvider(create: (_) => SettingsProvider()),
+
         // Add more providers as needed
       ],
       child: MyApp(),
@@ -40,12 +60,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     OneSignalHandler.initialize(context);
+    final settingsProvider = Provider.of<SettingsProvider>(context);
+
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: settingsProvider.isDarkMode
+          ? MyThemes.darkTheme
+          : MyThemes.lightTheme,
       home: SplashScreen(),
       routes: {
         'register': (context) => const MyRegister(),
         'login': (context) => const RoleSelectionPage(),
+        // 'HiddenDrawerGuid': (context) => HiddenDrawerGuid(),
+        'HiddenDrawer': (context) => HiddenDrawer(),
+        'travellerCalendarPage': (context) => TravellerCalendarPage(),
         'notificationScreen': (context) => NotificationScreen(
               groupsid: '',
             ),

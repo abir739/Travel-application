@@ -1,7 +1,13 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-//const String baseUrls = "https://api.zenify-trip.continuousnet.com";
 const String baseUrls = "http://192.168.1.92:3000";
+//const String baseUrls = "https://api.zenify-trip.continuousnet.com";
+
+// final String oneSignalAppId = 'ce7f9114-b051-4672-a9c5-0eec08d625e8';
+// const String baseUrls = "http://192.168.152.53:3000";
+// final accountSid = 'ACc47bfeda04bc38275dded333a92666bc';
+// final authToken = '70b4d4ec6bec695f4c0dfd9205a9e5b1';
+// final twilioNumber = '+12564154864';
 Future<String?> getBaseUrl() async {
   final storage = const FlutterSecureStorage();
   return await storage.read(key: "baseurl");
@@ -17,6 +23,8 @@ String thumbsDownEmoji = '\u{1F44E}';
 String laughingEmoji = '\u{1F604}';
 String cryingEmoji = '\u{1F622}';
 String fireEmoji = '\u{1F525}';
+String settingsEmoji = '\u2699';
+String calendarEmoji = '\u{1F4C6}';
 String partyEmoji = '\u{1F389}';
 String birthdayEmoji = '\u{1F382}';
 String starEyesEmoji = '\u{1F929}';
@@ -48,3 +56,15 @@ String soccerBallEmoji = '\u{26BD}';
 String pandaFaceEmoji = '\u{1F43C}';
 String catFaceWithHeartEyesEmoji = '\u{1F63B}';
 String hatchingChickEmoji = '\u{1F423}';
+String logoutEmoji = '🚪';
+String groupsEmoji = '👫';
+String transportEmoji = '🚗';
+String tasksEmoji = '📋';
+String addNotificationEmoji = '🔔';
+String informationsEmoji = 'ℹ️';
+
+
+
+
+
+

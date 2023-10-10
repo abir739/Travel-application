@@ -10,20 +10,22 @@ ThemeData kAppTheme = ThemeData(
       buttonTextTheme:
           ButtonTextTheme.primary, // Replace with your desired text theme
     ),
-   elevatedButtonTheme:ElevatedButtonThemeData(style: ButtonStyle(
-    backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 152, 2, 152)),),), // Set the background color to blue
-  
-  appBarTheme: AppBarTheme(
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ButtonStyle(
         backgroundColor:
-          AppPrimaryColor, // Make the AppBar background transparent
-        elevation: 0, // Remove the shadow
+            MaterialStateProperty.all<Color>(Color.fromARGB(255, 152, 2, 152)),
       ),
-    
-   inputDecorationTheme: InputDecorationTheme(
+    ), // Set the background color to blue
+
+    appBarTheme: AppBarTheme(
+      backgroundColor:
+          AppPrimaryColor, // Make the AppBar background transparent
+      elevation: 0, // Remove the shadow
+    ),
+    inputDecorationTheme: InputDecorationTheme(
       floatingLabelBehavior: FloatingLabelBehavior.auto,
       labelStyle: TextStyle(color: kAccentColor),
-
-      fillColor:Color.fromARGB(0, 90, 1, 1) ,
+      fillColor: Color(0xFF3A3557),
       focusedBorder: OutlineInputBorder(
         borderSide: BorderSide(
           color: kHighlightColor, // Change the color here
@@ -36,17 +38,16 @@ ThemeData kAppTheme = ThemeData(
           width: 1.0,
         ),
       ),
-          border: OutlineInputBorder( // Customize the border
-            borderRadius: BorderRadius.circular(10.0), // You can adjust the radius
+      border: OutlineInputBorder(
+        // Customize the border
+        borderRadius: BorderRadius.circular(10.0), // You can adjust the radius
 
-            borderSide: BorderSide(
-              color:Color.fromARGB(0, 90, 1, 1) , // Set the border color
-              width: 2.0, // Set the border width
-            ),
-          ),
+        borderSide: BorderSide(
+          color: Color.fromARGB(0, 90, 1, 1), // Set the border color
+          width: 2.0, // Set the border width
         ),
-      
-
+      ),
+    ),
     fontFamily: 'PlayFair',
     textTheme: TextTheme(
       headline1: TextStyle(
@@ -93,3 +94,25 @@ ThemeData kAppTheme = ThemeData(
           fontSize: 14,
           fontFamily: 'PlayFair'),
     ));
+
+class MyThemes {
+  static final primary = Colors.blue;
+  static final primaryColor = Colors.blue.shade300;
+
+  static final darkTheme = ThemeData(
+    scaffoldBackgroundColor: Colors.grey.shade900,
+    primaryColorDark: primaryColor,
+    hintColor: Colors.blue,
+    colorScheme: ColorScheme.dark(primary: primary),
+    splashColor: Color(0xFFEB5F52),
+    dividerColor: Colors.white,
+  );
+
+  static final lightTheme = ThemeData(
+    scaffoldBackgroundColor: Colors.white,
+    splashColor: Color(0xFFEB5F52),
+    primaryColor: primaryColor,
+    colorScheme: ColorScheme.light(primary: primary),
+    dividerColor: Colors.black,
+  );
+}

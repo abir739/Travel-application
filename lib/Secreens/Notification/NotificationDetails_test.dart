@@ -95,7 +95,8 @@ class _ActivityDetailScreenState extends State<ActivityDetailScreen> {
 
   Future<Transport> fetchtransferDetails(String? id) async {
     try {
-      final transport = await trasferhandler.fetchData("/api/transfers-mobile/$idt");
+      final transport =
+          await trasferhandler.fetchData("/api/transfers-mobile/$idt");
       print("${transport.from}from");
       print("${transport.touristGuide?.id}from");
       return transport; // Return the fetched data
@@ -106,14 +107,12 @@ class _ActivityDetailScreenState extends State<ActivityDetailScreen> {
   }
 
   @override
-
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Activity Detail'),
       ),
       body: Container(
-       
         child: Container(
           child: Container(
             child: buildTransportDetails(),
@@ -123,7 +122,7 @@ class _ActivityDetailScreenState extends State<ActivityDetailScreen> {
 //                 children: [
 //                   buildActivityDetails(),
 //                   SizedBox(height: 16.0),
-                  
+
 //                   SizedBox(height: 16.0),
 
 //                 ],
@@ -176,7 +175,8 @@ class _ActivityDetailScreenState extends State<ActivityDetailScreen> {
       },
     );
   }
-Widget TravelCard(Transport transfer) => Container(
+
+  Widget TravelCard(Transport transfer) => Container(
         child: Stack(
           children: [
             // Container(
@@ -221,7 +221,7 @@ Widget TravelCard(Transport transfer) => Container(
                           style: kAppTheme.textTheme.displaySmall,
                         ),
                         Text(
-                          transfer.from ??" No Data",
+                          transfer.from ?? " No Data",
                           style: kAppTheme.textTheme.displaySmall,
                         ),
                         Text(
@@ -229,13 +229,17 @@ Widget TravelCard(Transport transfer) => Container(
                           style: kAppTheme.textTheme.displaySmall,
                         ),
                         Text(
-                      transfer.to ?? " No Data",
+                          transfer.to ?? " No Data",
                           style: kAppTheme.textTheme.displaySmall,
                         ),
                       ],
-                    ), SizedBox(height: 20,),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
                     Text(
-                      "${transfer.touristGuide?.name } has update or create  " ?? " No Data",
+                      "${transfer.touristGuide?.name} has update or create  " ??
+                          " No Data",
                       style: kAppTheme.textTheme.headlineMedium,
                     ),
                     SizedBox(
@@ -303,8 +307,7 @@ Widget TravelCard(Transport transfer) => Container(
 //               ),
 //             ],
 //           );
-       
- }
+        }
       },
     );
   }

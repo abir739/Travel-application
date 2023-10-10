@@ -107,7 +107,7 @@ class _PlaningtestState extends State<Planingtest>
     final userId = await storage.read(key: "id");
     try {
       final user =
-          await httpUserHandler.fetchUser('/api/users/$userId', "$token");
+          await httpUserHandler.fetchUser('/api/users/$userId');
 
       setState(() {
         users = [user];

@@ -60,26 +60,26 @@ class _GroupsListScreenState extends State<GroupsListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 207, 207, 219),
-        title: Row(
-          children: [
-            SvgPicture.asset(
-              'assets/Frame.svg',
-              fit: BoxFit.cover,
-              height: 36.0,
-            ),
-            const SizedBox(width: 40),
-            const Text(
-              "Torist Groups List",
-              style: TextStyle(
-                color: Color.fromARGB(255, 68, 5, 150),
-                fontSize: 18,
-              ),
-            ),
-          ],
-        ),
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: const Color.fromARGB(255, 207, 207, 219),
+      //   title: Row(
+      //     children: [
+      //       SvgPicture.asset(
+      //         'assets/Frame.svg',
+      //         fit: BoxFit.cover,
+      //         height: 36.0,
+      //       ),
+      //       const SizedBox(width: 40),
+      //       const Text(
+      //         "Torist Groups List",
+      //         style: TextStyle(
+      //           color: Color.fromARGB(255, 68, 5, 150),
+      //           fontSize: 18,
+      //         ),
+      //       ),
+      //     ],
+      //   ),
+      // ),
       body: SafeArea(
         child: ListView.builder(
           itemCount: _touristGroups.length,

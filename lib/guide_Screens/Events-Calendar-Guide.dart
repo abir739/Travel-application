@@ -8,7 +8,9 @@ import 'package:zenify_trip/guide_Screens/calendar/Event_Details.dart';
 import 'package:zenify_trip/modele/activitsmodel/activitesmodel.dart';
 import 'package:zenify_trip/modele/tasks/taskModel.dart';
 import 'package:zenify_trip/modele/transportmodel/transportModel.dart';
+import 'package:get/get.dart';
 
+// To Do: edit task alertdialog add oussama menu + rest of the code
 class EventCalendarDataSource extends CalendarDataSource {
   EventCalendarDataSource(List<Appointment> source) {
     appointments = source;
@@ -28,6 +30,7 @@ class _EventCalendarState extends State<EventCalendar> {
   List<Activity> activities = [];
   List<Tasks> tasks = [];
   List<Transport> transfers = [];
+  final CalendarController _controller = CalendarController();
 
   @override
   void initState() {
@@ -144,7 +147,158 @@ class _EventCalendarState extends State<EventCalendar> {
     });
   }
 
+  Future<void> _showAddTaskDialog(BuildContext context) async {
+    final TextEditingController descriptionController = TextEditingController();
+    DateTime? selectedDate;
+
+    final result = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text(
+            "Add Task",
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              TextFormField(
+                controller: descriptionController,
+                decoration: const InputDecoration(
+                  labelText: 'Task Description',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter a description';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () async {
+                  final DateTime? pickedDate = await showDatePicker(
+                    context: context,
+                    initialDate: selectedDate ?? DateTime.now(),
+                    firstDate: DateTime.now(),
+                    lastDate: DateTime(2101),
+                  );
+
+                  if (pickedDate != null && pickedDate != selectedDate) {
+                    setState(() {
+                      selectedDate = pickedDate;
+                    });
+                  }
+                },
+                child: const Text('Select Date'),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text(
+                'Cancel',
+                style: TextStyle(
+                  color: Colors.red,
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop(false); // Return false on cancel
+              },
+            ),
+            TextButton(
+              child: const Text(
+                'Add',
+                style: TextStyle(
+                  color: Colors.blue,
+                ),
+              ),
+              onPressed: () async {
+                if (descriptionController.text.isEmpty) {
+                  // Show an error message if the description is empty
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Please enter a description'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                } else {
+                  String newTaskDescription = descriptionController.text;
+                  String? newTaskTodoDate;
+
+                  if (selectedDate != null) {
+                    newTaskTodoDate = selectedDate?.toLocal().toString();
+                  }
+
+                  // Send a POST request to add the task
+                  String? token = await storage.read(key: "access_token");
+                  String url = "$baseUrls/api/tasks";
+                  final response = await http.post(
+                    Uri.parse(url),
+                    headers: {
+                      "Authorization": "Bearer $token",
+                      "Content-Type": "application/json",
+                    },
+                    body: jsonEncode({
+                      "touristGuideId": widget.guideId,
+                      "description": newTaskDescription,
+                      "todoDate": newTaskTodoDate,
+                      // Add other task properties as needed
+                    }),
+                  );
+
+                  if (response.statusCode == 201) {
+                    // Task added successfully, update the calendar
+                    fetchTasks();
+                    Navigator.of(context).pop(true); // Return true on success
+                  } else {
+                    // Handle error
+                    print("Error adding task: ${response.statusCode}");
+                  }
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+
+    if (result == true) {
+      // Task was added successfully
+    }
+  }
+
+  Future<void> _deleteTask(Tasks task) async {
+    // Send an HTTP DELETE request to delete the task on the server
+    String? token = await storage.read(key: "access_token");
+    String url =
+        "$baseUrls/api/tasks/${task.id}"; // Replace with your API endpoint
+
+    final response = await http.delete(
+      Uri.parse(url),
+      headers: {
+        "Authorization": "Bearer $token",
+      },
+    );
+
+    if (response.statusCode == 204) {
+      // Task deleted successfully from the server
+      // Remove the task from the local list
+      tasks.remove(task);
+      // Update the UI
+      setState(() {});
+    } else {
+      // Handle error
+      print("Error deleting task: ${response.statusCode}");
+    }
+  }
+
   void _onTaskAppointmentTapped(Tasks task) {
+    print('Tapped on task with ID: ${task.id}'); // Print to verify the task ID
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
@@ -159,18 +313,15 @@ class _EventCalendarState extends State<EventCalendar> {
                   leading: const Icon(Icons.add),
                   title: const Text('Add New'),
                   onTap: () {
-                    // Handle "Add New" option
-                    Navigator.pop(context);
-                    // Add your logic for handling "Add New"
+                    _showAddTaskDialog(context);
                   },
                 ),
                 ListTile(
                   leading: const Icon(Icons.delete),
                   title: const Text('Delete'),
                   onTap: () {
-                    // Handle "Delete" option
-                    Navigator.pop(context);
-                    // Add your logic for handling "Delete"
+                    _deleteTask(task);
+                    Navigator.of(context).pop();
                   },
                 ),
                 ListTile(
@@ -193,40 +344,100 @@ class _EventCalendarState extends State<EventCalendar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Events Calendar'),
-      ),
-      body: SfCalendar(
-        allowedViews: const <CalendarView>[
-          CalendarView.month,
-          CalendarView.schedule,
+      body: ListView(
+        children: [
+          SizedBox(
+            height: Get.height * 0.88,
+            child: SfCalendar(
+              todayHighlightColor: const Color(0xFFEB5F52),
+              todayTextStyle: const TextStyle(
+                  fontStyle: FontStyle.normal,
+                  fontSize: 27,
+                  fontWeight: FontWeight.w900,
+                  color: Color.fromARGB(255, 238, 234, 238)),
+              monthCellBuilder:
+                  (BuildContext context, MonthCellDetails details) {
+                return Container(
+                  decoration: BoxDecoration(
+                    color: details.date.month == DateTime.now().month
+                        ? const Color.fromARGB(255, 245, 242, 242)
+                        : const Color.fromARGB(255, 179, 228, 236),
+                    border: Border.all(
+                        color: const Color.fromARGB(255, 207, 207, 219),
+                        width: 0.5),
+                  ),
+                  alignment: Alignment.center,
+                  child: Column(
+                    children: [
+                      Text(
+                        details.date.day.toString(),
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: details.visibleDates.contains(details.date)
+                              ? Colors.black87
+                              : const Color.fromARGB(255, 158, 158, 158),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 18,
+                      ),
+                      Text(
+                        details.appointments.length.toString(),
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: details.visibleDates.contains(details.date)
+                              ? const Color.fromARGB(255, 87, 6, 134)
+                              : const Color.fromARGB(255, 87, 6, 134),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+              headerHeight: 40,
+              controller: _controller,
+              allowedViews: const <CalendarView>[
+                CalendarView.month,
+                CalendarView.schedule,
+              ],
+              view: CalendarView.month,
+              showDatePickerButton: true,
+              monthViewSettings: const MonthViewSettings(
+                showAgenda: true,
+                agendaViewHeight: 300,
+                numberOfWeeksInView: 4,
+                agendaItemHeight: 75,
+              ),
+              dataSource: EventCalendarDataSource(_getCalendarAppointments()),
+              onTap: (CalendarTapDetails details) {
+                if (details.targetElement == CalendarElement.appointment) {
+                  Appointment tappedAppointment = details.appointments![0];
+                  String appointmentSubject = tappedAppointment.subject;
+
+                  if (appointmentSubject.startsWith('Task')) {
+                    // Find the associated task
+                    Tasks task = tasks.firstWhere(
+                      (t) => 'Task: ${t.description}' == appointmentSubject,
+                      orElse: () => Tasks(description: ''),
+                    );
+
+                    // Show Options for the task appointment
+                    _onTaskAppointmentTapped(task);
+                  } else if (appointmentSubject.startsWith('Transfer')) {
+                    Transport transfer = transfers.firstWhere(
+                      (t) =>
+                          'Transfer: ${t.from} to ${t.to}' ==
+                          appointmentSubject,
+                      orElse: () => Transport(),
+                    );
+
+                    _onTransferAppointmentTapped(transfer);
+                  }
+                }
+              },
+            ),
+          ),
         ],
-        view: CalendarView.schedule,
-        dataSource: EventCalendarDataSource(_getCalendarAppointments()),
-        onTap: (CalendarTapDetails details) {
-          if (details.targetElement == CalendarElement.appointment) {
-            Appointment tappedAppointment = details.appointments![0];
-            String appointmentSubject = tappedAppointment.subject;
-
-            if (appointmentSubject.startsWith('Task')) {
-              // Find the associated task
-              Tasks task = tasks.firstWhere(
-                (t) => 'Task: ${t.description}' == appointmentSubject,
-                orElse: () => Tasks(description: ''),
-              );
-
-              // Show Options for the task appointment
-              _onTaskAppointmentTapped(task);
-            } else if (appointmentSubject.startsWith('Transfer')) {
-              Transport transfer = transfers.firstWhere(
-                (t) => 'Transfer: ${t.from} to ${t.to}' == appointmentSubject,
-                orElse: () => Transport(),
-              );
-
-              _onTransferAppointmentTapped(transfer);
-            }
-          }
-        },
       ),
     );
   }
@@ -246,23 +457,32 @@ class _EventCalendarState extends State<EventCalendar> {
 
     // Add tasks to the calendar
     for (var task in tasks) {
-      appointments.add(Appointment(
-        startTime: task.todoDate!,
-        endTime: task.todoDate!,
-        subject: 'Task: ${task.description}',
-        color: Colors.green,
-      ));
+      // Create an appointment for each task on its todoDate
+      if (task.todoDate != null) {
+        appointments.add(Appointment(
+          startTime: task.todoDate!,
+          endTime: task.todoDate!,
+          subject: 'Task: ${task.description}',
+          color: Colors.green,
+        ));
+      }
     }
 
     // Add transfers to the calendar
     for (var transfer in transfers) {
-      appointments.add(Appointment(
-        startTime: transfer.date!,
-        endTime:
-            transfer.date!.add(Duration(hours: transfer.durationHours ?? 0)),
-        subject: 'Transfer: ${transfer.from} to ${transfer.to}',
-        color: Colors.red,
-      ));
+      // Create an appointment for each day of the transfer
+      DateTime currentDate = transfer.date!;
+      while (currentDate.isBefore(
+          transfer.date!.add(Duration(hours: transfer.durationHours ?? 0)))) {
+        appointments.add(Appointment(
+          startTime: currentDate,
+          endTime: currentDate
+              .add(Duration(hours: 1)), // Assuming each transfer lasts 1 hour
+          subject: 'Transfer: ${transfer.from} to ${transfer.to}',
+          color: Colors.red,
+        ));
+        currentDate = currentDate.add(Duration(days: 1));
+      }
     }
 
     return appointments;
